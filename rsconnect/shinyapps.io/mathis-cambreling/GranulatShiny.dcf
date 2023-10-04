@@ -1,0 +1,13 @@
+name: GranulatShiny
+title: GranulatShiny
+username:
+account: mathis-cambreling
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4288543
+bundleId: 5370861
+url: https://mathis-cambreling.shinyapps.io/GranulatShiny/
+when: 1639481091.02989
+lastSyncTime: 1639481091.02989
+asMultiple: FALSE
+asStatic: FALSE

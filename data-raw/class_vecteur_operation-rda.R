@@ -1,0 +1,3 @@
+## code to prepare `class_vecteur_operation.rda` dataset goes here
+
+usethis::use_data(class_vecteur_operation.rda, overwrite = TRUE)
