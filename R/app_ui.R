@@ -20,7 +20,7 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    dashboardPage(
+    dashboardPage( # create the left part of the interface to choose the page 
       skin = "blue",
       dashboardHeader(title = "GranulatShiny"),
       dashboardSidebar(sidebarMenu(
@@ -47,7 +47,7 @@ app_ui <- function(request) {
           
         )
       )),
-      dashboardBody(
+      dashboardBody( # create the interface for each tab
         tabItems(
           #onglet Information à rentrer
           tabItem(
