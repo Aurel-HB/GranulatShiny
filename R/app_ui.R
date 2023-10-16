@@ -59,17 +59,17 @@ app_ui <- function(request) {
                 "Prendre en compte la stratégie d'extraction ?",
                 c("non" = "1", "oui" = "2")
               ),
-              fileInput("tutti_catch", "Sélectionnez le fichier Tutti Catch"),
+              fileInput("tutti_catch", "Sélectionnez le fichier Tutti Catch", accept = c(".csv")),
               fileInput("tutti_operation",
-                        "Sélectionnez le fichier Tutti operation"),
+                        "Sélectionnez le fichier Tutti operation", accept = c(".csv")),
               conditionalPanel(
                 "output.operation_charge",
                 fileInput(
                   "shpFile",
-                  "Sélectionnez les Shapefiles (.shp, .shx, .dbf)",
+                  "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
                   multiple = T
                 ),
-                fileInput("uploadSave", "Charger les informations à rentrer")
+                fileInput("uploadSave", "Charger les informations à rentrer", accept = c(".csv"))
               ),
               conditionalPanel(
                 'input.complex==2',
