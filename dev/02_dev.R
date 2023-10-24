@@ -39,8 +39,11 @@ usethis::use_package( "simr" )
 usethis::use_package( "RColorBrewer" )
 usethis::use_package( "plyr" )
 usethis::use_package( "sf" )
-usethis::use_package( "rgdal" )
+#usethis::use_package( "rgdal" )
 usethis::use_package( "shinycssloaders" )
+
+## install.packages('attachment') # if needed.
+attachment::att_amend_desc()
 
 ## Add modules ----
 ## Create a module infrastructure in R/

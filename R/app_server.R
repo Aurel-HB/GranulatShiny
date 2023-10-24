@@ -24,7 +24,6 @@
 #' @import RColorBrewer
 #' @import plyr
 #' @import sf
-#' @import rgdal
 #' @noRd
 
 app_server <- function(input, output, session) {
