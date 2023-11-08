@@ -1,0 +1,156 @@
+#' Import_data UI Function
+#'
+#' @description A shiny Module.
+#'
+#' @param id,input,output,session Internal parameters for {shiny}.
+#'
+#' @noRd
+#'
+#' @importFrom shiny NS tagList
+mod_Import_data_ui <- function(id){
+  ns <- NS(id)
+  tagList(
+      selectInput(
+        ns("complex"),
+        "Prendre en compte la stratégie d'extraction ?",
+        c("non" = "1", "oui" = "2")
+      ),
+      fileInput(ns("tutti_catch"), "Sélectionnez le fichier Tutti Catch (.csv)", accept = c(".csv")),
+      fileInput(ns("tutti_operation"),
+                "Sélectionnez le fichier Tutti operation (.csv)", accept = c(".csv")),
+      conditionalPanel("input.tutti_operation != NULL",
+          fileInput(
+            ns("shpFile"),
+            "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
+            multiple = T
+          ),
+          fileInput(ns("uploadSave"), "Charger les informations à rentrer (.csv)", accept = c(".csv")),
+          hr()
+          )
+  )
+}
+
+#' Import_data Server Functions
+#'
+#' @noRd
+mod_Import_data_server <- function(input, output, session, r){
+    ns <- session$ns
+    # Mise en forme -----------------------------------------------------------
+    # pour faire marcher conditionalpanel dans le UI (les inputs s'affichent une fois que le fichier operation est chargé)
+
+
+    format_catch <- c("Campagne","Annee","Trait","Nom_Scientifique","Code_Campagne",
+                "Nombre","Poids","Pmoy","longueurmoy","DateDeb","LatDeb",
+                "LongDeb","DateFin","LatFin","LongFin")
+
+    # Charger les données
+    tutti_catch <- reactive({
+      if(is.null(input$tutti_catch)){return()}
+      file1 <- input$tutti_catch[,4]
+      data11 <- read.csv (file1, header = T, sep = ";")
+      verif <- verification(names(data11), format_catch)
+      if(verif == FALSE){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Le fichier a pas le bon format !
+          Référez vous au format tutti_catch de la notice.",
+          type = "fail"
+        )
+        return()
+      }
+      data11
+    })
+
+    observe({
+      r$tutti_catch <- tutti_catch()
+    })
+
+    format_operation <- c("Annee","Serie","Serie_Partielle","Code_Station",
+                          "Id_Operation","DateDeb","LatDeb","LongDeb","DateFin",
+                          "LatFin","LongFin","Distance")
+
+    tutti_operation <- reactive({
+      if(is.null(input$tutti_operation)){return()}
+      file2 <- input$tutti_operation[,4]
+      data22 <- read.csv (file2, header = T, sep = ";")
+      verif <- verification(names(data22), format_operation)
+      if(verif == FALSE){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Le fichier a pas le bon format !
+          Référez vous au format tutti_operation de la notice.",
+          type = "fail"
+        )
+        return()
+      }
+      data22
+    })
+
+    observe({
+      r$tutti_operation <- tutti_operation()
+    })
+
+
+    # Shape file
+    shape <- reactive({
+      shape_file <- input$shape$datapath[1]
+      shape <- st_read(shape_file)
+      polygon <-
+        shape[["geometry"]][[1]] ## [[1]] pour SIEGMA [[2]] pour RESISTE, possible de rajouter un input pour le choix de la ligne pour les shapefiles avec plusieurs lignes
+    })
+
+    shape <- reactive({
+      if (!is.null(input$shpFile)) {
+        shpDF <- input$shpFile
+        prevWD <- getwd()
+        uploadDirectory <- dirname(shpDF$datapath[1])
+        setwd(uploadDirectory)
+        for (i in 1:nrow(shpDF)) {
+          file.rename(shpDF$datapath[i], shpDF$name[i])
+        }
+        shpName <- shpDF$name[grep(x = shpDF$name, pattern = "*.shp")]
+        shpPath <- paste(uploadDirectory, shpName, sep = "/")
+        setwd(prevWD)
+        shpFile <- st_read(shpPath)
+        polygon <- shpFile[["geometry"]][[1]] # [[1]] pour SIEGMA [[2]] pour RESISTE
+        return(polygon)
+      } else {
+        return()
+      }
+    })
+
+
+    # Charger la sauvegarde
+    upload <- reactive({
+      if (is.null(input$uploadSave)) {
+        NULL
+      } else {
+        pre_file_save <- input$uploadSave[, 4]
+        file_save <- read.csv (pre_file_save, header = T, sep = ",")
+        station <- strsplit(as.character(file_save$stations), split = "/")
+        dates_deb <- file_save$dates_deb
+        dates_fin <- file_save$dates_fin
+        ban <- strsplit(as.character(file_save$ban), split = "/")
+        list_save <- list(station, dates_deb, dates_fin, ban)
+        return(list_save)
+      }
+    })
+
+
+    observe({
+      r$shape <- shape()
+    })
+
+    observe({
+      r$upload <- upload()
+    })
+
+}
+
+## To be copied in the UI
+# mod_Import_data_ui("Import_data_1")
+
+## To be copied in the server
+# mod_Import_data_server("Import_data_1")
