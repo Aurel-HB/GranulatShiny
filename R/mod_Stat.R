@@ -14,12 +14,14 @@ mod_Stat_ui <- function(id){
       #"input.stat != false",
       tableOutput(ns("var_summary")),
       box( title = "Histogram",
+           status = "success", #  Valid statuses are: primary, success, info, warning, danger.
            solidHeader = TRUE,
-        collapsible = TRUE,
-        plotOutput(ns("hist"), height = 500)
+        plotOutput(ns("hist")),
+        actionButton("goloi", "Passer au choix de la loi de distribution")
       ),
       box( title = "Boxplot",
            solidHeader = TRUE,
+           status = "info",
         collapsible = TRUE,
         plotOutput(ns("box_impact")),
         plotOutput(ns("box_saison"))
@@ -46,16 +48,19 @@ mod_Stat_server <- function(input, output, session, r){
     })
 
     output$var_summary <- renderTable({
+      if(is.null(data_analyse())){return()}
       numeric_summary(as.numeric(data_analyse()[,1]), names(data_analyse())[1])
     })
 
     output$hist <- renderPlot({
+      if(is.null(data_analyse())){return()}
       hist(as.numeric(data_analyse()[,1]),
            main = paste("Histogram of ", var_name(), sep=""),
            xlab = r$var_name, ylab = "Frequency", col = "lightblue")
     })
 
     output$box_impact <- renderPlot({
+      if(is.null(data_analyse())){return()}
       boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$traitement,
               data = data_analyse(),
               main = paste("Boxplot of ", var_name()," by impact", sep=""),
@@ -64,13 +69,13 @@ mod_Stat_server <- function(input, output, session, r){
     })
 
     output$box_saison <- renderPlot({
+      if(is.null(data_analyse())){return()}
       boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$saison,
               data = data_analyse(),
               main = paste("Boxplot of ", var_name()," by season", sep=""),
               xlab = "", ylab = ""
               )
     })
-
 
 }
 

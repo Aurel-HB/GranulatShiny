@@ -33,7 +33,6 @@ app_ui <- function(request) {
           tabName = "descriptive",
           icon = icon("far fa-chart-bar"),
           menuSubItem("Plot des données", tabName = "plot"),
-          #menuSubItem("Puissance statistique", tabName = "pui"),
           menuSubItem("Diagnostique d'analyse", tabName = "Diag")
         ),
         menuItem(
@@ -41,7 +40,8 @@ app_ui <- function(request) {
           tabName = "glmm",
           icon = icon("fish"),
           menuSubItem("Création des modèles", tabName = "mod"),
-          menuSubItem("Représentation des effets", tabName = "rep")
+          menuSubItem("Représentation des effets", tabName = "rep"),
+          menuSubItem("Puissance statistique", tabName = "pui")
 
         )
       )),
@@ -78,16 +78,17 @@ app_ui <- function(request) {
           tabItem(tabName = "descriptive"),
           #Onglet plot
           tabItem(tabName = "plot",
-                  mod_Stat_ui("Stat_1")),
+                  mod_Stat_ui("Stat_1")#,
+                  #actionButton("goloi", "Choix de la loi de distribution")
+          ),
           #Onglet choix de modelisation
           tabItem(
             tabName = "Diag",
             sidebarPanel(
-              mod_Prepare_model_ui("Prepare_model_1")
+              mod_Choix_loi_ui("Choix_loi_1")
             ),
             mainPanel(
               mod_Analyse_choice_ui("Analyse_choice_1"),
-              mod_Puissance_ui("Puissance_1")
             )
 
           ),
@@ -96,11 +97,20 @@ app_ui <- function(request) {
           # onglet modélisation
           tabItem(
             tabName = "mod",
-            mod_Modelling_ui("Modelling_1")),
+            sidebarPanel(
+              mod_Prepare_modelling_ui("Prepare_modelling_1")
+            ),
+            mainPanel(
+              mod_Modelling_ui("Modelling_1"),
+            )),
           #Onglet représentation
           tabItem(
             tabName = "rep",
-            mod_Representation_ui("Representation_1"))
+            mod_Representation_ui("Representation_1")),
+          #onglet puissance
+          tabItem(
+            tabName = "pui",
+            mod_Puissance_ui("Puissance_1"))
      )
     )
   )

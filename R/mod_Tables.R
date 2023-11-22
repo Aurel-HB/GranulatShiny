@@ -52,7 +52,7 @@ mod_Tables_server <- function(input, output, session, r){
     # Telecharger la sauvegarde
     output$downloadSave <- downloadHandler(
       filename = function() {
-        paste("save-input", ".csv", sep = "")
+        paste("sauvegarde", ".csv", sep = "")
       },
       content = function(file) {
         write.csv(save(),  file)
@@ -68,6 +68,7 @@ mod_Tables_server <- function(input, output, session, r){
       })
 
     output$variable <- renderUI({
+      if(is.null(data_forme())){return()}
       selectInput(
         ns("var"),
         "Choisir un variable pour l'analyse",
@@ -118,13 +119,6 @@ mod_Tables_server <- function(input, output, session, r){
       r$indice <- indice()
     })
 
-    #button2 <- eventReactive(
-    #  input$stat, {TRUE
-    #  })
-#
-    #observe({
-    #  r$button2 <- button2()
-    #})
 
 }
 

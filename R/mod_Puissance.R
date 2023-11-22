@@ -27,7 +27,7 @@ mod_Puissance_ui <- function(id){
     ),
     #Output du grah
     mainPanel(
-      plotOutput(ns("plot_puissance")) %>% withSpinner(color = "#eeee22")
+      plotOutput(ns("plot_puissance")) %>% withSpinner(color = "#006522")
 
     )
   )

@@ -44,8 +44,12 @@ app_server <- function(input, output, session) {
   #onglet plot stat
   callModule(mod_Stat_server, id = "Stat_1",session = session, r=r)
   #onglet diagnostic analyse
-  callModule(mod_Prepare_model_server, id = "Prepare_model_1",session = session, r=r)
+  callModule(mod_Choix_loi_server, id = "Choix_loi_1",session = session, r=r)
   callModule(mod_Analyse_choice_server, id = "Analyse_choice_1",session = session, r=r)
+  #onglet modelisation
+  callModule(mod_Prepare_modelling_server, id = "Prepare_modelling_1",session = session, r=r)
+  callModule(mod_Modelling_server, id = "Modelling_1",session = session, r=r)
+
   # Ouvre l'onglet Tables automatiquement
   observeEvent(r$button, {
     updateTabItems(session, "tabs", "table")
@@ -54,12 +58,12 @@ app_server <- function(input, output, session) {
   observeEvent(input$gostat, {
     updateTabItems(session, "tabs", "plot")
   })
-    #observe({if(!is.null(r$button2)){
-  #  updateTabItems(session, "tabs", "plot")
-  #}}) # pour que ce ça marche l'appel des modules doit se faire avant
+  observeEvent(input$goloi, {
+    updateTabItems(session, "tabs", "Diag")
+  })
 
   #onglet puissance statistique
-  #onglet modelisation
+
   #onglet representation des effets
 
 }

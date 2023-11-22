@@ -10,7 +10,10 @@
 mod_Analyse_choice_ui <- function(id){
   ns <- NS(id)
   tagList(
-    plotOutput(ns('plot_y'))
+    #plotOutput(ns('plot_y')),
+    plotOutput(ns('plot_loi')),
+    verbatimTextOutput(ns('ntest')),
+    verbatimTextOutput(ns('vecteur_loi'))
   )
 }
 
@@ -34,14 +37,67 @@ mod_Analyse_choice_server <- function(input, output, session, r){
       }) # sinon ggplot ne marche pas pour l'histogramme
 
     #Ggplot pour visualiser la variable Y
-    output$plot_y <-
-      renderPlot({
-        ggplot(data = data_complet(), aes(x = colonne_y())) +
-          geom_histogram(aes(y = ..density..), colour = "black", fill = "grey") +
-          geom_density(alpha = .2, fill = "blue") +
-          xlab(y_variable()) +
-          theme_minimal()
-      })
+    #output$plot_y <-
+    #  renderPlot({
+    #    ggplot(data = data_complet(), aes(x = colonne_y(), y = after_stat(density))) +
+    #      geom_histogram(colour = "black", fill = "grey") +
+    #      geom_density(alpha = .2, fill = "blue") +
+    #      xlab(y_variable()) +
+    #      theme_minimal()
+#
+    #  })
+
+    output$plot_loi <- renderPlot({
+      if (is.null(data_complet())){return()}
+      ggplot(data = data_complet(), aes(x = colonne_y(), y = after_stat(density))) +
+        geom_histogram(colour = "black", fill = "grey", bins = 100) +
+        geom_density(alpha = .3, fill = "blue") +
+        geom_area(aes( y= probability_distribution(colonne_y(), r$loi)),
+                  color="darkslategray", fill = "darkseagreen",
+                  alpha = 0.4, linewidth = 1)+
+        xlab(y_variable()) +
+        theme_minimal()
+
+    })
+
+    output$ntest <- renderPrint({
+      colonne_y()
+    })
+
+    output$vecteur_loi <- renderPrint({
+      if (is.null(data_complet())){return()}
+      vector <- probability_distribution(colonne_y(), r$loi)
+      verif <- 0
+
+      if (r$loi == "Binomiale"){
+        for (value in is.na(vector)){
+          if (value == TRUE){
+            verif <- verif + 1
+          }
+        }
+      }
+
+      if (!r$loi == "Binomiale"){
+        for (value in vector){
+          if (value == 0){
+            verif <- verif + 1
+          }
+        }
+      }
+
+      if(verif > length(vector)/2){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "La loi de probabilité choisie n'est pas appropriée !
+          Veuillez changer de loi.",
+          type = "fail"
+        )
+        return()
+        }
+      vector
+    })
+
 
 }
 

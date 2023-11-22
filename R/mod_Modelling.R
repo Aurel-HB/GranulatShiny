@@ -10,81 +10,89 @@
 mod_Modelling_ui <- function(id){
   ns <- NS(id)
   tagList(
-    #Input des glmms
-    sidebarPanel(
-      uiOutput("variable_y"),
-      selectInput(
-        "methode",
-        "Sélectionnez la méthode statistique",
-        c(
-          "GLMM" = "1",
-          "GLM" = "2",
-          "Permanova" = "3"
-        )
-      ),
-      conditionalPanel(
-        "input.methode != 3",
-        selectInput(
-          "loi",
-          "Sélectionnz la loi de distribution",
-          c(
-            "Normale",
-            "Binomiale" = "binomial",
-            "Poisson" = "poisson",
-            "Binomiale négative",
-            "Gamma log",
-            "Gamma inverse"
-          )
-        )
-      ),
-      checkboxInput("interaction", "Voulez-vous retirer l'interaction ?"),
-      uiOutput("covariable"),
-
-      hr(),
-      h4(strong("Formulation du modèle :")),
-      htmlOutput("ecriture_modele"),
-      htmlOutput("ecriture_loi"),
-      hr(),
-      actionButton("go2", "Lancer la modélisation"),
-      uiOutput("choix_modele"),
-      conditionalPanel(
-        "input.go2 != false",
-        selectInput(
-          "choix_sortie",
-          "Afficher les sorties :",
-          c(
-            "Anova" = "1",
-            "Summary" = "2",
-            "Vérification" = "3"
-          ),
-          selected = "1"
-        )
-      )
-
-
-
-
-    ),
     # Output des glmms
-    mainPanel(
-      # l'histogramme
-      plotOutput("plot_y"),
       #formulation du modèle
-      verbatimTextOutput("modele"),
+      verbatimTextOutput(ns("modele")),
       #plot de vérification
-      conditionalPanel("input.choix_sortie == 3", plotOutput("verification"))
-    )
+      conditionalPanel("input.choix_sortie == 3", plotOutput(ns("verification")))
   )
 }
 
 #' Modelling Server Functions
 #'
 #' @noRd
-mod_Modelling_server <- function(id){
-  moduleServer( id, function(input, output, session){
+mod_Modelling_server <- function(input, output, session, r){
     ns <- session$ns
 
-  })
+    # GLMMs -------------------------------------------------------------------
+    # Onglet Creation ####
+    ######################
+
+    #import des objets utiles dans le modules
+    data_complet <- reactive({
+      r$data_analyse
+    })
+
+    ecriture <- reactive({
+      r$ecriture
+    })
+
+
+    # formule et language modèle
+    formule <- reactive({
+      if(is.null(ecriture())){return()}
+      ecriture()[[3]]
+    })
+    formule_bis <- reactive({
+      if(is.null(ecriture())){return()}
+      ecriture()[[4]]
+    }) # formule sans interaction
+    language <-
+      reactive({
+        if(is.null(ecriture())){return()}
+        ecriture()[[5]]
+      }) #permet de bien nommer les variabes pour les GLM, necessaire pour que les test de puissances marchent
+    language_bis <- reactive({
+      if(is.null(ecriture())){return()}
+      ecriture()[[6]]
+    })
+    formule_interaction <- reactive({
+      if(is.null(ecriture())){return()}
+      ecriture()[[7]]
+    })
+    language_interaction <- reactive({
+      if(is.null(ecriture())){return()}
+      ecriture()[[8]]
+    })
+
+    #Modélo différentes méthodes
+    modele <- eventReactive(input$go2, {
+      if (input$methode == "1") {
+        glmm_maker(data_complet(),
+                   formule(),
+                   formule_bis(),
+                   input$interaction,
+                   input$loi)
+      } else if (input$methode == "2")  {
+        glm_maker(
+          data_complet(),
+          formule(),
+          formule_bis(),
+          language(),
+          language_bis(),
+          input$interaction,
+          input$loi
+        )
+      } else if (input$methode == "3") {
+        permanova_maker(data_complet(),
+                        formule(),
+                        formule_bis(),
+                        input$interaction)
+      }
+    })
+
+
+
 }
 
 ## To be copied in the UI
