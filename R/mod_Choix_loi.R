@@ -42,8 +42,9 @@ mod_Choix_loi_ui <- function(id){
          width = 15,
          height = 55,
          textOutput(ns("nb_value"))
-         )
-
+         ),
+    hr(),
+    actionButton("go_modelo", "Passer à la modélisation")
   )
 }
 

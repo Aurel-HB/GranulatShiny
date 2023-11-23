@@ -61,6 +61,10 @@ app_server <- function(input, output, session) {
   observeEvent(input$goloi, {
     updateTabItems(session, "tabs", "Diag")
   })
+  observeEvent(input$go_modelo, {
+    updateTabItems(session, "tabs", "mod")
+  })
+
 
   #onglet puissance statistique
 

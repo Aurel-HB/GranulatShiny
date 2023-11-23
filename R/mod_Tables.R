@@ -10,23 +10,24 @@
 mod_Tables_ui <- function(id){
   ns <- NS(id)
   tagList(
-      selectInput(
-        ns("list"),
-        "Quelle table afficher ?",
-        c(
-          "Table complete" = "1",
-          "Abondance" = "2",
-          "Biomasse" = "3",
-          "Richesse" = "4",
-          "Simpson" = "5"
-        ),
-        selected = "Table complete"
+    selectInput(
+      ns("list"),
+      "Quelle table afficher ?",
+      c(
+        "Table complete" = "1",
+        "Abondance" = "2",
+        "Biomasse" = "3",
+        "Richesse" = "4",
+        "Simpson" = "5"
       ),
-      downloadButton(ns("downloadData"), label = "Telecharger la table"),
-      hr(),
-      downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"),
-      hr(),
-      uiOutput(ns("variable"))
+    selected = "Table complete"
+    ),
+    downloadButton(ns("downloadData"), label = "Telecharger la table"),
+    hr(),
+    downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"),
+    hr(),
+    uiOutput(ns("variable")),
+    actionButton("gostat", "Commencer l'analyse")
     )
 }
 
@@ -85,8 +86,9 @@ mod_Tables_server <- function(input, output, session, r){
       s <- data_forme()[[1]]["saison"]
       t <- data_forme()[[1]]["traitement"]
       i <- data_forme()[[1]]["interaction"]
-      data <- data.frame(v, y, l, s, t, i)
-      names(data) <- c(input$var, "year", "station", "saison", "traitement", "interaction")
+      c <- data_forme()[[1]]["campagne"]
+      data <- data.frame(v, y, l, s, t, i,c)
+      names(data) <- c(input$var, "year", "station", "saison", "traitement", "interaction", "campagne")
       data
     })
 

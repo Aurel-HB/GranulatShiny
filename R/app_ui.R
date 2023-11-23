@@ -70,27 +70,23 @@ app_ui <- function(request) {
           tabItem(
             tabName = "table",
             sidebarPanel(
-              mod_Tables_ui("Tables_1"),
-              actionButton("gostat", "Commencer l'analyse")),
-            mainPanel(mod_Show_tables_ui("Show_tables_1"))
+              mod_Tables_ui("Tables_1")),
+            mainPanel(
+              mod_Show_tables_ui("Show_tables_1"))
             ),
           # Volet Statistiques descriptives
           tabItem(tabName = "descriptive"),
           #Onglet plot
           tabItem(tabName = "plot",
-                  mod_Stat_ui("Stat_1")#,
-                  #actionButton("goloi", "Choix de la loi de distribution")
+                  mod_Stat_ui("Stat_1")
           ),
           #Onglet choix de modelisation
           tabItem(
             tabName = "Diag",
             sidebarPanel(
-              mod_Choix_loi_ui("Choix_loi_1")
-            ),
+              mod_Choix_loi_ui("Choix_loi_1")),
             mainPanel(
-              mod_Analyse_choice_ui("Analyse_choice_1"),
-            )
-
+              mod_Analyse_choice_ui("Analyse_choice_1")),
           ),
           # Volet GLMMs
           tabItem(tabName = "glmm"),

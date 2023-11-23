@@ -10,11 +10,24 @@
 mod_Modelling_ui <- function(id){
   ns <- NS(id)
   tagList(
+    box( solidHeader = FALSE,
+         status = "info",
+         collapsible = FALSE,
+         width = NULL,
+         uiOutput(ns("choix_sortie"))
+    ),
     # Output des glmms
       #formulation du modèle
       verbatimTextOutput(ns("modele")),
       #plot de vérification
-      conditionalPanel("input.choix_sortie == 3", plotOutput(ns("verification")))
+    box(
+      plotOutput(ns("verification")),
+      width = NULL,
+      style = "overflow-x: scroll;",
+      collapsible = T,
+      solidHeader = TRUE,
+      hidden = TRUE
+    )
   )
 }
 
@@ -35,6 +48,14 @@ mod_Modelling_server <- function(input, output, session, r){
 
     ecriture <- reactive({
       r$ecriture
+    })
+
+    methode <- reactive({
+      r$methode
+    })
+
+    choix_modele <- reactive({
+      r$choix_modele
     })
 
 
@@ -66,32 +87,93 @@ mod_Modelling_server <- function(input, output, session, r){
     })
 
     #Modélo différentes méthodes
-    modele <- eventReactive(input$go2, {
-      if (input$methode == "1") {
+    modele <- eventReactive(r$go2, {
+      if (r$methode == "1") {
         glmm_maker(data_complet(),
                    formule(),
                    formule_bis(),
-                   input$interaction,
-                   input$loi)
-      } else if (input$methode == "2")  {
+                   r$interaction,
+                   r$distribution)
+      } else if (r$methode == "2")  {
         glm_maker(
           data_complet(),
           formule(),
           formule_bis(),
           language(),
           language_bis(),
-          input$interaction,
-          input$loi
+          r$interaction,
+          r$distribution
         )
-      } else if (input$methode == "3") {
+      } else if (r$methode == "3") {
         permanova_maker(data_complet(),
                         formule(),
                         formule_bis(),
-                        input$interaction)
+                        r$interaction)
+      }
+    })
+
+    observe({
+      r$modele <- modele()
+    })
+
+
+
+
+    # Les sorties du modèle
+
+    output$choix_sortie <- renderUI({
+      if(is.null(modele())){return()}
+      selectInput(
+        ns("choix_sortie"),
+        "Afficher les sorties :",
+        c(
+          "Anova" = "1",
+          "Summary" = "2",
+          "Vérification" = "3"
+        ),
+        selected = "1"
+      )
+    })
+
+    observe({
+      r$choix_sortie <- input$choix_sortie
+    })
+
+
+    output$modele <- renderPrint({
+      if(is.null(r$choix_sortie)){return()}
+      if (methode() %in% c(1, 2)) {
+        if (r$choix_sortie == "1") {
+          Anova(modele()[[choix_modele()]], type = "III")
+        } else if (r$choix_sortie == "2") {
+          summary(modele()[[choix_modele()]])
+        }
+
+
+      } else {
+        if (r$choix_sortie == "1") {
+          modele()[[choix_modele()]]$aov.tab
+        } else if (r$choix_sortie == "2") {
+          modele()[[choix_modele()]]$coefficients
+        }
+
+
       }
     })
 
 
+    # Vérification (sortie du modèle, même input)
+    output$verification <- renderPlot({
+      if (is.null(r$choix_sortie)){return()}
+      if (r$choix_sortie == "3") {
+        plot(simulateResiduals(modele()[[choix_modele()]]))
+      }
+    })
+
+    # réinitialisation du bouton
+    observeEvent(r$go2,{
+      r$go2 <- FALSE
+    })
 
 }
 

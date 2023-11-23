@@ -21,22 +21,7 @@ mod_Prepare_modelling_ui <- function(id){
           "Permanova" = "3"
         )
       ),
-      conditionalPanel(
-        "input.methode != 3",
-        selectInput(
-          ns("loi"),
-          "Sélectionnz la loi de distribution",
-          c(
-            "Normale",
-            "Binomiale" = "binomial",
-            "Poisson" = "poisson",
-            "Binomiale négative",
-            "Gamma log",
-            "Gamma inverse",
-            "Lognormale"
-          )
-        )
-      ),
+      uiOutput(ns("distribution")),
       checkboxInput(ns("interaction"), "Voulez-vous retirer l'interaction ?"),
       uiOutput(ns("covariable")),
 
@@ -47,20 +32,9 @@ mod_Prepare_modelling_ui <- function(id){
       verbatimTextOutput(ns("test")),
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation"),
-      uiOutput(ns("choix_modele")),
-      conditionalPanel(
-        "input.go2 != false",
-        selectInput(
-          ns("choix_sortie"),
-          "Afficher les sorties :",
-          c(
-            "Anova" = "1",
-            "Summary" = "2",
-            "Vérification" = "3"
-          ),
-          selected = "1"
-        )
-      )
+      uiOutput(ns("choix_modele"))
+
+
 
 
 
@@ -84,12 +58,29 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         selectInput(ns("y"), "Choississez la variable Y", choices = r$var_name)
       })
 
+    output$distribution <- renderUI({
+      if(input$methode == 3){return()}
+      selectInput(
+        ns("distribution"),
+        "Sélectionnz la loi de distribution",
+        c(
+          "Normale",
+          "Binomiale" = "binomial",
+          "Poisson" = "poisson",
+          "Binomiale négative",
+          "Gamma log",
+          "Gamma inverse",
+          "Lognormale"
+        )
+      )
+    })
+
     output$covariable <-
       renderUI({
         selectInput(
           ns("covariable"),
           "Ajouter une ou plusieurs covariables ?",
-          choices = colnames(r$data_analyse[,2:6]),
+          choices = colnames(r$data_analyse[,2:length(colnames(r$data_analyse))]),
           selected = F,
           multiple = T
         )
@@ -108,52 +99,53 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         unlist(data_complet()[, y_variable()])
       }) # sinon ggplot ne marche pas pour l'histogramme
 
-    interaction <- reactive({
-      input$interaction
+    observe({
+      r$interaction <- input$interaction
     })
-    methode <- reactive({
-      input$methode
+    observe({
+      r$methode <- input$methode
     })
-    loi <- reactive({
-      input$loi
+    observe({
+      r$distribution <- input$distribution
     })
-
 
     #ecriture du modèle initial
 
     ecriture <-
       reactive({
         if(is.null(data_complet())){return()}
-        if(loi() == "Lognormale"){
+        if(is.null(input$distribution)){return()}
+        if(input$distribution == "Lognormale"){
           return(
             ecriture_modele_log(y_variable(),
                             input$interaction,
                             input$methode,
                             input$covariable,
-                            input$loi)
+                            input$distribution)
           )
         }
         ecriture_modele(y_variable(),
                         input$interaction,
                         input$methode,
                         input$covariable,
-                        input$loi)
+                        input$distribution)
       })
     output$ecriture_modele <- renderText(ecriture()[[1]])
-    output$ecriture_loi <- renderText(ecriture()[[2]])
+    output$ecriture_distribution <- renderText(ecriture()[[2]])
 
     observe({
       r$ecriture <- ecriture()
     })
 
-    observe({
-      r$modele <- NULL
+    observeEvent( input$go2, {
+      r$go2 <- TRUE
     })
+
     #Afficher le choix du modèle entre initial et finalseulement si l'interaction n'est pas significative (et donc retirée)
 
     output$choix_modele <- renderUI({
       if(is.null(r$modele)){return()}
-      if (getCall(modele()[[2]]) != getCall(modele()[[1]])) {
+      if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
         selectInput(
           ns("choix_modele"),
           "Afficher les résultats du modèle :",
@@ -171,9 +163,17 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       }
     })
 
+    observe({
+      r$choix_modele <- choix_modele()
+    })
+
+
+
     output$test <- renderPrint({
       ecriture()[[3]]
     })
+
+
 
 }
 

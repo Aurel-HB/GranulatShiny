@@ -10,7 +10,7 @@
 mod_Show_tables_ui <- function(id){
   ns <- NS(id)
   tagList(
-      box(
+    box(
         dataTableOutput(ns("contents")),
         width = NULL,
         style = "overflow-x: scroll;",

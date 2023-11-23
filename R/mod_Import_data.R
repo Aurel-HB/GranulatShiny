@@ -47,6 +47,16 @@ mod_Import_data_server <- function(input, output, session, r){
     tutti_catch <- reactive({
       if(is.null(input$tutti_catch)){return()}
       file1 <- input$tutti_catch[,4]
+      if(grepl(".csv",file1) == FALSE){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Le fichier a pas le bon format !
+          Référez vous au format tutti_catch de la notice.",
+          type = "fail"
+        )
+        return()
+      }
       data11 <- read.csv (file1, header = T, sep = ";")
       verif <- verification(names(data11), format_catch)
       if(verif == FALSE){
@@ -73,6 +83,16 @@ mod_Import_data_server <- function(input, output, session, r){
     tutti_operation <- reactive({
       if(is.null(input$tutti_operation)){return()}
       file2 <- input$tutti_operation[,4]
+      if(grepl(".csv",file2) == FALSE){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Le fichier a pas le bon format !
+          Référez vous au format tutti_catch de la notice.",
+          type = "fail"
+        )
+        return()
+      }
       data22 <- read.csv (file2, header = T, sep = ";")
       verif <- verification(names(data22), format_operation)
       if(verif == FALSE){
