@@ -10,11 +10,10 @@
 mod_Ref_ui <- function(id){
   ns <- NS(id)
   tagList(
-    verbatimTextOutput(ns("summary")),
-    verbatimTextOutput(ns("summary1")),
-    verbatimTextOutput(ns("summary2")),
-    verbatimTextOutput(ns("summary3")),
-    #mod_simple_02_ui("simple_02_ui_1"),
+    #verbatimTextOutput(ns("summary")),
+    #verbatimTextOutput(ns("summary1")),
+    #verbatimTextOutput(ns("summary2")),
+    #verbatimTextOutput(ns("summary3")),
     uiOutput(ns("reference"))
   )
 }
@@ -71,10 +70,10 @@ mod_Ref_server <- function(input, output, session, r){
     })
 
     #### check point ######
-    output$summary <- renderPrint({
-      if(is.null(station_ban())){return("No data")}
-      summary(station_ban())
-    })
+    #output$summary <- renderPrint({
+    #  if(is.null(station_ban())){return("No data")}
+    #  summary(station_ban())
+    #})
 
     # Zones (fixer le nombre de zone à 1 pour le mode simple)
     zones <- reactive({

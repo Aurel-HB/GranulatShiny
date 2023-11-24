@@ -72,6 +72,26 @@ glmm_maker <-
                data = data)
         list(mod_f, mod_f)
       }
+    } else if (family == "Lognormale") {
+      if (interaction == F) {
+        mod <-
+          lmer(formule,
+               data = data)
+        if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
+          mod_f <-
+            lmer(formule_bis,
+                 data = data)
+          list(mod, mod_f)
+        } else {
+          list(mod, mod)
+        }
+      }
+      else if (interaction == T) {
+        mod_f <-
+          lmer(formule_bis,
+               data = data)
+        list(mod_f, mod_f)
+      }
     } else {
       nAGQ <- 1L
       if (family == "Gamma log") {

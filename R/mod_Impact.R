@@ -10,7 +10,7 @@
 mod_Impact_ui <- function(id){
   ns <- NS(id)
   tagList(
-      verbatimTextOutput(ns("testobjet")),
+      #verbatimTextOutput(ns("testobjet")),
       uiOutput(ns("datesOut")),
       uiOutput(ns("stationOut"))
   )
@@ -28,10 +28,10 @@ mod_Impact_server <- function(input, output, session, r){
     })
 
     #### check point ###
-    output$testobjet <- renderPrint({
-      if(is.null(tutti_operation())){return("No data")}
-      TRUE
-    })
+    #output$testobjet <- renderPrint({
+    #  if(is.null(tutti_operation())){return("No data")}
+    #  TRUE
+    #})
 
     upload <- reactive({
       r$upload

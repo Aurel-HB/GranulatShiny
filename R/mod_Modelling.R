@@ -25,8 +25,7 @@ mod_Modelling_ui <- function(id){
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
-      solidHeader = TRUE,
-      hidden = TRUE
+      solidHeader = TRUE
     )
   )
 }
@@ -50,7 +49,7 @@ mod_Modelling_server <- function(input, output, session, r){
       r$ecriture
     })
 
-    methode <- reactive({
+    methode <- eventReactive(r$go2,{
       r$methode
     })
 
@@ -128,8 +127,8 @@ mod_Modelling_server <- function(input, output, session, r){
         "Afficher les sorties :",
         c(
           "Anova" = "1",
-          "Summary" = "2",
-          "Vérification" = "3"
+          "Summary" = "2"#,
+          #"Vérification" = "3"
         ),
         selected = "1"
       )
@@ -140,35 +139,42 @@ mod_Modelling_server <- function(input, output, session, r){
     })
 
 
-    output$modele <- renderPrint({
-      if(is.null(r$choix_sortie)){return()}
-      if (methode() %in% c(1, 2)) {
-        if (r$choix_sortie == "1") {
-          Anova(modele()[[choix_modele()]], type = "III")
-        } else if (r$choix_sortie == "2") {
-          summary(modele()[[choix_modele()]])
+    observeEvent(r$go2,{
+      output$modele <- renderPrint({
+        if(is.null(r$choix_sortie)){return()}
+        if (methode() %in% c(1, 2)) {
+          if (r$choix_sortie == "1") {
+            Anova(modele()[[choix_modele()]], type = "III")
+          } else if (r$choix_sortie == "2") {
+            summary(modele()[[choix_modele()]])
+          }
+
+
+        } else {
+          if (r$choix_sortie == "1") {
+            modele()[[choix_modele()]]$aov.tab
+          } else if (r$choix_sortie == "2") {
+            modele()[[choix_modele()]]$coefficients
+          }
+
+
         }
-
-
-      } else {
-        if (r$choix_sortie == "1") {
-          modele()[[choix_modele()]]$aov.tab
-        } else if (r$choix_sortie == "2") {
-          modele()[[choix_modele()]]$coefficients
-        }
-
-
-      }
+      })
     })
+
 
 
     # Vérification (sortie du modèle, même input)
-    output$verification <- renderPlot({
-      if (is.null(r$choix_sortie)){return()}
-      if (r$choix_sortie == "3") {
+    observeEvent(r$go2,{
+      output$verification <- renderPlot({
+        if (is.null(r$choix_sortie)){return()}
+        if (methode()== 3){return()}
+        #if (r$choix_sortie == "3") {
         plot(simulateResiduals(modele()[[choix_modele()]]))
-      }
+        #}
+      })
     })
+
 
     # réinitialisation du bouton
     observeEvent(r$go2,{

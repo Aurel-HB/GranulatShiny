@@ -10,7 +10,7 @@
 mod_Prepare_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    verbatimTextOutput(ns("test")),
+    #verbatimTextOutput(ns("test")),
     actionButton(ns("go"), "Mettre en forme")
 
   )
@@ -60,12 +60,12 @@ mod_Prepare_data_server <- function(input, output, session, r){
     })
 
     ##### check point ######
-    output$test <- renderPrint({
-      if(is.null(tutti_catch_filtre())){return("No data")}
-      TRUE
-      #c(is.null(tutti_operation_filtre()),is.null(tutti_catch_filtre()),
-      #  is.null(module()),is.null(zones()), is.null(data_forme()))
-    })
+    #output$test <- renderPrint({
+    #  if(is.null(tutti_catch_filtre())){return("No data")}
+    #  TRUE
+    #  #c(is.null(tutti_operation_filtre()),is.null(tutti_catch_filtre()),
+    #  #  is.null(module()),is.null(zones()), is.null(data_forme()))
+    #})
     ########################
 
 

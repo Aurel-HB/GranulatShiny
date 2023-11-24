@@ -24,7 +24,7 @@ mod_Import_data_ui <- function(id){
             "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
             multiple = T
           ),
-          fileInput(ns("uploadSave"), "Charger les informations à rentrer (.csv)", accept = c(".csv")),
+          uiOutput(ns("uploadSave")),
           hr()
           )
   )
@@ -51,7 +51,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier a pas le bon format !
+          text = "Le fichier n'a pas le bon format !
           Référez vous au format tutti_catch de la notice.",
           type = "fail"
         )
@@ -63,7 +63,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier a pas le bon format !
+          text = "Le fichier n'a pas le bon format !
           Référez vous au format tutti_catch de la notice.",
           type = "fail"
         )
@@ -87,8 +87,8 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier a pas le bon format !
-          Référez vous au format tutti_catch de la notice.",
+          text = "Le fichier n'a pas le bon format !
+          Référez vous au format tutti_operation de la notice.",
           type = "fail"
         )
         return()
@@ -99,7 +99,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier a pas le bon format !
+          text = "Le fichier n'a pas le bon format !
           Référez vous au format tutti_operation de la notice.",
           type = "fail"
         )
@@ -143,12 +143,44 @@ mod_Import_data_server <- function(input, output, session, r){
 
 
     # Charger la sauvegarde
+
+    output$uploadSave <- renderUI({
+      if(is.null(tutti_catch())){return()}
+      if(is.null(tutti_operation())){return()}
+      fileInput(ns("uploadSave"), "Charger les informations si vous avez une
+                    sauvegarde des paramètres de la zone étudiée (.csv)",
+                accept = c(".csv"))
+    })
+
+    format_sauvegarde <- c("","stations","dates_deb","dates_fin","ban")
+
     upload <- reactive({
       if (is.null(input$uploadSave)) {
         NULL
       } else {
         pre_file_save <- input$uploadSave[, 4]
+        if(grepl(".csv",pre_file_save) == FALSE){
+          sendSweetAlert(
+            session = session,
+            title = "Alert !",
+            text = "Le fichier n'a pas le bon format !
+          Référez vous au format sauvegarde de la notice.",
+            type = "fail"
+          )
+          return()
+        }
         file_save <- read.csv (pre_file_save, header = T, sep = ",")
+        verif <- "dates_deb" %in% names(file_save)
+        if(verif == FALSE){
+          sendSweetAlert(
+            session = session,
+            title = "Alert !",
+            text = "Le fichier n'a pas le bon format !
+          Référez vous au format sauvegarde de la notice.",
+            type = "fail"
+          )
+          return()
+        }
         station <- strsplit(as.character(file_save$stations), split = "/")
         dates_deb <- file_save$dates_deb
         dates_fin <- file_save$dates_fin

@@ -29,7 +29,7 @@ mod_Prepare_modelling_ui <- function(id){
       h4(strong("Formulation du modèle :")),
       htmlOutput(ns("ecriture_modele")),
       htmlOutput(ns("ecriture_loi")),
-      verbatimTextOutput(ns("test")),
+      #verbatimTextOutput(ns("test")),
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation"),
       uiOutput(ns("choix_modele"))
@@ -168,10 +168,10 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
     })
 
 
-
-    output$test <- renderPrint({
-      ecriture()[[3]]
-    })
+    ### check point###
+    #output$test <- renderPrint({
+    #  ecriture()[[3]]
+    #})
 
 
 
