@@ -25,7 +25,7 @@ mod_Choix_loi_ui <- function(id){
         "Binomiale",
         "Poisson",
         "Binomiale negative",
-        "Gamma",
+        "Gamma log",
         "Lognormale"
       )),
     box(title = "Legende",

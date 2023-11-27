@@ -67,18 +67,31 @@ mod_Analyse_choice_server <- function(input, output, session, r){
     output$vecteur_loi <- renderPrint({
       if (is.null(data_complet())){return()}
       vector <- probability_distribution(colonne_y(), r$loi)
+      if (is.null(vector)){return()}
+      #if (!exists("vector")){return()}
+      #if (length(vector)==0){return()}
       verif <- 0
 
+      for (value in is.na(vector)){
+        if (value == TRUE){
+          verif <- verif + 1
+        }
+      }
+
       if (r$loi == "Binomiale"){
-        for (value in is.na(vector)){
-          if (value == TRUE){
+        for (value in na.omit(vector)){
+          if (value == 0){
             verif <- verif + 1
           }
+        }
+        if (verif != length(vector)){
+          #there other thing than zero and NA so
+          verif = 0
         }
       }
 
       if (!r$loi == "Binomiale"){
-        for (value in vector){
+        for (value in na.omit(vector)){
           if (value == 0){
             verif <- verif + 1
           }

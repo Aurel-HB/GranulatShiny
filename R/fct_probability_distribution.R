@@ -26,7 +26,7 @@ probability_distribution <- function(vector, law){
   if (law == "Binomiale negative"){
     dist_vector <- dnbinom(vector, mu = moy, size =  1/((sd**2-moy)/moy**2))
   }
-  if (law == "Gamma"){
+  if (law == "Gamma log"){
     dist_vector <- dgamma(vector, shape = (moy**2/sd**2), scale = moy/sd**2)
   }
   if (law == "Lognormale"){

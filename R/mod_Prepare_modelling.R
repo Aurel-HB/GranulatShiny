@@ -62,7 +62,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       if(input$methode == 3){return()}
       selectInput(
         ns("distribution"),
-        "Sélectionnz la loi de distribution",
+        "Sélectionnez la loi de distribution",
         c(
           "Normale",
           "Binomiale" = "binomial",
@@ -71,7 +71,8 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
           "Gamma log",
           "Gamma inverse",
           "Lognormale"
-        )
+        ),
+        selected = r$loi
       )
     })
 
