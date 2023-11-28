@@ -13,7 +13,7 @@ mod_Choix_loi_ui <- function(id){
     box( title = textOutput(ns("variable_y")),
          solidHeader = TRUE,
          collapsible = FALSE,
-         width = 15,
+         width = "100%",
          height = 45#,
          #textOutput(ns("variable_y"))
     ),
@@ -32,15 +32,15 @@ mod_Choix_loi_ui <- function(id){
         collapsible = FALSE,
         solidHeader = TRUE,
         status = "info",
-        width = 15,
-        height = 100,
+        width = "100%",
+        #height = 100,
         uiOutput(ns("legend_density")),
         uiOutput(ns("legend_law"))
       ),
     box( solidHeader = FALSE,
          collapsible = FALSE,
-         width = 15,
-         height = 55,
+         width = "100%",
+         #height = 55,
          textOutput(ns("nb_value"))
          ),
     hr(),

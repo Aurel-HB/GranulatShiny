@@ -46,6 +46,7 @@ app_ui <- function(request) {
         )
       )),
       dashboardBody( # create the interface for each tab
+        fluidPage(
         tabItems(
           #onglet Information à rentrer
           tabItem(
@@ -107,7 +108,7 @@ app_ui <- function(request) {
           tabItem(
             tabName = "pui",
             mod_Puissance_ui("Puissance_1"))
-     )
+     ))
     )
   )
 )

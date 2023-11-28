@@ -11,9 +11,9 @@ mod_Analyse_choice_ui <- function(id){
   ns <- NS(id)
   tagList(
     #plotOutput(ns('plot_y')),
-    plotOutput(ns('plot_loi')),
-    verbatimTextOutput(ns('ntest')),
-    verbatimTextOutput(ns('vecteur_loi'))
+    plotOutput(ns('plot_loi'), width = "100%"),
+    #verbatimTextOutput(ns('ntest')),
+    textOutput(ns('vecteur_loi'))
   )
 }
 
@@ -58,13 +58,13 @@ mod_Analyse_choice_server <- function(input, output, session, r){
         xlab(y_variable()) +
         theme_minimal()
 
-    })
+    })#, height = 750, width = 1100)
 
-    output$ntest <- renderPrint({
-      colonne_y()
-    })
+    #output$ntest <- renderPrint({
+    #  colonne_y()
+    #})
 
-    output$vecteur_loi <- renderPrint({
+    output$vecteur_loi <- renderText({
       if (is.null(data_complet())){return()}
       vector <- probability_distribution(colonne_y(), r$loi)
       if (is.null(vector)){return()}
@@ -108,7 +108,7 @@ mod_Analyse_choice_server <- function(input, output, session, r){
         )
         return()
         }
-      vector
+      #vector
     })
 
 
