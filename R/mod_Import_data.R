@@ -18,15 +18,10 @@ mod_Import_data_ui <- function(id){
       fileInput(ns("tutti_catch"), "Sélectionnez le fichier Tutti Catch (.csv)", accept = c(".csv")),
       fileInput(ns("tutti_operation"),
                 "Sélectionnez le fichier Tutti operation (.csv)", accept = c(".csv")),
-      conditionalPanel("input.tutti_operation != NULL",
-          fileInput(
-            ns("shpFile"),
-            "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
-            multiple = T
-          ),
-          uiOutput(ns("uploadSave")),
-          hr()
-          )
+      uiOutput(ns("shpFile")),
+      uiOutput(ns("uploadSave")),
+      hr()
+
   )
 }
 
@@ -114,6 +109,17 @@ mod_Import_data_server <- function(input, output, session, r){
 
 
     # Shape file
+
+    output$shpFile <- renderUI({
+      if(is.null(tutti_catch())){return()}
+      if(is.null(tutti_operation())){return()}
+      fileInput(
+        ns("shpFile"),
+        "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
+        multiple = T
+      )
+    })
+
     shape <- reactive({
       shape_file <- input$shape$datapath[1]
       shape <- st_read(shape_file)
