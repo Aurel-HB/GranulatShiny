@@ -20,9 +20,9 @@ numeric_summary <- function(vector, name){
     }
   }
   rate <- 1 - n0/length(vector)
-  final_vector <- data.frame(name, n0, rate, mean, sd, var_summary[1], var_summary[2],
+  final_vector <- data.frame(name, n0,length(vector), rate, mean, sd, var_summary[1], var_summary[2],
                              var_summary[3], var_summary[5], var_summary[6])
-  names(final_vector) <- c("variable", "n_missing", "complete_rate", "mean", "sd", "min", "Q25",
-                           "median", "Q75", "max")
+  names(final_vector) <- c("variable", "n_missing", "n_total", "complete_rate",
+                           "mean","sd", "min", "Q25","median", "Q75", "max")
   return(final_vector)
 }

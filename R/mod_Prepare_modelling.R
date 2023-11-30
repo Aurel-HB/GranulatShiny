@@ -32,6 +32,7 @@ mod_Prepare_modelling_ui <- function(id){
       #verbatimTextOutput(ns("test")),
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation"),
+      hr(),
       uiOutput(ns("choix_modele"))
 
 
@@ -55,7 +56,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
 
     output$variable_y <-
       renderUI({
-        selectInput(ns("y"), "Choississez la variable Y", choices = r$var_name)
+        selectInput(ns("y"), "La variable Y choisie est", choices = r$var_name)
       })
 
     output$distribution <- renderUI({
@@ -146,6 +147,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
 
     output$choix_modele <- renderUI({
       if(is.null(r$modele)){return()}
+      if(class(r$modele) == "try-error"){return()}
       if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
         selectInput(
           ns("choix_modele"),

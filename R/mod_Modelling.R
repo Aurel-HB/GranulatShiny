@@ -14,18 +14,20 @@ mod_Modelling_ui <- function(id){
          status = "info",
          collapsible = FALSE,
          width = NULL,
-         uiOutput(ns("choix_sortie"))
+         uiOutput(ns("choix_sortie")),
+         # Output des glmms
+         #formulation du modèle
+         verbatimTextOutput(ns("modele"))
     ),
-    # Output des glmms
-      #formulation du modèle
-      verbatimTextOutput(ns("modele")),
       #plot de vérification
     box(
       plotOutput(ns("verification")),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
-      solidHeader = TRUE
+      collapsed = T,
+      solidHeader = TRUE,
+      title = "Residual analysis"
     )
   )
 }
@@ -88,34 +90,32 @@ mod_Modelling_server <- function(input, output, session, r){
     #Modélo différentes méthodes
     modele <- eventReactive(r$go2, {
       if (r$methode == "1") {
-        glmm_maker(data_complet(),
+        try(glmm_maker(data_complet(),
                    formule(),
                    formule_bis(),
                    r$interaction,
-                   r$distribution)
+                   r$distribution), silent = T)
       } else if (r$methode == "2")  {
-        glm_maker(
+        try(glm_maker(
           data_complet(),
           formule(),
           formule_bis(),
           language(),
           language_bis(),
           r$interaction,
-          r$distribution
+          r$distribution), silent = T
         )
       } else if (r$methode == "3") {
-        permanova_maker(data_complet(),
+        try(permanova_maker(data_complet(),
                         formule(),
                         formule_bis(),
-                        r$interaction)
+                        r$interaction), silent = T)
       }
     })
 
     observe({
       r$modele <- modele()
     })
-
-
 
 
     # Les sorties du modèle
@@ -142,6 +142,7 @@ mod_Modelling_server <- function(input, output, session, r){
     observeEvent(r$go2,{
       output$modele <- renderPrint({
         if(is.null(r$choix_sortie)){return()}
+        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation")}
         if (methode() %in% c(1, 2)) {
           if (r$choix_sortie == "1") {
             Anova(modele()[[choix_modele()]], type = "III")
