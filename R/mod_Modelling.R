@@ -127,8 +127,7 @@ mod_Modelling_server <- function(input, output, session, r){
         "Afficher les sorties :",
         c(
           "Anova" = "1",
-          "Summary" = "2"#,
-          #"Vérification" = "3"
+          "Summary" = "2"
         ),
         selected = "1"
       )

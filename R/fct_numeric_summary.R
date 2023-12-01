@@ -1,11 +1,13 @@
 #' numeric_summary
 #'
-#' @description  summarise the numeric data
+#' @description  summarise a numeric data
 #'
 #' @param vector a numeric vector
 #' @param name a character value of the name of the variable in vector
 #'
-#' @return a summarised vector of the numeric vector
+#' @return a summarised vector of the numeric vector composed of "variable",
+#'  "n_missing", "n_total", "complete_rate", "mean","sd", "min", "Q25",
+#'  "median", "Q75", "max"
 #'
 #' @noRd
 

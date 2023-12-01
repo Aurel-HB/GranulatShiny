@@ -1,8 +1,15 @@
 #' global_function
 #'
 #' @description Regroupe toutes les fonctions pour la mise en forme et le calcul des indicateurs
+#' group all the functions used to format the data and calculate the indicators
 #'
-#' @return The return value, if any, from executing the function.
+#' @param tutti_catch dataframe
+#' @param tutti_operation dataframe
+#' @param liste_station character
+#' @param liste_dates dataframe
+#' @param zones integer
+#'
+#' @return a list of 5 datatable
 #'
 #' @noRd
 

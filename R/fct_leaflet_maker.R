@@ -1,9 +1,12 @@
 #' leaflet_maker
 #'
 #' @description Creer la carte leaflet à partir du jeu de donnée mise en forme par la fonction preleaflet
+#' create a leaflet map from a dataset created by the preleaflet function
 #'
+#' @param df dataframe
+#' @param shape polygon
 #'
-#' @return The return value, if any, from executing the function.
+#' @return a leaflet map
 #'
 #' @noRd
 

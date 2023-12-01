@@ -1,8 +1,12 @@
 #' indice_computing
 #'
 #' @description Calcul des indicateurs
+#' calculate of the abundance, biomass, richness, shannon, simpson ad pielou indicators
 #'
-#' @return The return value, if any, from executing the function.
+#' @param data_abun dataframe
+#' @param data_biom dataframe
+#'
+#' @return a dataframe with the indicators
 #'
 #' @noRd
 

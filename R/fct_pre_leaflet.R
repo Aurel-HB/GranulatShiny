@@ -1,6 +1,14 @@
 #' pre_leaflet
 #'
 #' @description Formate un df pour la visualisation des traits de chalut et des labels associés à ces traits
+#' prepare a dataframe to visualize the trawl haul with associated labels
+#'
+#' @param data dataframe
+#' @param liste_station character
+#' @param liste_dates dataframe
+#' @param zones number
+#'
+#'
 #'
 #' @return The return value, if any, from executing the function.
 #'

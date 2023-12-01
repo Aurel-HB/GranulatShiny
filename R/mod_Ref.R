@@ -51,7 +51,7 @@ mod_Ref_server <- function(input, output, session, r){
     #})
     #output$summary3 <- renderPrint({
     #  if(is.null(upload())){return("No data")}
-    #  summary(upload())
+    #  module()[[1]]
     #})
     ########################
 
