@@ -3,6 +3,11 @@
 #' @description Fonction pour faire tourner les permanova en fonction de la formule creer par la fct ecriture_modele
 #' L'intéraction est retirée automatiquement si non significative
 #'
+#'@param data description
+#'@param formule description
+#'@param formule_bis description
+#'@param interaction description
+#'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd

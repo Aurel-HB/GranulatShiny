@@ -9,7 +9,7 @@
 #'  "n_missing", "n_total", "complete_rate", "mean","sd", "min", "Q25",
 #'  "median", "Q75", "max"
 #'
-#' @noRd
+#'
 
 numeric_summary <- function(vector, name){
   var_summary <- as.numeric(summary(vector))

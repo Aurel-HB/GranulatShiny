@@ -29,6 +29,7 @@ mod_Stat_ui <- function(id){
            status = "info",
            collapsible = TRUE,
            collapsed = TRUE,
+           style = "overflow-x: scroll;",
            uiOutput(ns("choix_interaction")),
            plotOutput(ns("interact"))
       ),

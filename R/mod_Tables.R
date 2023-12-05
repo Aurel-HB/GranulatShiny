@@ -25,6 +25,17 @@ mod_Tables_ui <- function(id){
     downloadButton(ns("downloadData"), label = "Telecharger la table"),
     hr(),
     downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"),
+    #downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées",
+    #               style='width: 100%; overflow-x: scroll'),
+    #box( solidHeader = F,
+    #     collapsible = F,
+    #     collapsed = F,
+    #     style = "overflow-x: scroll;",
+    #     width = '100%',
+    #     downloadButton(ns("downloadTest"), label = "Telecharger la table"),
+    #     hr(),
+    #     downloadButton(ns("downloadTest2"), label = "Telecharger les informations rentrées")
+    #),
     hr(),
     uiOutput(ns("variable")),
     actionButton("gostat", "Commencer l'analyse")
