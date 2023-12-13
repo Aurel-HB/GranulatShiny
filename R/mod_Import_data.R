@@ -120,12 +120,7 @@ mod_Import_data_server <- function(input, output, session, r){
       )
     })
 
-    shape <- reactive({
-      shape_file <- input$shape$datapath[1]
-      shape <- st_read(shape_file)
-      polygon <-
-        shape[["geometry"]][[1]] ## [[1]] pour SIEGMA [[2]] pour RESISTE, possible de rajouter un input pour le choix de la ligne pour les shapefiles avec plusieurs lignes
-    })
+    # deletion of useless command on the shape ###
 
     shape <- reactive({
       if (!is.null(input$shpFile)) {
@@ -140,7 +135,23 @@ mod_Import_data_server <- function(input, output, session, r){
         shpPath <- paste(uploadDirectory, shpName, sep = "/")
         setwd(prevWD)
         shpFile <- st_read(shpPath)
-        polygon <- shpFile[["geometry"]][[1]] # [[1]] pour SIEGMA [[2]] pour RESISTE
+
+
+        # Check the number of features/entities in the shapefile
+        num_entities <- nrow(shpFile)
+        # Print the result
+        if (num_entities != 1) {
+          sendSweetAlert(
+            session = session,
+            title = "Alert !",
+            text = "Le fichier n'a pas le bon format !
+          Référez vous au format shapefile de la notice.",
+            type = "fail"
+          )
+        }
+
+        polygon <- shpFile[["geometry"]][[1]] # [[1]] pour SIEGMA [[2]] pour RESISTE,
+        # possible de rajouter un input pour le choix de la ligne pour les shapefiles avec plusieurs lignes
         return(polygon)
       } else {
         return()

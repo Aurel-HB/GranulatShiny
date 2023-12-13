@@ -82,7 +82,7 @@ mod_Choix_loi_server <- function(input, output, session, r){
   })
 
   output$density_text <- renderText({
-    "La courbe bleue corespond à la fonction de densité de la variable"
+    "La courbe bleue correspond à la fonction de densité de la variable"
   })
 
   output$legend_law <- renderUI({
@@ -94,7 +94,8 @@ mod_Choix_loi_server <- function(input, output, session, r){
   })
 
   output$law_text <- renderText({
-    "La courbe verte corespond à la loi de distribution"
+    "La courbe verte correspond à la loi de distribution tel que les paramètres
+    sont estimés à partir de la moyenne et de l'écart-type de la variable"
   })
 
   data_analyse <- reactive({

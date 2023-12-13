@@ -1,21 +1,20 @@
 Package: myGranulatShiny
 Title: Interface Granulat
 Version: 0.0.0.9000
-Authors@R: person('Hebert--Burggraeve', 'Aurel', email = 'Aurel.Hebert.Burggraeve@ifremer.fr', role = c('cre', 'aut'))
-Description: PKG_DESC.
+Authors@R: 
+    person("Hebert--Burggraeve", "Aurel", , "aurelhb722@orange.fr", role = c("cre", "aut"))
+Description: This package is an app to help industrial to mesure their
+    impact on fish communities
 License: MIT + file LICENSE
 Imports: 
     assertthat,
-    attempt,
     car,
     config (>= 0.3.2),
     DHARMa,
     dplyr,
-    DT,
+    ggeffects,
     ggplot2,
-    glue,
     golem (>= 0.4.1),
-    htmltools,
     leaflet,
     lme4,
     lsmeans,
@@ -29,21 +28,20 @@ Imports:
     shinyBS,
     shinycssloaders,
     shinydashboard,
-    simr,
-    sjPlot,
+    shinyWidgets,
     stats,
     stringr,
-    thinkr,
     tidyr,
     vegan
-Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.2.3
 Suggests: 
     knitr,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
 Config/testthat/edition: 3
+Encoding: UTF-8
 Language: en-US
-VignetteBuilder: knitr
+LazyData: true
+RoxygenNote: 7.2.3

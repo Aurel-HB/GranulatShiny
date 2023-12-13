@@ -16,15 +16,14 @@
 #' @import stats
 #' @import MASS
 #' @import DHARMa
-#' @import sjPlot
 #' @import stringr
 #' @import multcomp
 #' @import multcompView
 #' @import lsmeans
-#' @import simr
 #' @import RColorBrewer
 #' @import plyr
 #' @import sf
+#' @import ggeffects
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
@@ -49,6 +48,8 @@ app_server <- function(input, output, session) {
   #onglet modelisation
   callModule(mod_Prepare_modelling_server, id = "Prepare_modelling_1",session = session, r=r)
   callModule(mod_Modelling_server, id = "Modelling_1",session = session, r=r)
+  #onglet representation
+  callModule(mod_Representation_server, id = "Representation_1",session = session, r=r)
 
   # Ouvre l'onglet Tables automatiquement
   observeEvent(r$button, {
@@ -63,6 +64,9 @@ app_server <- function(input, output, session) {
   })
   observeEvent(input$go_modelo, {
     updateTabItems(session, "tabs", "mod")
+  })
+  observeEvent(input$go_represent, {
+    updateTabItems(session, "tabs", "rep")
   })
 
 

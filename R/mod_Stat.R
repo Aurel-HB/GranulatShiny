@@ -22,6 +22,9 @@ mod_Stat_ui <- function(id){
            ),
         #tableOutput(ns("var_summary")),
         plotOutput(ns("hist")),
+        checkboxInput(ns("outlier"), "Voulez-vous retirer les valeurs extrêmes ?"),
+        checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
+        hr(),
         actionButton("goloi", "Passer au choix de la loi de distribution")
       ),
       box( title = "Interactionplot",
@@ -63,17 +66,58 @@ mod_Stat_server <- function(input, output, session, r){
       r$var_name
     })
 
+
+    #variable <- reactive({
+    #  if(is.null(data_analyse())){return()}
+    #  if (input$outlier){
+    #    remove_outliers(as.numeric(data_analyse()[,1]))
+    #  } else {
+    #    as.numeric(data_analyse()[,1])
+    #  }
+    #})
+
+    # variable is the vector of the chosen variable with or without transformation
+    variable <- reactive({
+      if(is.null(data_analyse())){return()}
+      if (input$log && input$outlier){
+        return(log(delete_outliers(as.numeric(data_analyse()[,1]))+1))
+      }
+      else if (input$outlier){
+        return(delete_outliers(as.numeric(data_analyse()[,1])))
+      }
+      else if (input$log){
+        return(log(as.numeric(data_analyse()[,1]+1)))
+      } else {
+        return(as.numeric(data_analyse()[,1]))
+      }
+    })
+
+    # data_variable follow the change of variable
+    # if the outliers are deleted, the lines corresponding are removed for the plots
+    data_variable <- reactive({
+      if(is.null(data_analyse())){return()}
+      if (input$outlier){
+      return(as.data.frame(data_analyse()
+                           %>% dplyr::filter(data_analyse()[,1] %in%
+                                               delete_outliers(as.numeric(data_analyse()[,1])))))
+      }
+      data_analyse()
+    })
+
+
+
     output$var_summary <- renderTable({
       if(is.null(data_analyse())){return()}
-      numeric_summary(as.numeric(data_analyse()[,1]), names(data_analyse())[1])
+      numeric_summary(as.numeric(variable()), names(data_analyse())[1])
     })
 
     output$hist <- renderPlot({
       if(is.null(data_analyse())){return()}
-      hist(as.numeric(data_analyse()[,1]),
+      hist(as.numeric(variable()),
            main = paste("Histogram of ", var_name(), sep=""),
            xlab = r$var_name, ylab = "Frequency", col = "lightblue")
     })
+
 
     #### boxplot part ####
     output$choix_box <- renderUI({
@@ -93,36 +137,36 @@ mod_Stat_server <- function(input, output, session, r){
       if(is.null(data_analyse())){return()}
       if(is.null(input$choix_box)){return()}
       if(input$choix_box == 1){
-        boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$traitement,
-                data = data_analyse(),
+        boxplot(as.numeric(variable()) ~ data_variable()$traitement,
+                data = data_variable(),
                 main = paste("Boxplot of ", var_name()," by impact", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 2){
-        boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$year,
-                data = data_analyse(),
+        boxplot(as.numeric(variable()) ~ data_variable()$year,
+                data = data_variable(),
                 main = paste("Boxplot of ", var_name()," by year", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 3){
-        boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$campagne,
-                data = data_analyse(),
+        boxplot(as.numeric(variable()) ~ data_variable()$campagne,
+                data = data_variable(),
                 main = paste("Boxplot of ", var_name()," by survey", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 4){
-        boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$station,
-                data = data_analyse(),
+        boxplot(as.numeric(variable()) ~ data_variable()$station,
+                data = data_variable(),
                 main = paste("Boxplot of ", var_name()," by station", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 5){
-        boxplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$saison,
-                data = data_analyse(),
+        boxplot(as.numeric(variable()) ~ data_variable()$saison,
+                data = data_variable(),
                 main = paste("Boxplot of ", var_name()," by season", sep=""),
                 xlab = "", ylab = ""
         )
@@ -157,34 +201,34 @@ mod_Stat_server <- function(input, output, session, r){
       if(is.null(data_analyse())){return()}
       if(is.null(input$choix_interaction)){return()}
       if(input$choix_interaction == 1){
-        interaction.plot(x.factor=data_analyse()$saison,
-                         trace.factor=data_analyse()$traitement,
+        interaction.plot(x.factor=data_variable()$saison,
+                         trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
-                         response=as.numeric(data_analyse()[,1]),
+                         response=as.numeric(variable()),
                          main = paste("Interaction_plot of ", var_name()," by season and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 2){
-        interaction.plot(x.factor=data_analyse()$year,
-                         trace.factor=data_analyse()$traitement,
+        interaction.plot(x.factor=data_variable()$year,
+                         trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
-                         response=as.numeric(data_analyse()[,1]),
+                         response=as.numeric(variable()),
                          main = paste("Interaction_plot of ", var_name()," by year and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 3){
-        interaction.plot(x.factor=data_analyse()$campagne,
-                         trace.factor=data_analyse()$traitement,
+        interaction.plot(x.factor=data_variable()$campagne,
+                         trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
-                         response=as.numeric(data_analyse()[,1]),
+                         response=as.numeric(variable()),
                          main = paste("Interaction_plot of ", var_name()," by survey and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 4){
-        interaction.plot(x.factor=data_analyse()$station,
-                         trace.factor=data_analyse()$traitement,
+        interaction.plot(x.factor=data_variable()$station,
+                         trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
-                         response=as.numeric(data_analyse()[,1]),
+                         response=as.numeric(variable()),
                          main = paste("Interaction_plot of ", var_name()," by sation and traitment", sep=""),
                          xlab = "", ylab = "")
       }

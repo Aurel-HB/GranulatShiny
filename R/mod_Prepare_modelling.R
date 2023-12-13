@@ -33,7 +33,9 @@ mod_Prepare_modelling_ui <- function(id){
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation"),
       hr(),
-      uiOutput(ns("choix_modele"))
+      uiOutput(ns("choix_modele")),
+      hr(),
+      uiOutput(ns("go_represent"))
 
 
 
@@ -88,6 +90,15 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         )
       })
 
+    # Ajout de cov si GLMM
+    covariable <- reactive({
+      if(input$methode == 1){
+        return(c("campagne", "station", input$covariable))
+      } else {
+        return(input$covariable)
+      }
+    })
+
     # Mise en forme des expression reactives
     y_variable <- reactive({
       input$y
@@ -109,6 +120,9 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
     })
     observe({
       r$distribution <- input$distribution
+    })
+    observe({
+      r$covariable <- covariable()
     })
 
     #ecriture du modèle initial
@@ -143,7 +157,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       r$go2 <- TRUE
     })
 
-    #Afficher le choix du modèle entre initial et finalseulement si l'interaction n'est pas significative (et donc retirée)
+    #Afficher le choix du modèle entre initial et final seulement si l'interaction n'est pas significative (et donc retirée)
 
     output$choix_modele <- renderUI({
       if(is.null(r$modele)){return()}
@@ -170,6 +184,10 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       r$choix_modele <- choix_modele()
     })
 
+    output$go_represent <- renderUI({
+      if(is.null(r$modele)){return()}
+      actionButton("go_represent", "Voir les effets")
+    })
 
     ### check point###
     #output$test <- renderPrint({

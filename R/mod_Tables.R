@@ -24,18 +24,9 @@ mod_Tables_ui <- function(id){
     ),
     downloadButton(ns("downloadData"), label = "Telecharger la table"),
     hr(),
-    downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"),
-    #downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées",
-    #               style='width: 100%; overflow-x: scroll'),
-    #box( solidHeader = F,
-    #     collapsible = F,
-    #     collapsed = F,
-    #     style = "overflow-x: scroll;",
-    #     width = '100%',
-    #     downloadButton(ns("downloadTest"), label = "Telecharger la table"),
-    #     hr(),
-    #     downloadButton(ns("downloadTest2"), label = "Telecharger les informations rentrées")
-    #),
+    downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"
+                   #style='width: 100%; overflow-x: scroll'),
+                   ),
     hr(),
     uiOutput(ns("variable")),
     actionButton("gostat", "Commencer l'analyse")
@@ -96,10 +87,10 @@ mod_Tables_server <- function(input, output, session, r){
       l <- data_forme()[[1]]["station"]
       s <- data_forme()[[1]]["saison"]
       t <- data_forme()[[1]]["traitement"]
-      i <- data_forme()[[1]]["interaction"]
+      #i <- data_forme()[[1]]["interaction"]
       c <- data_forme()[[1]]["campagne"]
-      data <- data.frame(v, y, l, s, t, i,c)
-      names(data) <- c(input$var, "year", "station", "saison", "traitement", "interaction", "campagne")
+      data <- data.frame(v, y, l, s, t, c) #i,c)
+      names(data) <- c(input$var, "year", "station", "saison", "traitement", "campagne") #"interaction", "campagne")
       data
     })
 
