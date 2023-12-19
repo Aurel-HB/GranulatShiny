@@ -53,6 +53,9 @@ mod_Import_data_server <- function(input, output, session, r){
         return()
       }
       data11 <- read.csv (file1, header = T, sep = ";")
+      if (length(data11)==1){
+        data11 <- read.csv (file1, header = T, sep = ",")
+      }
       verif <- verification(names(data11), format_catch)
       if(verif == FALSE){
         sendSweetAlert(
@@ -89,6 +92,9 @@ mod_Import_data_server <- function(input, output, session, r){
         return()
       }
       data22 <- read.csv (file2, header = T, sep = ";")
+      if (length(data22)==1){
+        data22 <- read.csv (file2, header = T, sep = ",")
+      }
       verif <- verification(names(data22), format_operation)
       if(verif == FALSE){
         sendSweetAlert(

@@ -12,6 +12,9 @@ mod_Representation_ui <- function(id){
   tagList(
     # Inputs pour parametrer le graph
     sidebarPanel(
+      h4(strong("Formulation du modèle :")),
+      htmlOutput(ns("ecriture_modele")),
+      hr(),
       #choix du terme
       box(
         title = "Predictor",
@@ -67,6 +70,7 @@ mod_Representation_server <- function(input, output, session, r){
     })
 
 
+    output$ecriture_modele <- renderText(r$ecriture[[1]])
 
     # Render UI pour la visualisation
     output$pred_1 <-
@@ -218,15 +222,15 @@ mod_Representation_server <- function(input, output, session, r){
 
     ################
     # chexkpoint ####
-    output$test1 <- renderPrint({
-      class(input$cov_1)
-    })
+    #output$test1 <- renderPrint({
+    #  class(input$cov_1)
+    #})
     #####
 
     # chexkpoint ####
-    output$test2 <- renderPrint({
-      list(r$covariable,cov_1(), cov_3(), class(input$effet_cov))
-    })
+    #output$test2 <- renderPrint({
+    #  list(r$covariable,cov_1(), cov_3(), class(input$effet_cov))
+    #})
     #####
 
     ##test post-hoc entre les modalités
@@ -301,25 +305,39 @@ mod_Representation_server <- function(input, output, session, r){
     #  }
     #})
 
-    output$effet_plot <- renderPlot({
-      if (is.null(plot_effet())){return()}
+    plot_final <- reactive({
+      if (is.null(plot_effet())){return(NULL)}
       else if (is.null(r$covariable)){return(plot_effet())}
       else{return(plot_effet_covariable())}
+    })
+
+    output$effet_plot <- renderPlot({
+      plot_final()
     })
 
 
 
     ## Exporter le graphique
-    #observeEvent(plot_effet(), {
       output$downloadPlot_effet <- downloadHandler(
         filename = function() {
-          paste("plot-", r$variable, ".png", sep = "")
+          paste("plot_marginal", ".png", sep = "")
         },
         content = function(file) {
-          ggsave(file, plot = output$effet_plot)
-        }
+          # Use tryCatch to handle errors with try(silent = TRUE)
+          tryCatch(
+            {
+              ggsave(file, plot = plot_final(), height = 4.72, width = 8.75, bg = "white")
+            },
+            error = function(e) {
+              # Handle the error here (print a message, log it, etc.)
+              print("")
+            },
+            warning = function(w) {
+              # Handle warnings if needed
+              print("")
+            }
       )
-    #})
+    })
 
 }#
 #

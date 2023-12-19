@@ -169,6 +169,7 @@ mod_Modelling_server <- function(input, output, session, r){
       output$verification <- renderPlot({
         if (is.null(r$choix_sortie)){return()}
         if (methode()== 3){return()}
+        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation")}
         #plotQQunif(simulateResiduals(modele()[[choix_modele()]]))
         plot(simulateResiduals(modele()[[choix_modele()]]))
       })

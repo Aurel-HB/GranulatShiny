@@ -28,7 +28,7 @@ mod_Prepare_modelling_ui <- function(id){
       hr(),
       h4(strong("Formulation du modèle :")),
       htmlOutput(ns("ecriture_modele")),
-      htmlOutput(ns("ecriture_loi")),
+      #htmlOutput(ns("ecriture_loi")),
       #verbatimTextOutput(ns("test")),
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation"),
@@ -90,14 +90,14 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         )
       })
 
-    # Ajout de cov si GLMM
-    covariable <- reactive({
-      if(input$methode == 1){
-        return(c("campagne", "station", input$covariable))
-      } else {
-        return(input$covariable)
-      }
-    })
+    ## Ajout de cov si GLMM
+    #covariable <- reactive({
+    #  if(input$methode == 1){
+    #    return(c("campagne", "station", input$covariable))
+    #  } else {
+    #    return(input$covariable)
+    #  }
+    #})
 
     # Mise en forme des expression reactives
     y_variable <- reactive({
@@ -122,7 +122,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       r$distribution <- input$distribution
     })
     observe({
-      r$covariable <- covariable()
+      r$covariable <- input$covariable
     })
 
     #ecriture du modèle initial
