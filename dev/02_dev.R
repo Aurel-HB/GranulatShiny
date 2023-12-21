@@ -87,6 +87,8 @@ golem::add_fct("glm_maker_puissance")
 golem::add_fct("numeric_summary")
 golem::add_fct("verification")
 golem::add_fct("probability_distribution")
+golem::add_fct("dataset_creation")
+golem::add_fct("export_data")
 
 
 ## External resources
