@@ -44,12 +44,14 @@ mod_Impact_server <- function(input, output, session, r){
         dateRangeInput(
           ns("dates"),
           "Dates de la période d'activité :",
-          start = min(as.Date(
-            tutti_operation()$DateDeb,  "%d/%m/%Y"
-          )),
-          end = max(as.Date(
-            tutti_operation()$DateDeb,  "%d/%m/%Y"
-          )),
+          start = min(tutti_operation()$DateDeb),
+          end = max(tutti_operation()$DateDeb),
+          #start = min(as.Date(
+          #  tutti_operation()$DateDeb,  "%d/%m/%Y"
+          #)),
+          #end = max(as.Date(
+          #  tutti_operation()$DateDeb,  "%d/%m/%Y"
+          #)),
           format = "yyyy-mm-dd",
           startview = "month",
           weekstart = 0,

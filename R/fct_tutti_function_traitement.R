@@ -33,8 +33,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     names(tutti_operation)[5] <- "date"
     }
 
-  tutti_operation$date <-
-    as.Date(tutti_operation$date, format = "%d/%m/%Y %H:%M")
+  #tutti_operation$date <-
+  #  as.Date(tutti_operation$date, format = "%d/%m/%Y %H:%M")
 
   tutti_operation$Distance <- tutti_operation$Distance / 1000
   tutti_operation$Horizontal_opening <- 0.01
@@ -66,10 +66,18 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     }
 
   ## saison
-  tutti_catch_abun$month <-
-    as.numeric(substr(as.character(tutti_catch_abun$date), 4, 5))
-  tutti_catch_abun$day <-
-    as.numeric(substr(as.character(tutti_catch_abun$date), 1, 2))
+  # Extract month and day
+  tutti_catch_abun$month <- format(tutti_catch_abun$date, "%m")
+  tutti_catch_abun$day <- format(tutti_catch_abun$date, "%d")
+
+  # Convert month and day to numeric if needed
+  tutti_catch_abun$month <- as.numeric(tutti_catch_abun$month)
+  tutti_catch_abun$day <- as.numeric(tutti_catch_abun$day)
+
+  #tutti_catch_abun$month <-
+  #  as.numeric(substr(as.character(tutti_catch_abun$date), 4, 5))
+  #tutti_catch_abun$day <-
+  #  as.numeric(substr(as.character(tutti_catch_abun$date), 1, 2))
 
   tutti_catch_abun$saison <- NA
 
@@ -106,8 +114,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   tutti_catch_abun <-
     tutti_catch_abun %>% select(-c("month", "day"))
-  tutti_catch_abun$date <-
-    as.Date(tutti_catch_abun$date, format = "%d/%m/%Y %H:%M")
+  #tutti_catch_abun$date <-
+  #  as.Date(tutti_catch_abun$date, format = "%d/%m/%Y %H:%M")
 
 
   ## Survey and tow
@@ -149,10 +157,19 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     }
 
   ## saison
-  tutti_catch_biom$month <-
-    as.numeric(substr(as.character(tutti_catch_biom$date), 4, 5))
-  tutti_catch_biom$day <-
-    as.numeric(substr(as.character(tutti_catch_biom$date), 1, 2))
+  # Extract month and day
+  tutti_catch_biom$month <- format(tutti_catch_biom$date, "%m")
+  tutti_catch_biom$day <- format(tutti_catch_biom$date, "%d")
+
+  # Convert month and day to numeric if needed
+  tutti_catch_biom$month <- as.numeric(tutti_catch_biom$month)
+  tutti_catch_biom$day <- as.numeric(tutti_catch_biom$day)
+
+  ## saison
+  #tutti_catch_biom$month <-
+  #  as.numeric(substr(as.character(tutti_catch_biom$date), 4, 5))
+  #tutti_catch_biom$day <-
+  #  as.numeric(substr(as.character(tutti_catch_biom$date), 1, 2))
 
   tutti_catch_biom$saison <- NA
 

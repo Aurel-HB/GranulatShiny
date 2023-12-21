@@ -85,7 +85,7 @@ mod_Analyse_choice_server <- function(input, output, session, r){
           }
         }
         if (verif != length(vector)){
-          #there other thing than zero and NA so
+          #there is other thing than zero and NA so
           verif = 0
         }
       }
@@ -98,7 +98,7 @@ mod_Analyse_choice_server <- function(input, output, session, r){
         }
       }
 
-      if(verif > length(vector)/2){
+      if(verif > length(vector)*0.8){
         sendSweetAlert(
           session = session,
           title = "Alert !",

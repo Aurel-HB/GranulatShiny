@@ -31,6 +31,13 @@ indice_computing <- function(data_abun, data_biom) {
   data_abun$Pielou <- data_abun$Shannon / log(data_abun$Richness)
   data_abun <- data_abun %>% relocate(1:14, Pielou)
 
+  #test na in pielou
+  for(i in 1:length(data_abun$Pielou)){
+    if(is.na(data_abun$Pielou[i])){
+      data_abun$Pielou[i] <- 0
+    }
+  }
+
   return(data_abun)
 
 }

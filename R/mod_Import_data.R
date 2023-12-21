@@ -67,12 +67,28 @@ mod_Import_data_server <- function(input, output, session, r){
         )
         return()
       }
+
+      data11$DateDeb <-
+        as.Date(data11$DateDeb, format = "%d/%m/%Y %H:%M")
+      data11$DateFin <-
+        as.Date(data11$DateFin, format = "%d/%m/%Y %H:%M")
+      a <- 0
+      for(i in 1:length(data11[,1])){
+        if(is.na(data11$DateDeb[i])){ a <- 1}
+        if(is.na(data11$DateFin[i])){ a <- 1}
+      }
+      if(a == 1){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
+            Référez vous au format classique tutti pour la saisie des dates.",
+          type = "fail"
+        )
+      }
       data11
     })
 
-    observe({
-      r$tutti_catch <- tutti_catch()
-    })
 
     format_operation <- c("Annee","Serie","Serie_Partielle","Code_Station",
                           "Id_Operation","DateDeb","LatDeb","LongDeb","DateFin",
@@ -106,7 +122,75 @@ mod_Import_data_server <- function(input, output, session, r){
         )
         return()
       }
+
+      data22$DateDeb <-
+        as.Date(data22$DateDeb, format = "%d/%m/%Y %H:%M")
+      data22$DateFin <-
+        as.Date(data22$DateFin, format = "%d/%m/%Y %H:%M")
+      a <- 0
+      for(i in 1:length(data22[,1])){
+        if(is.na(data22$DateDeb[i])){ a <- 1}
+        if(is.na(data22$DateFin[i])){ a <- 1}
+      }
+      if(a == 1){
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
+            Référez vous au format classique tutti pour la saisie des dates.",
+          type = "fail"
+        )
+      }
       data22
+    })
+
+    ##test before exportation
+    #observe({
+    #  tutti_catch()$DateDeb <-
+    #    as.Date(tutti_catch()$DateDeb, format = "%d/%m/%Y %H:%M")
+    #  tutti_operation()$DateDeb <-
+    #    as.Date(tutti_operation()$DateDeb, format = "%d/%m/%Y %H:%M")
+    #  tutti_catch()$DateFin <-
+    #    as.Date(tutti_catch()$DateFin, format = "%d/%m/%Y %H:%M")
+    #  tutti_operation()$DateFin <-
+    #    as.Date(tutti_operation()$DateFin, format = "%d/%m/%Y %H:%M")
+    #})
+#
+    #observe({
+    #  for(i in 1:length(tutti_catch[,1])){
+    #    if(is.na(tutti_catch()$DateDeb[i])){ a <- 1}
+    #    if(is.na(tutti_catch()$DateFin[i])){ a <- 1}
+    #  }
+#
+    #  for(i in 1:length(tutti_operation[,1])){
+    #    if(is.na(tutti_operation()$DateDeb[i])){ b <- 1}
+    #    if(is.na(tutti_operation()$DateFin[i])){ b <- 1}
+    #  }
+#
+    #  if(a == 1){
+    #    sendSweetAlert(
+    #      session = session,
+    #      title = "Alert !",
+    #      text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch.
+    #        Référez vous au format classique tutti pour la saisie des dates.",
+    #      type = "fail"
+    #    )
+    #  }
+#
+    #  if(b == 1){
+    #    sendSweetAlert(
+    #      session = session,
+    #      title = "Alert !",
+    #      text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
+    #        Référez vous au format classique tutti pour la saisie des dates.",
+    #      type = "fail"
+    #    )
+    #  }
+    #})
+
+    #exporation of the dataset
+    observe({
+      r$tutti_catch <- tutti_catch()
     })
 
     observe({

@@ -175,7 +175,10 @@ mod_Representation_server <- function(input, output, session, r){
       if(is.null(modele())){return()}
       if(is.null(input$pred_1)){return()}
       if(is.null(input$pred_2)){return()}
-      ggpredict(modele()[[2]], terms = c(input$pred_1, input$pred_2))|> plot()
+      if(input$pred_1 == input$pred_2){return()}
+      try(
+        ggpredict(modele()[[2]], terms = c(input$pred_1, input$pred_2))|> plot(),
+        silent = T)
     })
 
     # To use ggpredict the covariable information need to be in the format Named num
