@@ -97,10 +97,12 @@ golem::add_css_file( "custom" )
 
 ## Add internal datasets ----
 ## If you have data in your package
-# usethis::use_data_raw( name = "class_vecteur_catch.rda")
-# usethis::use_data_raw( name = "class_vecteur_operation.rda" )
-# usethis::use_data(class_vecteur_catch, overwrite = TRUE, internal = TRUE)
-# usethis::use_data(class_vecteur_operation, overwrite = TRUE, internal = TRUE)
+catch <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/catch.rds")
+operation <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/operation.rds")
+polygon <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/polygon.rds")
+usethis::use_data(catch)
+usethis::use_data(operation)
+usethis::use_data(polygon)
 
 file.edit()
 ## Tests ----
