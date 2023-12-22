@@ -99,9 +99,9 @@ golem::add_css_file( "custom" )
 
 ## Add internal datasets ----
 ## If you have data in your package
-catch <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/catch.rds")
-operation <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/operation.rds")
-polygon <- readRDS("C:/Users/ahebertb/Documents/MyGranulat_test/data/polygon.rds")
+catch <- readRDS("catch.rds")
+operation <- readRDS("operation.rds")
+polygon <- readRDS("polygon.rds")
 usethis::use_data(catch)
 usethis::use_data(operation)
 usethis::use_data(polygon)
