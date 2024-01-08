@@ -31,6 +31,8 @@ app_server <- function(input, output, session) {
   r <- reactiveValues()
 
 
+  # onglet accueil
+  callModule(mod_reception_server, id = "reception_1",session = session, r=r)
   # onglet import data
   callModule(mod_Import_data_server, id = "Import_data_1",session = session, r=r)
   callModule(mod_Ref_server, id = "Ref_1",session = session, r=r)

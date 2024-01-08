@@ -36,10 +36,6 @@ mod_Map_server <- function(input, output, session, r){
     output$carte <- renderLeaflet({
       if(is.null(tutti_operation_bis())){return()}
       carte <- leaflet_maker(tutti_operation_filtre(), shape())
-      #m <- leaflet()
-      #m <- addTiles(m)
-      #m <- addMarkers(m, lng=174.768, lat=-36.852, popup="The birthplace of R")
-      #m
     })
 }
 

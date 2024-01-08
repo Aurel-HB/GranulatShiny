@@ -22,6 +22,11 @@ app_ui <- function(request) {
       dashboardSidebar(sidebarMenu(
         id = "tabs",
         menuItem(
+          "Page d'accueil",
+          tabName = "accueil",
+          icon = icon("far fa-file-lines")
+        ),
+        menuItem(
           "Mise en forme des données",
           tabName = "forme",
           icon = icon("readme"),
@@ -48,6 +53,11 @@ app_ui <- function(request) {
       dashboardBody( # create the interface for each tab
         fluidPage(
         tabItems(
+          #page d'accueil
+          tabItem(
+            tabName = "accueil",
+            mod_reception_ui("reception_1")
+          ),
           #onglet Information à rentrer
           tabItem(
             tabName = "donnees",

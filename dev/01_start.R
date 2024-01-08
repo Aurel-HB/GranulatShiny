@@ -14,9 +14,9 @@
 ## Fill the DESCRIPTION ----
 ## Add meta data about your application
 ##
-## /!\ Note: if you want to change the name of your app during development,
+## /!/ Note: if you want to change the name of your app during development,
 ## either re-run this function, call golem::set_golem_name(), or don't forget
-## to change the name in the app_sys() function in app_config.R /!\
+## to change the name in the app_sys() function in app_config.R /!/
 ##
 golem::fill_desc(
   pkg_name = "myGranulatShiny", # The Name of the package containing the App
@@ -51,9 +51,10 @@ golem::use_recommended_deps()
 
 ## Favicon ----
 # If you want to change the favicon (default is golem's one)
-golem::favicon("GranulatShiny")
-golem::use_favicon("inst/app/www/GranulatShiny.ico") # path = "path/to/ico". Can be an online file.
-#golem::remove_favicon()
+golem::use_favicon("C:/Users/ahebertb/Downloads/favicon.ico", method = "curl")
+golem::use_favicon("C:/Users/ahebertb/Downloads/hex-GranulatShiny.png", method = "curl")
+#golem::remove_favicon(path = "inst/app/www/favicon.ico")
+
 
 ## Add helper functions ----
 golem::use_utils_ui()

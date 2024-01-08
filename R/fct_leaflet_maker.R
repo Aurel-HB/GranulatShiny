@@ -71,5 +71,7 @@ leaflet_maker <- function(df, shape) {
       }
     }
   }
+  carte <- carte %>% setView(lng = df["LongDeb"][1,1],
+                             lat = df["LatDeb"][1,1], zoom = 11)
   carte
 }

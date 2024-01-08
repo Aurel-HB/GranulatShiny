@@ -62,6 +62,7 @@ golem::add_module( name = "Modelling" )
 golem::add_module( name = "Representation")
 golem::add_module( name = "Puissance")
 golem::add_module( name = "complexe_02")
+golem::add_module( name = "reception")
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*
@@ -102,10 +103,11 @@ golem::add_css_file( "custom" )
 catch <- readRDS("catch.rds")
 operation <- readRDS("operation.rds")
 polygon <- readRDS("polygon.rds")
+sauvegarde <- readRDS("sauvegarde.rds")
 usethis::use_data(catch)
 usethis::use_data(operation)
 usethis::use_data(polygon)
-
+usethis::use_data(sauvegarde)
 file.edit()
 ## Tests ----
 ## Add one line by test you want to create

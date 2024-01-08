@@ -11,13 +11,12 @@ mod_Import_data_ui <- function(id){
   ns <- NS(id)
   tagList(
       selectInput(
-        ns("complex"),
-        "Prendre en compte la stratégie d'extraction ?",
-        c("non" = "1", "oui" = "2")
+        ns("data"),
+        "Avez-vous vos propres données ?",
+        c("oui" = "1", "non" = "2")
       ),
-      fileInput(ns("tutti_catch"), "Sélectionnez le fichier Tutti Catch (.csv)", accept = c(".csv")),
-      fileInput(ns("tutti_operation"),
-                "Sélectionnez le fichier Tutti operation (.csv)", accept = c(".csv")),
+      uiOutput(ns("tutti_catch")),
+      uiOutput(ns("tutti_operation")),
       uiOutput(ns("shpFile")),
       uiOutput(ns("uploadSave")),
       hr()
@@ -38,8 +37,24 @@ mod_Import_data_server <- function(input, output, session, r){
                 "Nombre","Poids","Pmoy","longueurmoy","DateDeb","LatDeb",
                 "LongDeb","DateFin","LatFin","LongFin")
 
-    # Charger les données
+    # Charger les données ####
+    # catch ####
+    output$tutti_catch <- renderUI({
+      if(input$data == 2){return()}
+      fileInput(ns("tutti_catch"), "Sélectionnez le fichier Tutti Catch (.csv)", accept = c(".csv"))
+    })
+
     tutti_catch <- reactive({
+      #if you wnat to use the package data
+      if(input$data == 2){
+        data11 <- catch
+        data11$DateDeb <-
+          as.Date(data11$DateDeb, format = "%d/%m/%Y %H:%M")
+        data11$DateFin <-
+          as.Date(data11$DateFin, format = "%d/%m/%Y %H:%M")
+        return(data11)
+      }
+      # if not
       if(is.null(input$tutti_catch)){return()}
       file1 <- input$tutti_catch[,4]
       if(grepl(".csv",file1) == FALSE){
@@ -88,13 +103,30 @@ mod_Import_data_server <- function(input, output, session, r){
       }
       data11
     })
+    #####
 
 
     format_operation <- c("Annee","Serie","Serie_Partielle","Code_Station",
                           "Id_Operation","DateDeb","LatDeb","LongDeb","DateFin",
                           "LatFin","LongFin","Distance")
+    # operation ####
+    output$tutti_operation <- renderUI({
+      if(input$data == 2){return()}
+      fileInput(ns("tutti_operation"),
+                "Sélectionnez le fichier Tutti operation (.csv)", accept = c(".csv"))
+    })
 
     tutti_operation <- reactive({
+      #if you wnat to use the package data
+      if(input$data == 2){
+        data22 <- operation
+        data22$DateDeb <-
+          as.Date(data22$DateDeb, format = "%d/%m/%Y %H:%M")
+        data22$DateFin <-
+          as.Date(data22$DateFin, format = "%d/%m/%Y %H:%M")
+        return(data22)
+      }
+      #if not
       if(is.null(input$tutti_operation)){return()}
       file2 <- input$tutti_operation[,4]
       if(grepl(".csv",file2) == FALSE){
@@ -144,50 +176,6 @@ mod_Import_data_server <- function(input, output, session, r){
       data22
     })
 
-    ##test before exportation
-    #observe({
-    #  tutti_catch()$DateDeb <-
-    #    as.Date(tutti_catch()$DateDeb, format = "%d/%m/%Y %H:%M")
-    #  tutti_operation()$DateDeb <-
-    #    as.Date(tutti_operation()$DateDeb, format = "%d/%m/%Y %H:%M")
-    #  tutti_catch()$DateFin <-
-    #    as.Date(tutti_catch()$DateFin, format = "%d/%m/%Y %H:%M")
-    #  tutti_operation()$DateFin <-
-    #    as.Date(tutti_operation()$DateFin, format = "%d/%m/%Y %H:%M")
-    #})
-#
-    #observe({
-    #  for(i in 1:length(tutti_catch[,1])){
-    #    if(is.na(tutti_catch()$DateDeb[i])){ a <- 1}
-    #    if(is.na(tutti_catch()$DateFin[i])){ a <- 1}
-    #  }
-#
-    #  for(i in 1:length(tutti_operation[,1])){
-    #    if(is.na(tutti_operation()$DateDeb[i])){ b <- 1}
-    #    if(is.na(tutti_operation()$DateFin[i])){ b <- 1}
-    #  }
-#
-    #  if(a == 1){
-    #    sendSweetAlert(
-    #      session = session,
-    #      title = "Alert !",
-    #      text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch.
-    #        Référez vous au format classique tutti pour la saisie des dates.",
-    #      type = "fail"
-    #    )
-    #  }
-#
-    #  if(b == 1){
-    #    sendSweetAlert(
-    #      session = session,
-    #      title = "Alert !",
-    #      text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
-    #        Référez vous au format classique tutti pour la saisie des dates.",
-    #      type = "fail"
-    #    )
-    #  }
-    #})
-
     #exporation of the dataset
     observe({
       r$tutti_catch <- tutti_catch()
@@ -198,11 +186,12 @@ mod_Import_data_server <- function(input, output, session, r){
     })
 
 
-    # Shape file
+    # Shape file ####
 
     output$shpFile <- renderUI({
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
+      if(input$data == 2){return()}
       fileInput(
         ns("shpFile"),
         "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
@@ -210,10 +199,14 @@ mod_Import_data_server <- function(input, output, session, r){
       )
     })
 
+
     # deletion of useless command on the shape ###
 
     shape <- reactive({
-      if (!is.null(input$shpFile)) {
+      #if you wnat to use the package data
+      if (input$data == 2){return(polygon)}
+      # if not
+      else if (!is.null(input$shpFile)) {
         shpDF <- input$shpFile
         prevWD <- getwd()
         uploadDirectory <- dirname(shpDF$datapath[1])
@@ -247,13 +240,14 @@ mod_Import_data_server <- function(input, output, session, r){
         return()
       }
     })
+    #####
 
-
-    # Charger la sauvegarde
+    # Charger la sauvegarde ####
 
     output$uploadSave <- renderUI({
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
+      if(input$data == 2){return()}
       fileInput(ns("uploadSave"), "Charger les informations si vous avez une
                     sauvegarde des paramètres de la zone étudiée (.csv)",
                 accept = c(".csv"))
@@ -262,7 +256,18 @@ mod_Import_data_server <- function(input, output, session, r){
     format_sauvegarde <- c("","stations","dates_deb","dates_fin","ban")
 
     upload <- reactive({
-      if (is.null(input$uploadSave)) {
+
+      if (input$data == 2){
+        file_save <- sauvegarde
+        station <- strsplit(as.character(file_save$stations), split = "/")
+        dates_deb <- file_save$dates_deb
+        dates_fin <- file_save$dates_fin
+        ban <- strsplit(as.character(file_save$ban), split = "/")
+        list_save <- list(station, dates_deb, dates_fin, ban)
+        return(list_save)
+      }
+
+      else if (is.null(input$uploadSave)) {
         NULL
       } else {
         pre_file_save <- input$uploadSave[, 4]
@@ -276,6 +281,7 @@ mod_Import_data_server <- function(input, output, session, r){
           )
           return()
         }
+
         file_save <- read.csv (pre_file_save, header = T, sep = ",")
         verif <- "dates_deb" %in% names(file_save)
         if(verif == FALSE){
@@ -288,6 +294,7 @@ mod_Import_data_server <- function(input, output, session, r){
           )
           return()
         }
+
         station <- strsplit(as.character(file_save$stations), split = "/")
         dates_deb <- file_save$dates_deb
         dates_fin <- file_save$dates_fin
@@ -296,7 +303,7 @@ mod_Import_data_server <- function(input, output, session, r){
         return(list_save)
       }
     })
-
+    #####
 
     observe({
       r$shape <- shape()
