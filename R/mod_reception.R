@@ -10,8 +10,12 @@
 mod_reception_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h3("Bienvenue sur l'application GranulatShiny"),
-    textOutput(ns("author"))
+    mainPanel(
+    img(src='www/favicon.png', align = "right", style = "width: 234px; height: 260px"),
+    h1("Bienvenue sur l'application GranulatShiny"),
+    textOutput(ns("author")),
+    hr(),
+    actionButton("start", "start"))
   )
 }
 
@@ -22,7 +26,7 @@ mod_reception_server <- function(input, output, session, r){
     ns <- session$ns
 
     output$author <- renderText({
-      "by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet, Laurent Dubroca, Camille Vogel"
+      "developed by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet, Laurent Dubroca, Camille Vogel"
     })
 
 }

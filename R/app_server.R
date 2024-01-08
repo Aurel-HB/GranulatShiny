@@ -53,6 +53,10 @@ app_server <- function(input, output, session) {
   #onglet representation
   callModule(mod_Representation_server, id = "Representation_1",session = session, r=r)
 
+  #permet de passer à la page des données
+  observeEvent(input$start, {
+    updateTabItems(session, "tabs", "donnees")
+  })
   # Ouvre l'onglet Tables automatiquement
   observeEvent(r$button, {
     updateTabItems(session, "tabs", "table")
