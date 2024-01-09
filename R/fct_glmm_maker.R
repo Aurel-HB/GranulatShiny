@@ -3,7 +3,7 @@
 #' @description Fonction pour faire tourner les glmm en fonction de la formule creer par la fct ecriture_modele
 #' L'intéraction est retirée automatiquement si non significative
 #'
-#' optimisation pour meilleur convergence : autoriasation des approximations ds dérivés partiels et nAGQ = 0
+#' optimisation pour meilleur convergence : autorisation des approximations ds dérivés partiels et nAGQ = 0
 #' à modifier selon le besoin et l'évolution de la méthodologie
 #'
 #' @return The return value, if any, from executing the function.

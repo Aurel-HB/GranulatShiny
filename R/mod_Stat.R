@@ -24,6 +24,7 @@ mod_Stat_ui <- function(id){
         plotOutput(ns("hist")),
         checkboxInput(ns("outlier"), "Voulez-vous retirer les valeurs extrêmes ?"),
         checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
+        textOutput(ns("info")),
         hr(),
         actionButton("goloi", "Passer au choix de la loi de distribution")
       ),
@@ -66,15 +67,10 @@ mod_Stat_server <- function(input, output, session, r){
       r$var_name
     })
 
-
-    #variable <- reactive({
-    #  if(is.null(data_analyse())){return()}
-    #  if (input$outlier){
-    #    remove_outliers(as.numeric(data_analyse()[,1]))
-    #  } else {
-    #    as.numeric(data_analyse()[,1])
-    #  }
-    #})
+    output$info <- renderText({
+      "Attention si votre variable contient des valeurs manquantes ou des zéros,
+      vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle."
+    })
 
     # variable is the vector of the chosen variable with or without transformation
     variable <- reactive({

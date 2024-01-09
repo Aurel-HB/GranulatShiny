@@ -141,7 +141,7 @@ mod_Modelling_server <- function(input, output, session, r){
     observeEvent(r$go2,{
       output$modele <- renderPrint({
         if(is.null(r$choix_sortie)){return()}
-        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation")}
+        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle.")}
         if (methode() %in% c(1, 2)) {
           if (r$choix_sortie == "1") {
             Anova(modele()[[choix_modele()]], type = "III")

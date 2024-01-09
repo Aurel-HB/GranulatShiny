@@ -22,8 +22,9 @@ mod_Prepare_modelling_ui <- function(id){
         )
       ),
       uiOutput(ns("distribution")),
-      checkboxInput(ns("interaction"), "Voulez-vous retirer l'interaction ?"),
       uiOutput(ns("covariable")),
+      checkboxInput(ns("interaction"), "Voulez-vous retirer l'interaction ?"),
+      textOutput(ns("info")),
 
       hr(),
       h4(strong("Formulation du modèle :")),
@@ -77,6 +78,10 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         ),
         selected = r$loi
       )
+    })
+
+    output$info <- renderText({
+      "Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle."
     })
 
     output$covariable <-
