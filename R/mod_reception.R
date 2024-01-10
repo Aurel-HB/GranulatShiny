@@ -15,7 +15,8 @@ mod_reception_ui <- function(id){
     h1("Bienvenue sur l'application GranulatShiny"),
     textOutput(ns("author")),
     hr(),
-    actionButton("start", "start"))
+    actionButton("start", "start")
+    )
   )
 }
 

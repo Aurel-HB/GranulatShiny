@@ -63,6 +63,8 @@ golem::add_module( name = "Representation")
 golem::add_module( name = "Puissance")
 golem::add_module( name = "complexe_02")
 golem::add_module( name = "reception")
+golem::add_module( name = "Indicator")
+golem::add_module( name = "Structure")
 
 ## Add helper functions ----
 ## Creates fct_* and utils_*

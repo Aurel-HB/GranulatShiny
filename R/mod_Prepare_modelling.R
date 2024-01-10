@@ -32,7 +32,7 @@ mod_Prepare_modelling_ui <- function(id){
       #htmlOutput(ns("ecriture_loi")),
       #verbatimTextOutput(ns("test")),
       hr(),
-      actionButton(ns("go2"), "Lancer la modélisation"),
+      actionButton(ns("go2"), "Lancer la modélisation",icon = icon("dragon")),
       hr(),
       uiOutput(ns("choix_modele")),
       hr(),

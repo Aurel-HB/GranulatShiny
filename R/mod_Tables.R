@@ -29,7 +29,8 @@ mod_Tables_ui <- function(id){
                    ),
     hr(),
     uiOutput(ns("variable")),
-    actionButton("gostat", "Commencer l'analyse")
+    actionButton("gostat1", "Stat exploratoires"),
+    actionButton("gostat2", "Stat descriptives")
     )
 }
 

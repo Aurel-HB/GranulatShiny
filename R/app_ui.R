@@ -24,26 +24,34 @@ app_ui <- function(request) {
         menuItem(
           "Page d'accueil",
           tabName = "accueil",
-          icon = icon("far fa-file-lines")
+          #icon = icon("far fa-file-lines")
+          icon = icon("dungeon")
         ),
         menuItem(
           "Mise en forme des données",
           tabName = "forme",
-          icon = icon("readme"),
+          icon = icon("wand-magic-sparkles"),
           menuSubItem("Informations à rentrer", tabName = "donnees"),
           menuSubItem("Tables", tabName = "table")
         ),
         menuItem(
+          "Statistiques exploratoires",
+          tabName = "exploratory",
+          icon = icon("eye"),
+          menuSubItem("Plot des indicateurs", tabName = "Indic"),
+          menuSubItem("Plot de la structure", tabName = "Struc")
+        ),
+        menuItem(
           "Statistiques descriptives",
           tabName = "descriptive",
-          icon = icon("far fa-chart-bar"),
+          icon = icon("scroll"),
           menuSubItem("Plot des données", tabName = "plot"),
           menuSubItem("Diagnostique d'analyse", tabName = "Diag")
         ),
         menuItem(
           "Modélisation",
           tabName = "glmm",
-          icon = icon("fish"),
+          icon = icon("fish-fins"),
           menuSubItem("Création des modèles", tabName = "mod"),
           menuSubItem("Représentation des effets", tabName = "rep"),
           menuSubItem("Puissance statistique", tabName = "pui")
@@ -53,7 +61,7 @@ app_ui <- function(request) {
       dashboardBody( # create the interface for each tab
         fluidPage(
         tabItems(
-          #page d'accueil
+          #page d'accueil ####
           tabItem(
             tabName = "accueil",
             mod_reception_ui("reception_1")
@@ -85,7 +93,18 @@ app_ui <- function(request) {
             mainPanel(
               mod_Show_tables_ui("Show_tables_1"))
             ),
-          # Volet Statistiques descriptives
+          # Volet Statistiques exploratoires ####
+          tabItem(tabName = "exploratory"),
+          #Onglet plot indicator
+          tabItem(tabName = "Indic",
+                  mod_Indicator_ui("Indicator_1")
+          ),
+          #Onglet plot structure
+          tabItem(
+            tabName = "Struc",
+            mod_Structure_ui("Structure_1")
+          ),
+          # Volet Statistiques descriptives ####
           tabItem(tabName = "descriptive"),
           #Onglet plot
           tabItem(tabName = "plot",
@@ -99,7 +118,7 @@ app_ui <- function(request) {
             mainPanel(
               mod_Analyse_choice_ui("Analyse_choice_1")),
           ),
-          # Volet GLMMs
+          # Volet GLMMs ####
           tabItem(tabName = "glmm"),
           # onglet modélisation
           tabItem(

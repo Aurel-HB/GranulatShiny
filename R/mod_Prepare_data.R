@@ -11,7 +11,7 @@ mod_Prepare_data_ui <- function(id){
   ns <- NS(id)
   tagList(
     #verbatimTextOutput(ns("test")),
-    actionButton(ns("go"), "Mettre en forme")
+    actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
 
   )
 }

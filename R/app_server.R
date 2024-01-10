@@ -42,6 +42,10 @@ app_server <- function(input, output, session) {
   callModule(mod_Prepare_data_server, id = "Prepare_data_1",session = session, r=r)
   callModule(mod_Tables_server, id = "Tables_1",session = session, r=r)
   callModule(mod_Show_tables_server, id = "Show_tables_1", session =session, r=r)
+  #onglet plot indicator
+  callModule(mod_Indicator_server, id = "Indicator_1", session =session, r=r)
+  #onglet plot structure
+  callModule(mod_Structure_server, id = "Structure_1", session =session, r=r)
   #onglet plot stat
   callModule(mod_Stat_server, id = "Stat_1",session = session, r=r)
   #onglet diagnostic analyse
@@ -62,7 +66,16 @@ app_server <- function(input, output, session) {
     updateTabItems(session, "tabs", "table")
     r$button <- FALSE # réinitialise le bouton
   })#}) # pour que ce ça marche l'appel des modules doit se faire avant
-  observeEvent(input$gostat, {
+  observeEvent(input$gostat1, {
+    updateTabItems(session, "tabs", "Indic")
+  })
+  observeEvent(input$struct, {
+    updateTabItems(session, "tabs", "Struc")
+  })
+  observeEvent(input$descript, {
+    updateTabItems(session, "tabs", "plot")
+  })
+  observeEvent(input$gostat2, {
     updateTabItems(session, "tabs", "plot")
   })
   observeEvent(input$goloi, {

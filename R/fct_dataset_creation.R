@@ -262,8 +262,12 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 8, st
 
   optot <- merge(c1, Code_station, by.x = "trait", by.y = "station")
 
+  serie <- data.frame("season"=c("winter", "spring", "summer","autumn"),
+                      "serie" = c(1,2,3,4))
+  optot <- merge(optot, serie)
+
   operation <- data.frame("Annee" = optot$year,"Serie" = c("Campagne SHINY"),
-                          "Serie_Partielle" = c(1),
+                          "Serie_Partielle" = optot$serie,
                           "Code_Station" = optot$trait,
                           "Id_Operation" = optot$code,
                           "DateDeb" = optot$DateDeb,

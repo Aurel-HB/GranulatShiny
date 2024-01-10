@@ -33,8 +33,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     names(tutti_operation)[5] <- "date"
     }
 
-  #tutti_operation$date <-
-  #  as.Date(tutti_operation$date, format = "%d/%m/%Y %H:%M")
 
   tutti_operation$Distance <- tutti_operation$Distance / 1000
   tutti_operation$Horizontal_opening <- 0.01
@@ -42,15 +40,18 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     tutti_operation$Horizontal_opening * tutti_operation$Distance
 
   # variable campagne
-  campagne<-c(1)
-  for( i in 2:nrow(tutti_operation)){
-    if (tutti_operation$tow[i]>tutti_operation$tow[i-1]){
-      campagne[i] <- campagne[i-1] } else {
-        campagne[i]<- campagne[i-1]+1
+  survey_Date <- sort(unique(tutti_operation$date))
+  survey_ID <- c(1:length(survey_Date))
+  ref <- data.frame(survey_Date,survey_ID)
+
+  for(i_tutti in 1:nrow(tutti_operation)){
+    for (i_ref in 1:nrow(ref)){
+      if (tutti_operation$date[i_tutti] == ref$survey_Date[i_ref]){
+        tutti_operation$campagne[i_tutti] <- ref$survey_ID[i_ref]
       }
+    }
   }
 
-  tutti_operation$campagne<-campagne
 
   # catch table shapping - ABUNDANCE
 
@@ -74,10 +75,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_abun$month <- as.numeric(tutti_catch_abun$month)
   tutti_catch_abun$day <- as.numeric(tutti_catch_abun$day)
 
-  #tutti_catch_abun$month <-
-  #  as.numeric(substr(as.character(tutti_catch_abun$date), 4, 5))
-  #tutti_catch_abun$day <-
-  #  as.numeric(substr(as.character(tutti_catch_abun$date), 1, 2))
 
   tutti_catch_abun$saison <- NA
 
@@ -114,8 +111,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   tutti_catch_abun <-
     tutti_catch_abun %>% select(-c("month", "day"))
-  #tutti_catch_abun$date <-
-  #  as.Date(tutti_catch_abun$date, format = "%d/%m/%Y %H:%M")
 
 
   ## Survey and tow
@@ -123,11 +118,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     tutti_catch_abun %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
 
 
-
-  # Abun per km2 in each tow
-  # tutti_catch_abun$abun_km2 <-
-  #   round(tutti_catch_abun$abun / tutti_catch_abun$hauled_surf,
-  #         digits = 0)
 
   tutti_catch_abun_wide <-
     pivot_wider(tutti_catch_abun, #tutti_catch_abun[,-4] pour faire en relatif
@@ -166,10 +156,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_biom$day <- as.numeric(tutti_catch_biom$day)
 
   ## saison
-  #tutti_catch_biom$month <-
-  #  as.numeric(substr(as.character(tutti_catch_biom$date), 4, 5))
-  #tutti_catch_biom$day <-
-  #  as.numeric(substr(as.character(tutti_catch_biom$date), 1, 2))
 
   tutti_catch_biom$saison <- NA
 
@@ -215,11 +201,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_biom <-
     tutti_catch_biom %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
 
-
-
-  # tutti_catch_biom$biom_km2 <-
-  #   round(tutti_catch_biom$biom / tutti_catch_biom$hauled_surf,
-  #         digits = 3)
 
   tutti_catch_biom_wide <-
     pivot_wider(tutti_catch_biom, #tutti_catch_biom[,-4] en relatif
