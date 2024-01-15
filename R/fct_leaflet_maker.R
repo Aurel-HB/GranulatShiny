@@ -8,7 +8,7 @@
 #'
 #' @return a leaflet map
 #'
-#' @noRd
+#'
 
 leaflet_maker <- function(df, shape) {
 

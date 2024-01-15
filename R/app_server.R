@@ -24,6 +24,7 @@
 #' @import plyr
 #' @import sf
 #' @import ggeffects
+#' @import cowplot
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic

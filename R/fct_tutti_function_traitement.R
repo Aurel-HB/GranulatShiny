@@ -2,6 +2,13 @@
 #'
 #' @description Mise en forme de la table à partir du format tutti
 #'
+#' @param tutti_catch dataframe
+#' @param tutti_operation dataframe
+#' @param liste_station character
+#' @param liste_dates dataframe
+#' @param zones integer
+#'
+#'
 #' @return The return value, if any, from executing the function.
 #'
 #' @noRd

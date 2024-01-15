@@ -1,11 +1,15 @@
 #' outlier_remove
 #'
-#' @description Eneleve les traits qui possèdent des valeurx extremes des indicateurs calculés
-#' reprise de la méthode de jehanne pour son article, peut etre à revoir ou enelever
+#' @description Remove survey lines with extreme values of the calculated
+#' indicators
+#' use of Rivet Jehanne's method for her article, may need to be revised or removed
 #'
-#' @return The return value, if any, from executing the function.
+#' @param data dataframe
 #'
-#' @noRd
+#' @return The return value is a dataframe with the extrem value remove by the
+#'  boxplot method
+#'
+#'
 
 outlier_remove <- function(data) {
   a <- boxplot.stats(data$Richness)$out

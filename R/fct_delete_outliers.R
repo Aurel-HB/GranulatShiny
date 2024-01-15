@@ -1,12 +1,13 @@
 #' delete_outliers
 #'
-#' @description A fct function that remove the outliers of a vector using the 1.5xIQR rule
+#' @description A fct function that remove the outliers of a vector using
+#' the 1.5xIQR rule
 #'
 #' @param vector a numeric or integer vector
 #'
 #' @return The intitial vector without the outliers of the series
 #'
-#' @noRd
+#'
 
 delete_outliers <- function(vector){
   # Calculate quartiles and IQR

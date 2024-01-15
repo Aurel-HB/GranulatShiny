@@ -8,9 +8,9 @@
 #' @param operation dataframe
 #' @param impact_polygon sf polygon
 #'
-#' @return The return value, if any, from executing the function.
+#' @return No return value
 #'
-#' @noRd
+#'
 
 export_data <- function(path, catch, operation, impact_polygon){
   ### export the files ####

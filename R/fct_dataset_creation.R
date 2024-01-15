@@ -49,7 +49,7 @@
 #'
 #' @return A list composed of 2 dataframe and 1 polygon.
 #'
-#' @noRd
+#'
 
 dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 8, start_lat = 44, start_long = -2){
 

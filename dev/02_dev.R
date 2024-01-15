@@ -42,6 +42,7 @@ usethis::use_package( "plyr" )
 usethis::use_package( "sf" )
 usethis::use_package( "shinycssloaders" )
 usethis::use_package( "spelling" )
+usethis::use_package( "cowplot" )
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 
@@ -92,6 +93,9 @@ golem::add_fct("verification")
 golem::add_fct("probability_distribution")
 golem::add_fct("dataset_creation")
 golem::add_fct("export_data")
+golem::add_fct("diversity_table")
+golem::add_fct("lineplot_creation")
+golem::add_fct("structure_table")
 
 
 ## External resources

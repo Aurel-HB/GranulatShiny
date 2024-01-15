@@ -1,13 +1,17 @@
 #' glm_maker
 #'
-#' @description Fonction pour faire tourner les glm en fonction de la formule creer par la fct ecriture_modele
-#' L'intéraction est retirée automatiquement si non significative
+#' @description Function to run the glm according to the formula created
+#' by the fct ecriture_modele
+#' Interaction is automatically removed if not significant
 #'
-#' Dans le cas des glm besoin de modifier la formule et la loi directement dans l'objet de sortie des glm pour que ca s'affiche correctement dans les sorties du modele
+#' In the case of glm, you need to modify the formula and the distribution
+#' directly in the glm output object so that it is displayed correctly
+#' in the model's output.
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value is a list of 2 result from the glm model with and
+#' without interaction
 #'
-#' @noRd
+#'
 
 glm_maker <-
   function(data,

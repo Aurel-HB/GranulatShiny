@@ -10,8 +10,8 @@
 mod_Prepare_data_ui <- function(id){
   ns <- NS(id)
   tagList(
-    #verbatimTextOutput(ns("test")),
-    actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
+    uiOutput(ns("button"))
+    #actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
 
   )
 }
@@ -59,14 +59,6 @@ mod_Prepare_data_server <- function(input, output, session, r){
       save
     })
 
-    ##### check point ######
-    #output$test <- renderPrint({
-    #  if(is.null(tutti_catch_filtre())){return("No data")}
-    #  TRUE
-    #  #c(is.null(tutti_operation_filtre()),is.null(tutti_catch_filtre()),
-    #  #  is.null(module()),is.null(zones()), is.null(data_forme()))
-    #})
-    ########################
 
 
     # Mettre en forme et calcul des indicateurs
@@ -80,9 +72,14 @@ mod_Prepare_data_server <- function(input, output, session, r){
                       zones())
     }) # data_forme est une liste de 5 tableaux
 
-    #button <- eventReactive(
-    #  input$go, {TRUE
-    #})
+
+   output$button <- renderUI({
+     if(is.null(tutti_catch_filtre())){return()}
+     if(is.null(tutti_operation_filtre())){return()}
+     actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
+   })
+
+
 
     observe({
       r$save <- save()
@@ -96,13 +93,6 @@ mod_Prepare_data_server <- function(input, output, session, r){
      if(is.null(data_forme())){return()}
       r$data_forme <- data_forme()
      })
-
-
-    # Ouvre l'onglet Tables automatiquement
-    #observeEvent(input$go, {
-    #  updateTabItems(session, "tabs", "table")
-    #})
-
 
 }
 

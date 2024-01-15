@@ -1,16 +1,23 @@
 #' ecriture_modele_log
 #'
-#' @description Fonction qui permet l'ecriture du modèle (formulation + loi) avec log transformation
-#' 1. Sous forme output = language_model
-#' 2. sous forme de formule pour faire tourner les fonctions glmms = formule_model
-#' 3. les versions bis sont sans interactions
-#' 4. la version formule_interaction est utilisé seulement pour le test de puissance
-#' impossible de faire marcher la foncion quand on test l'intercation sinon
+#' @description Function for writing the model (formulation + distribution)
+#' with log transformation
+#' 1. in output form = language_model
+#' 2. in formula form to run glmms functions = formula_model
+#' 3. the bis versions have no interactions
+#' 4. the formula_interaction version is only used for the power test
+#' impossible to run the function when testing the interaction otherwise
+#'
+#' @param y character = name of the explained variable
+#' @param interaction boolean
+#' @param methode character in (glm, glmm, permanova)
+#' @param covariable character that list all the covariable in the model
+#' @param loi character = name of the chosen probability distribution
+#'
+#'  @return The return value is a list of all the information needed to run
+#'  a model in log transformation
 #'
 #'
-#' #' #' @return The return value, if any, from executing the function.
-#'
-#' @noRd
 
 ecriture_modele_log <-
   function(y, interaction, methode, covariable, loi) {

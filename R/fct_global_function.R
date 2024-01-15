@@ -11,7 +11,7 @@
 #'
 #' @return a list of 5 datatable
 #'
-#' @noRd
+#'
 
 global_function <- function(tutti_catch, tutti_operation, liste_station, liste_dates, zones) {
   data <- tutti_function_traitement(tutti_catch, tutti_operation, liste_station, liste_dates, zones)

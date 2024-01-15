@@ -1,14 +1,16 @@
 #' glmm_maker
 #'
-#' @description Fonction pour faire tourner les glmm en fonction de la formule creer par la fct ecriture_modele
-#' L'intéraction est retirée automatiquement si non significative
+#' @description Function to run the glmm according to the formula created
+#' by the fct ecriture_modele
+#' Interaction is automatically removed if not significant
 #'
-#' optimisation pour meilleur convergence : autorisation des approximations ds dérivés partiels et nAGQ = 0
-#' à modifier selon le besoin et l'évolution de la méthodologie
+#' optimisation for better convergence: authorisation of partial derivative
+#' approximations and nAGQ = 0
+#' to be modified as required and as the methodology evolves
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value is a list of 2 result from the glmm model with and
+#' without interaction
 #'
-#' @noRd
 
 glmm_maker <-
   function(data,

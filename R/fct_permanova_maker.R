@@ -8,9 +8,10 @@
 #'@param formule_bis description
 #'@param interaction description
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value is a list with the result of the permanova
+#' with and without interaction
 #'
-#' @noRd
+#'
 
 permanova_maker <-
   function(data,
