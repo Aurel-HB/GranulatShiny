@@ -60,6 +60,14 @@ mod_Prepare_data_server <- function(input, output, session, r){
     })
 
 
+    species <- reactive({
+      if(is.null(tutti_catch_filtre())){return()}
+      return(unique(tutti_catch_filtre()['Nom_Scientifique']))
+    })
+
+    observe({
+      r$species <- species()
+    })
 
     # Mettre en forme et calcul des indicateurs
     data_forme <- eventReactive(input$go, {

@@ -39,15 +39,23 @@ mod_Indicator_ui <- function(id){
 #' @noRd
 mod_Indicator_server <- function (input, output, session, r){
   ns <- session$ns
-  dataset <- reactive({as.data.frame(r$data_forme[[1]])})
+  dataset <- reactive({
+    if(is.null(r$data_forme)){return()}
+    as.data.frame(r$data_forme[[1]])
+    })
   #output$test <- renderPrint({class(input$choix_campagne)})
 
   ID_campagne <- reactive({
+    if(is.null(dataset())){return()}
     ID_camp <- c()
     for (i in (1:max(dataset()['campagne']))){
       ID_camp <- c(ID_camp, paste("C",i,sep=""))
     }
     return(ID_camp)
+  })
+
+  observe({
+    r$ID_campagne <- ID_campagne()
   })
 
   data_indic <- reactive ({

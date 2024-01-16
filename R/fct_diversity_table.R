@@ -1,7 +1,10 @@
 #' diversity_table
 #'
-#' @description A fct function that create a dataframe compose of 5 indictors
+#' @description A fct function that create a dataframe of 3 columns.
+#' For a choosen variable we have the mean per survey per location.
+#' The aim is to create a dataframe compose of 5 indictors
 #' with 3 modalities each : (Abun,Biom,Richness,Shannon,Simpson) ; (int,ext,tot)
+#'
 #'
 #' @param data dataframe
 #' @param var_name character of 1 value
@@ -38,12 +41,12 @@ diversity_table <- function(data, var_name){
     tot <- c()
     for (j in 1:nrow(temp)){
       if( temp$station[j] %in% liste_station){
-        int <- c(int,temp[var_name][j,1])
+        int <- as.numeric(c(int,temp[var_name][j,1]))
       }
       else{
-        ext <- c(ext, temp[var_name][j,1])
+        ext <- as.numeric(c(ext, temp[var_name][j,1]))
       }
-      tot <- c(tot, temp[var_name][j,1])
+      tot <- as.numeric(c(tot, temp[var_name][j,1]))
     }
     Var_int[i,1] <- mean(int)
     Var_int[i,2] <- stats::sd(int)

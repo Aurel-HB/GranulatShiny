@@ -16,6 +16,8 @@ The return value is a dataframe with the value of chosen variable
 for interior, exterior of the concession and the globale average
 }
 \description{
-A fct function that create a dataframe compose of 5 indictors
+A fct function that create a dataframe of 3 columns.
+For a choosen variable we have the mean per survey per location.
+The aim is to create a dataframe compose of 5 indictors
 with 3 modalities each : (Abun,Biom,Richness,Shannon,Simpson) ; (int,ext,tot)
 }

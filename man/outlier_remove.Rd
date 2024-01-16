@@ -16,5 +16,5 @@ The return value is a dataframe with the extrem value remove by the
 \description{
 Remove survey lines with extreme values of the calculated
 indicators
-use of jehanne's method for her article, may need to be revised or removed
+use of Rivet Jehanne's method for her article, may need to be revised or removed
 }
