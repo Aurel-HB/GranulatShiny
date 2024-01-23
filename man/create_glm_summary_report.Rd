@@ -10,7 +10,7 @@ create_glm_summary_report(summary)
 \item{summary}{summary of a model}
 }
 \value{
-The return value is a list a ceofficient dataframe, a statistic
+The return value is a list of a ceofficient dataframe, a statistic
 indicators dataframe and the formula as a character
 }
 \description{

@@ -51,8 +51,8 @@ golem::use_recommended_deps()
 
 ## Favicon ----
 # If you want to change the favicon (default is golem's one)
-golem::use_favicon("C:/Users/ahebertb/Downloads/favicon.ico", method = "curl")
-golem::use_favicon("C:/Users/ahebertb/Downloads/hex-GranulatShiny.png", method = "curl")
+#golem::use_favicon("C:/Users/ahebertb/Downloads/favicon.ico", method = "curl")
+#golem::use_favicon("C:/Users/ahebertb/Downloads/hex-GranulatShiny.png", method = "curl")
 #golem::remove_favicon(path = "inst/app/www/favicon.ico")
 
 

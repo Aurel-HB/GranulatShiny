@@ -5,6 +5,6 @@ account: aurelhb
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10839078
-bundleId: 8075741
+bundleId: 8174776
 url: https://aurelhb.shinyapps.io/mygranulat_test/
 version: 1
