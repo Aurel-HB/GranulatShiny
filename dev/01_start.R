@@ -19,7 +19,7 @@
 ## to change the name in the app_sys() function in app_config.R /!/
 ##
 golem::fill_desc(
-  pkg_name = "GranulatShiny2.0", # The Name of the package containing the App
+  pkg_name = "myGranulatShiny", # The Name of the package containing the App
   pkg_title = "Interface Granulat", # The Title of the package containing the App
   pkg_description = "PKG_DESC.", # The Description of the package containing the App
   author_first_name = "Hebert--Burggraeve", # Your First Name
