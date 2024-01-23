@@ -22,6 +22,8 @@ mod_Stat_ui <- function(id){
            ),
         #tableOutput(ns("var_summary")),
         plotOutput(ns("hist")),
+        downloadButton(ns("downloadPlot"),
+                       label = "Telecharger le graphique"),
         checkboxInput(ns("outlier"), "Voulez-vous retirer les valeurs extrêmes ?"),
         checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
         textOutput(ns("info")),
@@ -107,12 +109,45 @@ mod_Stat_server <- function(input, output, session, r){
       numeric_summary(as.numeric(variable()), names(data_analyse())[1])
     })
 
-    output$hist <- renderPlot({
+    histogram <- reactive({
       if(is.null(data_analyse())){return()}
-      hist(as.numeric(variable()),
-           main = paste("Histogram of ", var_name(), sep=""),
-           xlab = r$var_name, ylab = "Frequency", col = "lightblue")
+      data <- as.data.frame(variable())
+      names(data) <- c("variable")
+      ggplot(data, aes(x = variable))+
+        geom_histogram(fill="lightblue", color="black", bins = 50)+
+        labs(title = paste("Histogram of ", var_name(), sep=""),
+             x=r$var_name, y="Frequency")
     })
+    output$hist <- renderPlot({
+      if(is.null(histogram())){return()}
+      histogram()
+      #hist(as.numeric(variable()),
+      #     main = paste("Histogram of ", var_name(), sep=""),
+      #     xlab = r$var_name, ylab = "Frequency", col = "lightblue")
+    })
+
+    ## Exporter le graphique
+    output$downloadPlot <- downloadHandler(
+      filename = function() {
+        paste("histogram_", var_name(), ".png", sep = "")
+      },
+      content = function(file) {
+        # Use tryCatch to handle errors with try(silent = TRUE)
+        tryCatch(
+          {
+            ggsave(file, plot = histogram(), height = 9, width = 16,
+                   bg = "white")
+          },
+          error = function(e) {
+            # Handle the error here (print a message, log it, etc.)
+            print("")
+          },
+          warning = function(w) {
+            # Handle warnings if needed
+            print("")
+          }
+        )
+      })
 
 
     #### boxplot part ####

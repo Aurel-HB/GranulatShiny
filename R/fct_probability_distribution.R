@@ -6,7 +6,7 @@
 #'
 #' @return a vector density of a distribution probability
 #'
-#' @noRd
+#'
 
 probability_distribution <- function(vector, law){
 

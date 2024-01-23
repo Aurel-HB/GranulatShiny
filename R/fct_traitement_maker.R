@@ -1,11 +1,19 @@
 #' traitement_maker
 #'
-#' @description Creer la variable traitement en fonction des imformations rentrées (stations et dates)
-#' à adapter pour la version "complexe"
+#' @description Creer la variable traitement en fonction des imformations
+#' rentrées (stations et dates)
+#' Create the traitement variable based on the information entered
+#' (stations and dates)
 #'
-#' @return The return value, if any, from executing the function.
+#'  @param data dataframe
+#'  @param station character
+#'  @param dates Dates
+#'  @param traitement character
 #'
-#' @noRd
+#' @return The return value is a character corresponding to the qualitative
+#' variable of BACI.
+#'
+#'
 
 traitement_maker <- function(data, station, dates, traitement) {
   # création de la variable traitement

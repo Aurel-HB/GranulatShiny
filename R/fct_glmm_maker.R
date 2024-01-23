@@ -8,8 +8,8 @@
 #' approximations and nAGQ = 0
 #' to be modified as required and as the methodology evolves
 #'
-#' @return The return value is a list of 2 result from the glmm model with and
-#' without interaction
+#' @return The return value is a list of 2 result from the glmm initial or
+#' final model (with or without interaction for example)
 #'
 
 glmm_maker <-

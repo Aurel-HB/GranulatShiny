@@ -1,10 +1,12 @@
 #' table_shapping
 #'
 #' @description Creer les tables réduites à partir de la table complète
+#' create data tables with only one explaineed variable with the explanatory
+#' variables
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value is a list of 5 dataframe
 #'
-#' @noRd
+#'
 
 table_shapping <- function(data) {
   Rich <- data %>% select(Richness, Annee=year, saison, traitement, campagne, station)

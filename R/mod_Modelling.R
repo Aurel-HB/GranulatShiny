@@ -17,11 +17,17 @@ mod_Modelling_ui <- function(id){
          uiOutput(ns("choix_sortie")),
          # Output des glmms
          #formulation du modèle
-         verbatimTextOutput(ns("modele"))
+         verbatimTextOutput(ns("modele")),
+         downloadButton(ns("downloadModel"),
+                        label = "Telecharger le modele"),
+         downloadButton(ns("downloadSummary"),
+                        label = "Telecharger le summary")
     ),
       #plot de vérification
     box(
       plotOutput(ns("verification")),
+      downloadButton(ns("downloadPlot"),
+                     label = "Telecharger le graphique"),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
@@ -117,6 +123,29 @@ mod_Modelling_server <- function(input, output, session, r){
       r$modele <- modele()
     })
 
+    ## Exporter le modele
+    output$downloadModel <- downloadHandler(
+      filename = function() {
+        paste("model",".rds", sep = "")
+      },
+      content = function(file) {
+        # Use tryCatch to handle errors with try(silent = TRUE)
+        tryCatch(
+          {
+            base::saveRDS(modele()[[choix_modele()]], file)
+          },
+          error = function(e) {
+            # Handle the error here (print a message, log it, etc.)
+            print("")
+          },
+          warning = function(w) {
+            # Handle warnings if needed
+            print("")
+          }
+        )
+      }, contentType = "application/x-rds")
+
+
 
     # Les sorties du modèle
 
@@ -129,7 +158,7 @@ mod_Modelling_server <- function(input, output, session, r){
           "Anova" = "1",
           "Summary" = "2"
         ),
-        selected = "1"
+        selected = "2"
       )
     })
 
@@ -162,18 +191,76 @@ mod_Modelling_server <- function(input, output, session, r){
       })
     })
 
+    ## exporter le summary
+    output$downloadSummary <- downloadHandler(
+      filename = function() {
+        paste("modele_summary",".txt", sep = "")
+      },
+      content = function(file) {
+        # Use tryCatch to handle errors with try(silent = TRUE)
+        tryCatch(
+          {
+            # Open a connection to a file (e.g., "output.txt")
+            sink(file)
+
+            # Write the content of the text area to the file
+            print(summary(modele()[[choix_modele()]]))
+
+            # Close the connection to the file
+            sink()
+          },
+          error = function(e) {
+            # Handle the error here (print a message, log it, etc.)
+            print("")
+          },
+          warning = function(w) {
+            # Handle warnings if needed
+            print("")
+          }
+        )
+      })
 
 
     # Vérification (sortie du modèle, même input)
     observeEvent(r$go2,{
-      output$verification <- renderPlot({
+      residual <- reactive({
         if (is.null(r$choix_sortie)){return()}
         if (methode()== 3){return()}
         if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation")}
         #plotQQunif(simulateResiduals(modele()[[choix_modele()]]))
         plot(simulateResiduals(modele()[[choix_modele()]]))
       })
+      output$verification <- renderPlot({
+        residual()
+      })
     })
+
+    ## Exporter le graphique
+    output$downloadPlot <- downloadHandler(
+      filename = function() {
+        paste("plot_residual",".png", sep = "")
+      },
+      content = function(file) {
+        # Use tryCatch to handle errors with try(silent = TRUE)
+        tryCatch(
+          {
+           #open the device
+            png(file,height = 600, width = 1070)
+            #create the plot
+            plot(simulateResiduals(modele()[[choix_modele()]]))
+            #close the device
+            dev.off()
+          },
+          error = function(e) {
+            # Handle the error here (print a message, log it, etc.)
+            print("")
+          },
+          warning = function(w) {
+            # Handle warnings if needed
+            print("")
+          }
+        )
+     })
 
 
     # réinitialisation du bouton

@@ -62,7 +62,6 @@ golem::add_module( name = "Prepare_modelling" )
 golem::add_module( name = "Modelling" )
 golem::add_module( name = "Representation")
 golem::add_module( name = "Puissance")
-golem::add_module( name = "complexe_02")
 golem::add_module( name = "reception")
 golem::add_module( name = "Indicator")
 golem::add_module( name = "Structure")
@@ -85,7 +84,6 @@ golem::add_fct("glmm_maker")
 golem::add_fct("glm_maker")
 golem::add_fct("permanova_maker")
 golem::add_fct("puissance_maker")
-golem::add_fct("puissance_maker2") #version alternative en dev
 golem::add_fct("glmm_maker_puissance")
 golem::add_fct("glm_maker_puissance")
 golem::add_fct("numeric_summary")
@@ -96,6 +94,7 @@ golem::add_fct("export_data")
 golem::add_fct("diversity_table")
 golem::add_fct("lineplot_creation")
 golem::add_fct("structure_table")
+golem::add_fct("summary_report")
 
 
 ## External resources

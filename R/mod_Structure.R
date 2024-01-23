@@ -10,9 +10,28 @@
 mod_Structure_ui <- function(id){
   ns <- NS(id)
   tagList(
-    h1("En cours de dèveloppement"),
     #verbatimTextOutput(ns("test")),
-    tableOutput(ns("percent")),
+    box(
+      dataTableOutput(ns("percent")),
+      downloadButton(ns("downloadData"), label = "Telecharger le tableau"),
+      width = NULL,
+      style = "overflow-x: scroll;",
+      collapsible = T,
+      solidHeader = TRUE,
+      status = "primary"
+    ),
+    box(
+      uiOutput(ns("choix_campagne")),
+      plotOutput(ns("plot")),
+      #telecharger le graphique
+      downloadButton(ns("downloadPlot"),
+                     label = "Telecharger le graphique"),
+      width = NULL,
+      style = "overflow-x: scroll;",
+      collapsible = T,
+      solidHeader = TRUE,
+      status = "info"
+    ),
     actionButton("descript", "Stat descriptives")
   )
 }
@@ -27,7 +46,6 @@ mod_Structure_server <- function (input, output, session, r){
       as.data.frame(r$data_forme[[1]])
       })
     species <- reactive({r$species[,1]})
-    #"year""station""date""saison""campagne""tow""hauled_surf""traitement""interaction""Abun""Biom""Richness""Shannon""Simpson""Pielou"
 
 
     data_brut <- reactive ({
@@ -45,6 +63,11 @@ mod_Structure_server <- function (input, output, session, r){
       data
     })
 
+    # test ###
+    #output$test <- renderPrint({
+    #  list(class(Barplot()), Barplot())
+    #})
+
     data_percent <- reactive({
       if(is.null(data_brut())){return()}
       data <- data_brut()
@@ -55,15 +78,132 @@ mod_Structure_server <- function (input, output, session, r){
       }
       data_t <- t(data[,2:(length(species())+1)])
       #redefine row and column names
-      rownames(dtat_t) <- species()
       colnames(data_t) <- r$ID_campagne
-      data_t <- cbind(species(),data_t)
+      data_t <- as.data.frame(cbind(species(),data_t))
+      names(data_t)[1] <- c("species")
       data_t
     })
 
-    output$percent <- renderTable({
+    output$percent <- renderDataTable({
       data_percent()
     })
+
+    # Donwload data
+    output$downloadData <- downloadHandler(
+      filename = function() {
+        paste("data_structure", ".csv", sep = "")
+      },
+      content = function(file) {
+        write.csv(data_percent(),  file)
+      }
+    )
+
+    output$choix_campagne <- renderUI({
+      selectInput(
+        ns("choix_campagne"),
+        "Sélectionner la campagne :",
+        r$ID_campagne,
+        selected = r$ID_campagne[1]
+      )
+    })
+
+    plot <- reactive({
+      if(is.null(data_brut())){return()}
+      if(is.null(input$choix_campagne)){return()}
+      #### prepare data ####
+      data_t <- as.data.frame(t(data_brut()[,2:(length(species())+1)]))
+      #rownames(data_t) <- species()
+      colnames(data_t) <- r$ID_campagne
+      data_t <- cbind(species(),data_t)
+      names(data_t) <- c("species", names(data_t)[2:length(names(data_t))])
+
+      # order the data to have the most present species
+      data <- as.data.frame(data_t[c("species",input$choix_campagne)])
+      names(data) <- c("species", "Abundance")
+      #data <- data %>% dplyr::arrange(desc(Abundance))
+      data <- data[order(data$Abundance, decreasing = TRUE), ]
+      data$species <- factor(data$species,data$species)
+
+      #### barplot ####
+      # Default bar plot
+      barplot <- ggplot(data, aes(x=species, y=Abundance, fill=species)) +
+        geom_bar(stat="identity", color="black",
+                 position=position_dodge())+
+      # Finished bar plot
+      labs(title=paste("Abundance per species for the survey ",
+                         input$choix_campagne, sep=""))+
+        theme_classic() +
+        scale_fill_viridis_d()
+      # change the display of species for too many species
+      if (length(data$species) > 5){
+        # Set the threshold for displaying species names
+        threshold <- 5  # Adjust this value based on your preference
+
+        # Get the species names and filter them based on the threshold
+        species_names <- data$species
+        filtered_species_names <-
+          ifelse(seq_along(species_names) %% threshold == 0, species_names, "")
+
+        # Update x-axis labels with filtered species names
+        barplot <- barplot + scale_x_discrete(labels = filtered_species_names)
+      }
+
+      #### cumulative plot ####
+      # Create a cumulative sum of abundances
+      data$cumulative_abundance <- cumsum(data$Abundance)
+
+      # Create the cumulative abundance curve with number of species
+      # on the x-axis using ggplot2 and geom_step
+      cumul_plot <- ggplot(data, aes(x = seq_along(cumulative_abundance),
+                                          y = cumulative_abundance)) +
+        geom_step() +
+        labs(title = "Cumulative Abundance Curve",
+             x = "Number of Species",
+             y = "Cumulative Abundance")
+
+      # Create the cumulative abundance curve using ggplot2 and stat_ecdf
+      #cumul_plot <- ggplot(data, aes(y = cumulative_abundance)) +
+      #  stat_ecdf(geom = "step", pad = F) +
+      #  labs(title = "Cumulative Abundance Curve",
+      #       x = "Cumulative Abundance",
+      #       y = "Cumulative Probability")
+
+      # Create a rarefaction curve using ggplot2
+      #cumul_plot <- ggplot(data, aes(x = cumulative_abundance,
+      #                                    y = seq_along(cumulative_abundance)))+
+      #  geom_line() +
+      #  labs(title = "Rarefaction Curve",
+      #       x = "Cumulative Abundance",
+      #       y = "Number of Species")
+
+      return(plot_grid(barplot, cumul_plot))
+    })
+
+    output$plot <- renderPlot({
+      plot()
+    })
+
+    ## Exporter le graphique
+    output$downloadPlot <- downloadHandler(
+      filename = function() {
+        paste("plot_structure_", input$choix_campagne, ".png", sep = "")
+      },
+      content = function(file) {
+        # Use tryCatch to handle errors with try(silent = TRUE)
+        tryCatch(
+          {
+            ggsave(file, plot = plot(), height = 9, width = 16, bg = "white")
+          },
+          error = function(e) {
+            # Handle the error here (print a message, log it, etc.)
+            print("")
+          },
+          warning = function(w) {
+            # Handle warnings if needed
+            print("")
+          }
+        )
+      })
 
 }
 

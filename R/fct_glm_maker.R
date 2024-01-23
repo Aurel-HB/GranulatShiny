@@ -8,8 +8,8 @@
 #' directly in the glm output object so that it is displayed correctly
 #' in the model's output.
 #'
-#' @return The return value is a list of 2 result from the glm model with and
-#' without interaction
+#' @return The return value is a list of 2 result from the glmm initial or
+#' final model (with or without interaction for example)
 #'
 #'
 

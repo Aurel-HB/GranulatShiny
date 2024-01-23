@@ -15,8 +15,8 @@ glm_maker(
 )
 }
 \value{
-The return value is a list of 2 result from the glm model with and
-without interaction
+The return value is a list of 2 result from the glmm initial or
+final model (with or without interaction for example)
 }
 \description{
 Function to run the glm according to the formula created

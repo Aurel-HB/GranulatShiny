@@ -29,8 +29,8 @@ mod_Tables_ui <- function(id){
                    ),
     hr(),
     uiOutput(ns("variable")),
-    actionButton("gostat1", "Stat exploratoires"),
-    actionButton("gostat2", "Stat descriptives")
+    actionButton("gostat1", "Analyse multivariée"),
+    actionButton("gostat2", "Analyse univariée")
     )
 }
 
@@ -75,7 +75,7 @@ mod_Tables_server <- function(input, output, session, r){
       if(is.null(data_forme())){return()}
       selectInput(
         ns("var"),
-        "Choisir un variable pour l'analyse",
+        "Choisir un variable pour l'analyse univariée",
         choices = levels(as.factor(variables())),
         selected = "Abun"
       )

@@ -12,6 +12,7 @@ mod_Indicator_ui <- function(id){
   tagList(
     box(
       dataTableOutput(ns("diversity")),
+      downloadButton(ns("downloadData"), label = "Telecharger le tableau"),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
@@ -22,6 +23,9 @@ mod_Indicator_ui <- function(id){
     box(
       uiOutput(ns("choix_campagne")),
       plotOutput(ns("lineplots")),
+      #telecharger le graphique
+      downloadButton(ns("downloadPlot"),
+                     label = "Telecharger le graphique"),
       collapsible = T,
       collapsed = T,
       solidHeader = TRUE,
@@ -84,6 +88,17 @@ mod_Indicator_server <- function (input, output, session, r){
   output$diversity <- renderDataTable({show_data_indic()},
                                   options = list("pageLength" = 10))
 
+  # Donwload data
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("data_indic", ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(show_data_indic(),  file)
+    }
+  )
+
+
   #### boxplot part ####
   output$choix_campagne <- renderUI({
     selectInput(
@@ -119,6 +134,29 @@ mod_Indicator_server <- function (input, output, session, r){
   output$lineplots <- renderPlot({
     line_plots()
   })
+
+  ## Exporter le graphique
+  output$downloadPlot <- downloadHandler(
+    filename = function() {
+      paste("plot_indic_", input$choix_campagne, ".png", sep = "")
+    },
+    content = function(file) {
+      # Use tryCatch to handle errors with try(silent = TRUE)
+      tryCatch(
+        {
+          ggsave(file, plot = line_plots(), height = 9, width = 16, bg = "white")
+        },
+        error = function(e) {
+          # Handle the error here (print a message, log it, etc.)
+          print("")
+        },
+        warning = function(w) {
+          # Handle warnings if needed
+          print("")
+        }
+      )
+    })
+
 }
 
 ## To be copied in the UI

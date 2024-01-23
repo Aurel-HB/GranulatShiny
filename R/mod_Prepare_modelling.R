@@ -29,7 +29,7 @@ mod_Prepare_modelling_ui <- function(id){
       hr(),
       h4(strong("Formulation du modèle :")),
       htmlOutput(ns("ecriture_modele")),
-      #htmlOutput(ns("ecriture_loi")),
+      #htmlOutput(ns("ecriture_distribution")),
       #verbatimTextOutput(ns("test")),
       hr(),
       actionButton(ns("go2"), "Lancer la modélisation",icon = icon("dragon")),
@@ -84,25 +84,39 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       "Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle."
     })
 
+    covariable <- reactive({
+      if (is.null(r$data_analyse)){return()}
+      vector <- colnames(r$data_analyse[,2:length(colnames(r$data_analyse))])
+      cov <- c()
+      # we check the variable already in the formula
+      for (variable in vector) {
+        if(grepl(variable, as.character(ecriture()[[1]])) == FALSE){
+          cov <- c(cov,variable)
+        }
+      }
+      cov
+    })
+
     output$covariable <-
       renderUI({
-        selectInput(
-          ns("covariable"),
-          "Ajouter une ou plusieurs covariables ?",
-          choices = colnames(r$data_analyse[,2:length(colnames(r$data_analyse))]),
-          selected = F,
-          multiple = T
-        )
+        if(input$methode == 1){
+          selectInput(
+            ns("covariable"),
+            "Ajouter une covariable ?",
+            choices = c("year"),
+            selected = F,
+            multiple = T
+          )
+        }else{
+          selectInput(
+            ns("covariable"),
+            "Ajouter une ou plusieurs covariables ?",
+            choices = covariable(),
+            selected = F,
+            multiple = T
+          )
+        }
       })
-
-    ## Ajout de cov si GLMM
-    #covariable <- reactive({
-    #  if(input$methode == 1){
-    #    return(c("campagne", "station", input$covariable))
-    #  } else {
-    #    return(input$covariable)
-    #  }
-    #})
 
     # Mise en forme des expression reactives
     y_variable <- reactive({
@@ -152,7 +166,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
                         input$distribution)
       })
     output$ecriture_modele <- renderText(ecriture()[[1]])
-    output$ecriture_distribution <- renderText(ecriture()[[2]])
+    #output$ecriture_distribution <- renderText(ecriture()[[2]])
 
     observe({
       r$ecriture <- ecriture()

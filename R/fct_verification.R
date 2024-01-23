@@ -1,10 +1,15 @@
 #' verification
 #'
-#' @description A fct function
+#' @description A fct function that check if the columns name of a dataset
+#' correspond to attempted names
+#' So it check if a table is in the good shape
 #'
-#' @return The return value, if any, from executing the function.
+#' @param name character
+#' @param format character
 #'
-#' @noRd
+#' @return The return value is a booleen
+#'
+#'
 
 verification <- function(name, format){
   test <- c(name == format)

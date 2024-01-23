@@ -7,8 +7,8 @@
 glmm_maker(data, formule, formule_bis, interaction, family)
 }
 \value{
-The return value is a list of 2 result from the glmm model with and
-without interaction
+The return value is a list of 2 result from the glmm initial or
+final model (with or without interaction for example)
 }
 \description{
 Function to run the glmm according to the formula created

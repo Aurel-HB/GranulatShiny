@@ -1,6 +1,7 @@
 #' tutti_function_traitement
 #'
 #' @description Mise en forme de la table à partir du format tutti
+#' Table formatting using tutti format
 #'
 #' @param tutti_catch dataframe
 #' @param tutti_operation dataframe
@@ -9,9 +10,9 @@
 #' @param zones integer
 #'
 #'
-#' @return The return value, if any, from executing the function.
+#' @return The return value is a list of 2 dataframe
 #'
-#' @noRd
+#'
 
 tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station, liste_dates, zones) {
   # operation table shapping
