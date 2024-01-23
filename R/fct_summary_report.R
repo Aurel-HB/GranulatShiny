@@ -5,7 +5,7 @@
 #'
 #' @param summary summary of a model
 #'
-#' @return The return value is a list a ceofficient dataframe, a statistic
+#' @return The return value is a list of a ceofficient dataframe, a statistic
 #' indicators dataframe and the formula as a character
 #'
 #'
