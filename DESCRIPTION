@@ -1,10 +1,8 @@
-Package: myGranulatShiny
+Package: GranulatShiny2.0
 Title: Interface Granulat
 Version: 0.0.0.9000
-Authors@R: 
-    person("Hebert--Burggraeve", "Aurel", , "aurelhb722@orange.fr", role = c("cre", "aut"))
-Description: This package is an app to help industrial to mesure their
-    impact on fish communities
+Authors@R: person('Hebert--Burggraeve', 'Aurel', email = 'Aurel.Hebert.Burggraeve@ifremer.fr', role = c('cre', 'aut'))
+Description: PKG_DESC.
 License: MIT + file LICENSE
 Imports: 
     assertthat,
