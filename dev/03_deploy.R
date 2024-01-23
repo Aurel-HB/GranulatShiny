@@ -39,6 +39,11 @@ golem::add_dockerfile_with_renv()
 golem::add_dockerfile_with_renv_shinyproxy()
 
 
+#library(rsconnect)
+#rsconnect::setAccountInfo(name='aurelhb',
+#                          token='<TOKEN>',
+#                          secret='<SECRET>')
+
 # Deploy to Posit Connect or ShinyApps.io
 # In command line.
 rsconnect::deployApp(
@@ -57,3 +62,6 @@ rsconnect::deployApp(
   lint = FALSE,
   forceUpdate = TRUE
 )
+
+
+
