@@ -1,13 +1,17 @@
-Package: GranulatShiny2.0
+Package: myGranulatShiny
 Title: Interface Granulat
 Version: 0.0.0.9000
-Authors@R: person('Hebert--Burggraeve', 'Aurel', email = 'Aurel.Hebert.Burggraeve@ifremer.fr', role = c('cre', 'aut'))
+Authors@R: 
+    person("Hebert--Burggraeve", "Aurel", , "Aurel.Hebert.Burggraeve@ifremer.fr", role = c("cre", "aut"))
 Description: PKG_DESC.
 License: MIT + file LICENSE
+Depends: 
+    R (>= 2.10)
 Imports: 
     assertthat,
     car,
     config (>= 0.3.2),
+    cowplot,
     DHARMa,
     dplyr,
     ggeffects,
@@ -19,7 +23,6 @@ Imports:
     MASS,
     multcomp,
     multcompView,
-    pkgload,
     plyr,
     RColorBrewer,
     sf,
@@ -31,8 +34,7 @@ Imports:
     stats,
     stringr,
     tidyr,
-    vegan,
-    cowplot
+    vegan
 Suggests: 
     knitr,
     rmarkdown,
@@ -45,5 +47,3 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
-Depends: 
-    R (>= 2.10)

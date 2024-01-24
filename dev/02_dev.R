@@ -15,34 +15,34 @@
 
 ## Dependencies ----
 ## Add one line by package you want to add as dependency
-usethis::use_package( "thinkr" )
-usethis::use_package( "dplyr" )
-usethis::use_package( "tidyr" )
-usethis::use_package( "stringr" )
-usethis::use_package( "vegan" )
-usethis::use_package( "shinydashboard" )
-usethis::use_package( "shinyBS" )
-usethis::use_package( "shiny" )
-usethis::use_package( "shinyWidgets" )
-usethis::use_package( "assertthat" )
-usethis::use_package( "leaflet" )
-usethis::use_package( "ggplot2" )
-usethis::use_package( "lme4" )
-usethis::use_package( "car" )
-usethis::use_package( "stats" )
-usethis::use_package( "MASS" )
-usethis::use_package( "DHARMa" )
-usethis::use_package( "sjPlot" )
-usethis::use_package( "multcomp" ) # necessite la version 1.3-7 (ne marche pas avec la version la plus récente)
-usethis::use_package( "multcompView" )
-usethis::use_package( "lsmeans" )
-usethis::use_package( "simr" )
-usethis::use_package( "RColorBrewer" )
-usethis::use_package( "plyr" )
-usethis::use_package( "sf" )
-usethis::use_package( "shinycssloaders" )
+#usethis::use_package( "thinkr" )
+usethis::use_package( "dplyr" ) #
+usethis::use_package( "tidyr" ) #
+usethis::use_package( "stringr" ) #
+usethis::use_package( "vegan" ) #
+usethis::use_package( "shinydashboard" ) #
+usethis::use_package( "shinyBS" ) #
+usethis::use_package( "shiny" ) #
+usethis::use_package( "shinyWidgets" ) #
+usethis::use_package( "assertthat" ) #
+usethis::use_package( "leaflet" ) #
+usethis::use_package( "ggplot2" ) #
+usethis::use_package( "lme4" ) #
+usethis::use_package( "car" ) #
+usethis::use_package( "stats" ) #
+usethis::use_package( "MASS" ) #
+usethis::use_package( "DHARMa" ) #
+#usethis::use_package( "sjPlot" )
+usethis::use_package( "multcomp" ) #
+usethis::use_package( "multcompView" ) #
+usethis::use_package( "lsmeans" ) #
+#usethis::use_package( "simr" )
+usethis::use_package( "RColorBrewer" ) #
+usethis::use_package( "plyr" ) #
+usethis::use_package( "sf" ) #
+usethis::use_package( "shinycssloaders" ) #
 usethis::use_package( "spelling" )
-usethis::use_package( "cowplot" )
+usethis::use_package( "cowplot" ) #
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 

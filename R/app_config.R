@@ -9,7 +9,7 @@
 #'
 #' @noRd
 app_sys <- function(...) {
-  system.file(..., package = "GranulatShiny2.0")
+  system.file(..., package = "myGranulatShiny")
 }
 
 
