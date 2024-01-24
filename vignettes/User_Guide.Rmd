@@ -1,0 +1,58 @@
+---
+title: "User Guide"
+author: "Aurel Hebert Burggraeve"
+date: "2024-01-24"
+output:   
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Page d'accueil
+
+Welcome to the user guide for your app!
+
+## Mise en forme des données
+
+### Informations à rentrer
+
+In this section, we'll guide you on entering the necessary information.
+
+### Table
+
+Learn how to work with tables and format your data effectively.
+
+## Statistiques exploratoires
+
+### Plot des indicateurs
+
+Explore different plots to understand key indicators.
+
+### Plot de la structure
+
+Visualize the structure of your data using various plotting techniques.
+
+## Statistiques descriptives
+
+### Plot des données
+
+Generate descriptive plots to better understand your dataset.
+
+### Diagnostique d'analyse
+
+Perform diagnostic analysis on your data.
+
+## Modélisation
+
+### Création des modèles
+
+Learn how to create models for your data.
+
+### Représentation des effets
+
+Visualize the effects of your models.
+
+### Puissance statistique
+
+Understand and analyze the statistical power of your models.
+

@@ -14,8 +14,16 @@ mod_reception_ui <- function(id){
     img(src='www/favicon.png', align = "right", style = "width: 234px; height: 260px"),
     h1("Bienvenue sur l'application GranulatShiny"),
     textOutput(ns("author")),
+    br(),
+    actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
     hr(),
-    actionButton("start", "start")
+    actionButton("start", "start"),
+    #selectInput(ns("mode"),"Sélectionner un mode :",
+    #  c("user" = "1","developer" = "2"),
+    #  selected = "1"
+    #),
+    br(),
+    checkboxInput(ns("mode"), "Passer en mode developpeur ?")
     )
   )
 }
@@ -28,6 +36,17 @@ mod_reception_server <- function(input, output, session, r){
 
     output$author <- renderText({
       "developed by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet, Laurent Dubroca, Camille Vogel"
+    })
+
+    observe({
+      if(input$mode){return(
+        r$mode <- c("dev")
+      )}
+      r$mode <- c("user")
+    })
+
+    observe({
+      r$path <- paste(getwd(),"/vignettes", sep ="")
     })
 
 }

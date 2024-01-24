@@ -11,6 +11,8 @@
 #### CURRENT FILE: ON START SCRIPT #####
 ########################################
 
+## the app have been develop with R 4.3.2
+
 ## Fill the DESCRIPTION ----
 ## Add meta data about your application
 ##
