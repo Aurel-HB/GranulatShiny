@@ -30,6 +30,7 @@ Imports:
     shinyBS,
     shinycssloaders,
     shinydashboard,
+    shinyscreenshot,
     shinyWidgets,
     stats,
     stringr,

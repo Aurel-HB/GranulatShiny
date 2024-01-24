@@ -10,6 +10,8 @@
 #' @import tidyr
 #' @import leaflet
 #' @import shinycssloaders
+#' @import shinyscreenshot
+#'
 #' @noRd
 app_ui <- function(request) {
   tagList(

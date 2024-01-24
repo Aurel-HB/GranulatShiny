@@ -43,6 +43,7 @@ usethis::use_package( "sf" ) #
 usethis::use_package( "shinycssloaders" ) #
 usethis::use_package( "spelling" )
 usethis::use_package( "cowplot" ) #
+usethis::use_package( "shinyscreenshot")
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 
