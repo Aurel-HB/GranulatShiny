@@ -32,18 +32,15 @@ usethis::use_package( "car" ) #
 usethis::use_package( "stats" ) #
 usethis::use_package( "MASS" ) #
 usethis::use_package( "DHARMa" ) #
-#usethis::use_package( "sjPlot" )
 usethis::use_package( "multcomp" ) #
 usethis::use_package( "multcompView" ) #
 usethis::use_package( "lsmeans" ) #
-#usethis::use_package( "simr" )
 usethis::use_package( "RColorBrewer" ) #
 usethis::use_package( "plyr" ) #
 usethis::use_package( "sf" ) #
 usethis::use_package( "shinycssloaders" ) #
 usethis::use_package( "spelling" )
 usethis::use_package( "cowplot" ) #
-usethis::use_package( "shinyscreenshot")
 ## install.packages('attachment') # if needed.
 attachment::att_amend_desc()
 
