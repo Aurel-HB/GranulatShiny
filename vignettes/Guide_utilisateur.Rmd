@@ -8,50 +8,52 @@ output:
     toc_float: true
 ---
 
-# Page d'accueil
+# <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
+
+## <i class="fa-solid fa-dungeon"></i> Page d'accueil
 
 Welcome to the user guide for your app! <br>
+
 ```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
 knitr::include_graphics("favicon.png")
 ```
-<br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application.
-<br>Les boutons sans icône vous permettent de passer d'un onglet à un autre.
+
+<br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application. <br>Les boutons sans icône vous permettent de passer d'un onglet à un autre.
+
 ```{r, echo=FALSE, warning=FALSE}
 library(shiny)
 actionButton("start", "start")
 ```
 
 Ceux portant un petit dragon désignent une étape obligatoire.
+
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("go", "Mettre en forme",icon = icon("dragon"))
 ```
+
 Les boutons avec une flèche permettent de télécharger des résultats de l'application. Les formats sont (csv, png, txt, rds).
+
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("tel", "Telecharger la table",icon = icon("download"))
 ```
+
 Pour passer à la suite appuyer sur le bouton start de la page d'accueil.
 
-## Mise en forme des données
+## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
 
 ### Informations à rentrer
 
-La première étape de l'application est l'importation des données.<br> 
-Si vous avez vos données, vous devez sélectionner les 2 premiers fichiers : TuttiCatch et TuttiOperation. Seul le format csv est pris en charge. Le tableau Capture concerne les données de capture provenant de l'échantillonnage des pêcheries et le tableau Opération correspond à toutes les informations dérivées des stations d'échantillonnage (type d'engin, durée des traits de chalut, coordonnées gps, etc.).<br>
-Attention, si vous n'appliquez pas le bon fichier, un message d'avertissement apparaîtra sur l'interface.<br>
-Si vous voyez ce message, je vous recommande d'ouvrir l'avis pour comparer le fichier attendu avec votre fichier.Après avoir appliqué le fichier TuttiOperation, une carte apparaîtra et vous aurez la possibilité d'interagir avec les cases Stations d'impact et Stations de référence.
+La première étape de l'application est l'importation des données.<br> Si vous avez vos données, vous devez sélectionner les 2 premiers fichiers : TuttiCatch et TuttiOperation. Seul le format csv est pris en charge. Le tableau Capture concerne les données de capture provenant de l'échantillonnage des pêcheries et le tableau Opération correspond à toutes les informations dérivées des stations d'échantillonnage (type d'engin, durée des traits de chalut, coordonnées gps, etc.).<br> Attention, si vous n'appliquez pas le bon fichier, un message d'avertissement apparaîtra sur l'interface.<br> Si vous voyez ce message, je vous recommande d'ouvrir l'avis pour comparer le fichier attendu avec votre fichier.Après avoir appliqué le fichier TuttiOperation, une carte apparaîtra et vous aurez la possibilité d'interagir avec les cases Stations d'impact et Stations de référence.
 
-Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br>
-Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br>
-Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
+Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
 
-Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice.
-Les étapes décrites avant se feront automatiquement.
+Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement.
 
 ### Table
 
-Learn how to work with tables and format your data effectively.
+Dans l'onglet des tableaux, il y a un tableau de données à droite et une partie interactive à gauche. Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher" (1). Il est possible de télécharger (2) l'affichage du tableau de données et le paramétrage utilisé dans l'onglet des données de charge. Il faut ensuite choisir une variable expliquée sur laquelle effectuer l'analyse univariée(3). Néanmoins vous pouvez décidez de conduire une analyse multivariée ou de passer directement à l'analyse univariée.
 
-## Statistiques exploratoires
+## <i class="fa-solid fa-eye"></i> Statistiques exploratoires
 
 ### Plot des indicateurs
 
@@ -61,21 +63,42 @@ Explore different plots to understand key indicators.
 
 Visualize the structure of your data using various plotting techniques.
 
-## Statistiques descriptives
+## <i class="fa-solid fa-scroll"></i> Statistiques descriptives
 
 ### Plot des données
 
-Generate descriptive plots to better understand your dataset.
+La partie verte (1) est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable. <br>
+
+La partie du diagramme d'interaction (2) permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et l'enquête.<br>
+La partie boxplot (3) offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison.
+Après l'exploration des données, il est possible de passer à l'onglet suivant en appuyant sur le bouton "Choisir la probabilité de distribution" ou en cliquant sur  “diagnostique d’analyse”.
 
 ### Diagnostique d'analyse
 
-Perform diagnostic analysis on your data.
+Cet onglet permet de choisir et de visualiser la distribution de probabilité qui correspond le mieux à la variable expliquée. En gris, c'est l'histogramme de fréquence de la variable, en bleu c'est la fonction de densité et en vert c'est la distribution de probabilité. Les paramètres de chaque distribution de probabilité sont approximés à l'aide de la moyenne et de l’écart type de la variable. Vous pouvez changer le type de distribution de probabilité et si elle ne correspond pas du tout, un message d'avertissement apparaît.<br>
+Lorsque vous êtes satisfait de la distribution des probabilités, vérifiez la phrase au-dessus du bouton "Passer à la modélisation". Il y a deux possibilités. Dans le cas où vous avez moins de 30 observations, la phrase dit : "Vous n'avez pas assez de valeurs pour passer à la partie modélisation". Dans ce cas, vous devez changer la variable de travail car il n'y a pas assez de valeur pour créer un modèle pertinent. A l'inverse, vous aurez : "Après avoir choisi une distribution de probabilité, vous pouvez passer à la construction du modèle". Lorsque vous avez terminé, appuyez sur le bouton "passer à la modélisation".
 
-## Modélisation
+## <i class="fa-solid fa-fish-fins"></i> Modélisation
 
 ### Création des modèles
 
-Learn how to create models for your data.
+Dans cette partie, vous créerez le modèle pour l'analyse.<br>
+Il existe 3 types de modèles : GLMM, GLM, Permanova. Les modèles linéaires généralisés (GLM) permettent d'étendre les idées de la modélisation linéaire à une classe plus large de types de réponses, telles que les données de comptage ou les réponses binaires.<br> 
+Les modèles linéaires généralisés constituent une approche commune pour un large éventail de problèmes de modélisation des réponses. Les réponses normales, de Poisson et binomiales sont les plus couramment utilisées, mais d'autres distributions peuvent également être utilisées. <br>
+Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.<br>
+PERmutational Multivariate ANalysis Of VAriance (PERMANOVA) est un test statistique non paramétrique à plusieurs variables. Il est utilisé pour comparer des groupes d'objets et tester l'hypothèse nulle selon laquelle les centroïdes et la dispersion des groupes, tels que définis par l'espace de mesure, sont équivalents pour tous les groupes. Le rejet de l'hypothèse nulle signifie que le centroïde et/ou la dispersion des objets sont différents entre les groupes. Le test est donc basé sur le calcul préalable de la distance entre deux objets inclus dans votre expérience. <br>
+
+Selon le type de modèle que vous choisissez, vous aurez une première formulation différente du modèle :<br>
+GLMM → Biom ~ traitement * saison + (1|campagne) + (1|station)<br>
+GLM → Biom ~ traitement * saison<br>
+PERMANOVA → Biom ~ traitement * saison<br>
+
+Et pour GLMM et GLM, vous devrez choisir une distribution de probabilité. Par défaut, il propose la dernière distribution de probabilité que vous avez vérifiée dans la partie précédente.<br>
+
+Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br>
+La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br>
+Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene.
 
 ### Représentation des effets
 

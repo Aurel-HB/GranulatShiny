@@ -25,7 +25,7 @@
 #' @import sf
 #' @import ggeffects
 #' @import cowplot
-#' @import shinyscreenshot
+#'
 #' @noRd
 app_server <- function(input, output, session) {
   # Your application server logic
