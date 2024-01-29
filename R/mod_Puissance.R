@@ -11,34 +11,30 @@ mod_Puissance_ui <- function(id){
   ns <- NS(id)
   tagList(
     # Inputs pour parametrer le test de puissance
-    sidebarPanel(
-      #choix du terme
-      uiOutput(ns("puissance_choix")),
-      #nombre de campagne à simuler
-      numericInput(
-        ns("nbr_campagne"),
-        "Combien de campagne supplémentaire à simuler ?",
-        value = 2,
-        min = 1,
-        step = 1
-      ),
-      actionButton(ns("go3"), "GO")
-
-    ),
+    #sidebarPanel(
+      h1("En cours de développement"),
+      textOutput(ns("explain"))
+    #),
     #Output du grah
-    mainPanel(
-      plotOutput(ns("plot_puissance")) %>% withSpinner(color = "#006522")
+    #mainPanel(
+      #plotOutput(ns("plot_puissance")) %>% withSpinner(color = "#006522")
 
-    )
+    #)
   )
 }
 
 #' Puissance Server Functions
 #'
 #' @noRd
-mod_Puissance_server <- function(input, output, session){
+mod_Puissance_server <- function(input, output, session, r){
     ns <- session$ns
 
+    output$explain <- renderText({
+      "L'outil construit par Mathis Cambreling fonctionne seulement pour le jeu
+      de données ayant servi de base aux calculs. L'outil n'étant pas
+      généralisable, celui-ci a été retiré pour assurer la stabilité actuelle
+      de l'application. Un autre outil est en cours de développement."
+    })
 }
 
 ## To be copied in the UI

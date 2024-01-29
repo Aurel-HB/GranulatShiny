@@ -28,7 +28,8 @@ mod_Stat_ui <- function(id){
         checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
         textOutput(ns("info")),
         hr(),
-        actionButton("goloi", "Passer au choix de la loi de distribution")
+        actionButton("goloi", "Passer au choix de la loi de distribution",
+                      icon = icon("ship"))
       ),
       box( title = "Interactionplot",
            solidHeader = TRUE,

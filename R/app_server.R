@@ -58,6 +58,9 @@ app_server <- function(input, output, session) {
   callModule(mod_Modelling_server, id = "Modelling_1",session = session, r=r)
   #onglet representation
   callModule(mod_Representation_server, id = "Representation_1",session = session, r=r)
+  #onglet puissance statistique
+  callModule(mod_Puissance_server, id = "Puissance_1",session = session, r=r)
+
 
   #permet de passer à la page des données
   observeEvent(input$start, {
@@ -90,9 +93,5 @@ app_server <- function(input, output, session) {
     updateTabItems(session, "tabs", "rep")
   })
 
-
-  #onglet puissance statistique
-
-  #onglet representation des effets
 
 }

@@ -44,7 +44,7 @@ mod_Choix_loi_ui <- function(id){
          textOutput(ns("nb_value"))
          ),
     hr(),
-    actionButton("go_modelo", "Passer à la modélisation")
+    actionButton("go_modelo", "Statistiques inférentielles", icon = icon("ship"))
   )
 }
 

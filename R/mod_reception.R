@@ -17,7 +17,7 @@ mod_reception_ui <- function(id){
     br(),
     actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
     hr(),
-    actionButton("start", "start")
+    actionButton("start", "start", icon = icon("ship"))
     )
   )
 }

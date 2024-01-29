@@ -51,7 +51,7 @@ app_ui <- function(request) {
           menuSubItem("Diagnostique d'analyse", tabName = "Diag")
         ),
         menuItem(
-          "Modélisation",
+          "Statistiques inférentielles",
           tabName = "glmm",
           icon = icon("fish-fins"),
           menuSubItem("Création des modèles", tabName = "mod"),

@@ -36,10 +36,10 @@ mod_Representation_ui <- function(id){
         width = "100%"
       ),
       #afficher ou non les lettres post-hocs
-      checkboxInput(ns("post_hoc"), "Afficher les lettres de significativitées"),
+      #checkboxInput(ns("post_hoc"), "Afficher les lettres de significativitées"),
       # gerer la place des lettres
-      uiOutput(ns("largeur_plot")),
-      uiOutput(ns("hauteur_plot")),
+      #uiOutput(ns("largeur_plot")),
+      #uiOutput(ns("hauteur_plot")),
       #telecharger le graphique
       downloadButton(ns("downloadPlot_effet"), label = "Telecharger
                      le graphique (.png)")

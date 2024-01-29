@@ -34,7 +34,7 @@ mod_Indicator_ui <- function(id){
       title = "Représentation des indicateurs"
       ),
     hr(),
-    actionButton("struct", "Structure de la communeauté")
+    actionButton("struct", "Structure de la communeauté", icon = icon("ship"))
   )
 }
 

@@ -30,8 +30,8 @@ mod_Tables_ui <- function(id){
                    ),
     hr(),
     uiOutput(ns("variable")),
-    actionButton("gostat1", "Analyse multivariée"),
-    actionButton("gostat2", "Analyse univariée")
+    actionButton("gostat1", "Statistiques exploratoires", icon = icon("ship")),
+    actionButton("gostat2", "Statistiques descriptives", icon = icon("ship"))
     )
 }
 

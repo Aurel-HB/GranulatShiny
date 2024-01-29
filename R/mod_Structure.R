@@ -29,10 +29,11 @@ mod_Structure_ui <- function(id){
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
+      collapsed = T,
       solidHeader = TRUE,
       status = "info"
     ),
-    actionButton("descript", "Stat descriptives")
+    actionButton("descript", "Statistiques descriptives", icon = icon("ship"))
   )
 }
 

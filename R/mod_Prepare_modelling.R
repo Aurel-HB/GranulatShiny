@@ -205,7 +205,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
 
     output$go_represent <- renderUI({
       if(is.null(r$modele)){return()}
-      actionButton("go_represent", "Voir les effets")
+      actionButton("go_represent", "Voir les effets", icon = icon("ship"))
     })
 
     ### check point###
