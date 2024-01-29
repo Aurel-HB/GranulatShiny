@@ -12,7 +12,7 @@ mod_Indicator_ui <- function(id){
   tagList(
     box(
       dataTableOutput(ns("diversity")),
-      downloadButton(ns("downloadData"), label = "Telecharger le tableau"),
+      downloadButton(ns("downloadData"), label = "Telecharger le tableau (.csv)"),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
@@ -25,7 +25,7 @@ mod_Indicator_ui <- function(id){
       plotOutput(ns("lineplots")),
       #telecharger le graphique
       downloadButton(ns("downloadPlot"),
-                     label = "Telecharger le graphique"),
+                     label = "Telecharger le graphique (.png)"),
       collapsible = T,
       collapsed = T,
       solidHeader = TRUE,

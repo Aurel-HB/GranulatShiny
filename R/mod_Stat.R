@@ -23,7 +23,7 @@ mod_Stat_ui <- function(id){
         #tableOutput(ns("var_summary")),
         plotOutput(ns("hist")),
         downloadButton(ns("downloadPlot"),
-                       label = "Telecharger le graphique"),
+                       label = "Telecharger le graphique (.png)"),
         checkboxInput(ns("outlier"), "Voulez-vous retirer les valeurs extrêmes ?"),
         checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
         textOutput(ns("info")),

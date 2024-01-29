@@ -22,9 +22,10 @@ mod_Tables_ui <- function(id){
       ),
     selected = "Table complete"
     ),
-    downloadButton(ns("downloadData"), label = "Telecharger la table"),
+    downloadButton(ns("downloadData"), label = "Telecharger la table (.csv)"),
     hr(),
-    downloadButton(ns("downloadSave"), label = "Telecharger les informations rentrées"
+    downloadButton(ns("downloadSave"), label = "Telecharger les informations
+                   rentrées (.csv)"
                    #style='width: 100%; overflow-x: scroll'),
                    ),
     hr(),

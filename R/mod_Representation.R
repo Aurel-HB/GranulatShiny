@@ -41,7 +41,8 @@ mod_Representation_ui <- function(id){
       uiOutput(ns("largeur_plot")),
       uiOutput(ns("hauteur_plot")),
       #telecharger le graphique
-      downloadButton(ns("downloadPlot_effet"), label = "Telecharger le graphique")
+      downloadButton(ns("downloadPlot_effet"), label = "Telecharger
+                     le graphique (.png)")
     ),
     #Output du grah
     mainPanel( box(

@@ -17,13 +17,7 @@ mod_reception_ui <- function(id){
     br(),
     actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
     hr(),
-    actionButton("start", "start"),
-    #selectInput(ns("mode"),"Sélectionner un mode :",
-    #  c("user" = "1","developer" = "2"),
-    #  selected = "1"
-    #),
-    br(),
-    checkboxInput(ns("mode"), "Passer en mode developpeur ?")
+    actionButton("start", "start")
     )
   )
 }
@@ -35,18 +29,8 @@ mod_reception_server <- function(input, output, session, r){
     ns <- session$ns
 
     output$author <- renderText({
-      "developed by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet, Laurent Dubroca, Camille Vogel"
-    })
-
-    observe({
-      if(input$mode){return(
-        r$mode <- c("dev")
-      )}
-      r$mode <- c("user")
-    })
-
-    observe({
-      r$path <- paste(getwd(),"/vignettes", sep ="")
+      "developed by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet,
+      Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel"
     })
 
 }

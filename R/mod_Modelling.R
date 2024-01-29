@@ -19,15 +19,15 @@ mod_Modelling_ui <- function(id){
          #formulation du modèle
          verbatimTextOutput(ns("modele")),
          downloadButton(ns("downloadModel"),
-                        label = "Telecharger le modele"),
+                        label = "Telecharger le modele (.rds)"),
          downloadButton(ns("downloadSummary"),
-                        label = "Telecharger le summary")
+                        label = "Telecharger le summary (.txt)")
     ),
       #plot de vérification
     box(
       plotOutput(ns("verification")),
       downloadButton(ns("downloadPlot"),
-                     label = "Telecharger le graphique"),
+                     label = "Telecharger le graphique (.png)"),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
