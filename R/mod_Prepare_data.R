@@ -84,10 +84,12 @@ mod_Prepare_data_server <- function(input, output, session, r){
    output$button <- renderUI({
      if(is.null(tutti_catch_filtre())){return()}
      if(is.null(tutti_operation_filtre())){return()}
-     actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
+     actionButton(ns("go"), "Mettre en forme",
+                  icon = icon("dragon", style='color: #22A433'))
    })
 
-
+   # icon("dragon", style='color: #AF1111')
+   # icon("dragon", style='color: #22A433')
 
     observe({
       r$save <- save()
