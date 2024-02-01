@@ -16,6 +16,7 @@ mod_reception_ui <- function(id){
     textOutput(ns("author")),
     br(),
     actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
+    textOutput(ns("ref")),
     uiOutput(ns("ref_file_url_1")),
     uiOutput(ns("ref_file_url_2")),
     uiOutput(ns("ref_file_url_3")),
@@ -38,21 +39,29 @@ mod_reception_server <- function(input, output, session, r){
       Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel"
     })
 
+    observeEvent(input$guide, {
+      browseURL(paste("file://", "www/apps_guide.html", sep=""))
+    })
+
+    output$ref <- renderText({
+      "Lien URL vers les documetns de references"
+    })
+    #"URL link of reference document: ",
     output$ref_file_url_1 <- renderUI({
       url <- a("WGEXT", href="https://ices-library.figshare.com/articles/report/Working_Group_on_the_Effects_of_Extraction_of_Marine_Sediments_on_the_Marine_Ecosystem_WGEXT_/18621728/1")
-      tagList("URL link: ", url)
+      tagList(url)
     })
     output$ref_file_url_2 <- renderUI({
       url <- a("DOGGM", href="https://side.developpement-durable.gouv.fr/PACA/doc/SYRACUSE/385733/guide-methodologique-pour-l-elaboration-des-documents-d-orientations-pour-une-gestion-durable-des-gr")
-      tagList("URL link: ", url)
+      tagList(url)
     })
     output$ref_file_url_3 <- renderUI({
       url <- a("Protocole_halieutique", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins/Protocoles/Ressources-halieutiques")
-      tagList("URL link: ", url)
+      tagList(url)
     })
     output$ref_file_url_4 <- renderUI({
       url <- a("Guide_technique", href="https://www.mineralinfo.fr/fr/actualite/actualite/elaboration-des-etudes-dimpact-granulats-marins-guide-technique-2023")
-      tagList("URL link: ", url)
+      tagList(url)
     })
     #output$ref_file_url_5 <- renderUI({
     #  url <- a("", href="")
