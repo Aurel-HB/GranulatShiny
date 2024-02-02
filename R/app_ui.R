@@ -13,44 +13,58 @@
 #'
 #' @noRd
 app_ui <- function(request) {
+  # internationalization
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
+  i18n$use_js() ### <<-- Add this
+
   tagList(
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
     dashboardPage( # create the left part of the interface to choose the page
       skin = "blue",
-      dashboardHeader(title = "GranulatShiny"),
+      dashboardHeader(title = tagList(shiny.i18n::usei18n(i18n),"GranulatShiny"),
+                    tags$li(class="dropdown",
+                              selectInput(inputId="lang",
+                                          label=i18n$t("Langue"),
+                                          choices = i18n$get_languages(),
+                                          selected = i18n$get_key_translation())
+                                          #icon=icon("flag"),
+                      #                    class= 'dropdown')
+                      )
+                      ),
       dashboardSidebar(sidebarMenu(
         id = "tabs",
         menuItem(
-          "Page d'accueil",
+          i18n$t("Page d'accueil"),
           tabName = "accueil",
           #icon = icon("far fa-file-lines")
           icon = icon("dungeon")
         ),
         menuItem(
-          "Mise en forme des données",
+          i18n$t("Mise en forme des données"),
           tabName = "forme",
           icon = icon("wand-magic-sparkles"),
           menuSubItem("Informations à rentrer", tabName = "donnees"),
           menuSubItem("Tables", tabName = "table")
         ),
         menuItem(
-          "Statistiques exploratoires",
+          i18n$t("Statistiques exploratoires"),
           tabName = "exploratory",
           icon = icon("eye"),
           menuSubItem("Plot des indicateurs", tabName = "Indic"),
           menuSubItem("Plot de la structure", tabName = "Struc")
         ),
         menuItem(
-          "Statistiques descriptives",
+          i18n$t("Statistiques descriptives"),
           tabName = "descriptive",
           icon = icon("scroll"),
           menuSubItem("Plot des données", tabName = "plot"),
           menuSubItem("Diagnostique d'analyse", tabName = "Diag")
         ),
         menuItem(
-          "Statistiques inférentielles",
+          i18n$t("Statistiques inférentielles"),
           tabName = "glmm",
           icon = icon("fish-fins"),
           menuSubItem("Création des modèles", tabName = "mod"),

@@ -32,6 +32,9 @@ app_server <- function(input, output, session) {
   # reactiveValues créée pour sauvegarder les infos des modules
   r <- reactiveValues()
 
+  #calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
 
   # onglet accueil
   callModule(mod_reception_server, id = "reception_1",session = session, r=r)
@@ -92,6 +95,12 @@ app_server <- function(input, output, session) {
   observeEvent(input$go_represent, {
     updateTabItems(session, "tabs", "rep")
   })
+
+  # change language
+  observeEvent(input$lang, {
+    shiny.i18n::update_lang(input$lang,session)
+  })
+
 
 
 }

@@ -8,11 +8,15 @@
 #'
 #' @importFrom shiny NS tagList
 mod_reception_ui <- function(id){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
+
   ns <- NS(id)
+
   tagList(
     mainPanel(
     img(src='www/favicon.png', align = "right", style = "width: 234px; height: 260px"),
-    h1("Bienvenue sur l'application GranulatShiny"),
+    h1(i18n$t("Bienvenue sur l'application GranulatShiny")),
     textOutput(ns("author")),
     br(),
     actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
@@ -32,11 +36,19 @@ mod_reception_ui <- function(id){
 #'
 #' @noRd
 mod_reception_server <- function(input, output, session, r){
-    ns <- session$ns
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
+  i18n$use_js() ### <<-- Add this
+
+
+
+  ns <- session$ns
+
 
     output$author <- renderText({
-      "developed by Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet,
-      Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel"
+      paste0(i18n$t("Auteurs"),": Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet,
+      Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel")
     })
 
     observeEvent(input$guide, {

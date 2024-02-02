@@ -8,11 +8,13 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Import_data_ui <- function(id){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
       selectInput(
         ns("data"),
-        "Avez-vous vos propres données ?",
+        i18n$t("Avez-vous vos propres données ?"),
         c("oui" = "1", "non" = "2")
       ),
       uiOutput(ns("tutti_catch")),
