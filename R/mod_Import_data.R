@@ -30,6 +30,8 @@ mod_Import_data_ui <- function(id){
 #'
 #' @noRd
 mod_Import_data_server <- function(input, output, session, r){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
     # Mise en forme -----------------------------------------------------------
     # pour faire marcher conditionalpanel dans le UI (les inputs s'affichent une fois que le fichier operation est chargé)
@@ -43,7 +45,7 @@ mod_Import_data_server <- function(input, output, session, r){
     # catch ####
     output$tutti_catch <- renderUI({
       if(input$data == 2){return()}
-      fileInput(ns("tutti_catch"), "Sélectionnez le fichier Tutti Catch (.csv)", accept = c(".csv"))
+      fileInput(ns("tutti_catch"), i18n$t("Sélectionnez le fichier Tutti Catch (.csv)"), accept = c(".csv"))
     })
 
     tutti_catch <- reactive({

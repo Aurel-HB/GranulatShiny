@@ -10,6 +10,7 @@
 mod_reception_ui <- function(id){
   i18n <- golem::get_golem_options(which = "translator")
   i18n$set_translation_language("fr")
+  i18n$use_js() ### <<-- Add this
 
   ns <- NS(id)
 
@@ -18,6 +19,9 @@ mod_reception_ui <- function(id){
     img(src='www/favicon.png', align = "right", style = "width: 234px; height: 260px"),
     h1(i18n$t("Bienvenue sur l'application GranulatShiny")),
     textOutput(ns("author")),
+    uiOutput(ns("pipo")),
+    #uiOutput(ns("author")),
+    #verbatimTextOutput(ns("author")),
     br(),
     actionButton(ns("guide"), "Guide utilisateur", icon = icon("book")),
     textOutput(ns("ref")),
@@ -45,9 +49,13 @@ mod_reception_server <- function(input, output, session, r){
 
   ns <- session$ns
 
+    output$pipo<-renderUI({
+      print(i18n$t('pipo'))
+      HTML(i18n$t("pipo"))
+    })
 
     output$author <- renderText({
-      paste0(i18n$t("Auteurs"),": Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet,
+      paste(i18n$t("Auteurs"),": Aurel Hebert--Burggraeve, Mathis Cambreling, Jehanne Rivet,
       Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel")
     })
 
@@ -56,7 +64,7 @@ mod_reception_server <- function(input, output, session, r){
     })
 
     output$ref <- renderText({
-      "Lien URL vers les documetns de references"
+      "Lien URL vers les documents de références"
     })
     #"URL link of reference document: ",
     output$ref_file_url_1 <- renderUI({
