@@ -13,7 +13,7 @@
 #'
 #' @return The return value is a lineplot of the indicator chosen
 #'
-#'
+#' @export
 
 lineplot_creation <- function(data, indicator, campagne){
   #First prepare the data

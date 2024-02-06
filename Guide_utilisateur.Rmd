@@ -11,18 +11,21 @@ output:
 # <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
 
 ## <i class="fa-solid fa-dungeon"></i> Page d'accueil
+
 ```{r, echo=FALSE, warning=FALSE, results = FALSE, message=FALSE}
 library(shiny)
 library(DT)
-
+library(ggplot2)
+library(cowplot)
+library(dplyr)
 ```
-
 
 Welcome to the user guide for your app! <br>
 
 ```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
 knitr::include_graphics("inst/app/www/favicon.png")
 ```
+
 <br> GranulatShiny est une application Shiny qui automatise le traitement statistique des données collectées dans le cadre des enquêtes dédiées aux ressources halieutiques et à l'ichtyofaune sur les concessions d'extraction de granulats marins. L'application produit des figures et des tableaux standardisés basés sur le "Protocole halieutique", et fournit une interface graphique interactive pour l'analyse sans aucune compétence en codage. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons.
 
 <br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application. <br>Les boutons avec une icône bateau vous permettent de passer d'un onglet à un autre.
@@ -53,11 +56,12 @@ La première étape de l'application est l'importation des données.<br> Si vous
 
 Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
 
-Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement.
+Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement. Mais en faisant ce choix, vous acceptez de faire l’analyse sur une concession fictive dans le Golfe de Gascogne. Cette concession est en exploitation de 2000 à 2030 avec un suivi tous les 5 ans. Il y a 10 stations dans la concession et 10 stations hors de la concession. Pour éviter toutes confusions, les espèces présentes dans ce jeu de données sont fictives également. Donc en aucun cas vous ne pouvez utiliser ce jeu de données pour la réalisation d’un rapport officiel.
 
 ### Table
 
 Dans l'onglet des tableaux, il y a un tableau de données à droite et une partie interactive à gauche. Le tableau affiché est calculé à partir des données renseignées dans la partie d'avant. Les fonctions de mises en formes du tableau vont calculer l'abundance, la biomasse et différents indicateurs de diversité pour chaque station et chaque campagne. La variable indicatrice de l'état de chaque station (sans traitement ou traitement) renseigne si la sation est dans la concession et donc impacté par les travaux ou si la station est en dehors de l'action de la concession.
+
 ```{r, echo=FALSE, warning=FALSE}
 
 dataset <- readRDS("data/complete_dataset.rds")
@@ -74,13 +78,15 @@ callback <- JS(
 datatable(dataset, callback = callback)
 
 ```
-Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher". Il est possible de télécharger  l'affichage du tableau de données et le paramétrage utilisé dans l'onglet des données de charge. Il faut ensuite choisir une variable expliquée sur laquelle effectuer la partie statistique descriptive. Néanmoins vous pouvez décidez de réaliser la partie statistique exploratoire ou de passer directement à la partie statistique descriptive.
+
+Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher". Il est possible de télécharger l'affichage du tableau de données et le paramétrage utilisé dans l'onglet des données de charge. Il faut ensuite choisir une variable expliquée sur laquelle effectuer la partie statistique descriptive. Néanmoins vous pouvez décidez de réaliser la partie statistique exploratoire ou de passer directement à la partie statistique descriptive.
 
 ## <i class="fa-solid fa-eye"></i> Statistiques exploratoires
 
 ### Plot des indicateurs
 
-Ce tableau représente l’abondance, la biomasse, la richesse, l’indicateur de Shannon et l’indicateur de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession et dans la totalité pour chaque campagne (Protocole halieutique 4.1). 
+Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance de la communauté en comparant la zone totale avec celle de la concession et celle en dehors de la concession.Les indicateurs présentés sont ceux référencés dans le protocole halieutique de 2011 article 4.1. Ce tableau représente l’abondance, la biomasse, la richesse, l’indicateur de Shannon et l’indicateur de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession et dans la totalité pour chaque campagne.
+
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_diversity_table.R")
 
@@ -106,56 +112,203 @@ show_data_indic <- data.frame("ID_campagne" = data_indic[,1], show_data_indic)
 
 datatable(show_data_indic, callback = callback)
 ```
+
 Cette figure représente les valeurs du tableau ci-dessus avec l’erreur standard associé à chaque valeur (Protocole halieutique 4.1) .
 
+```{r, echo=FALSE, warning=FALSE, fig.height = 9, fig.width = 16}
+source("R/fct_lineplot_creation.R")
+campagne <- "C1"
+abun_plot <- lineplot_creation(data_indic, "Abun", campagne)
+biom_plot <- lineplot_creation(data_indic, "Biom", campagne)
+richness_plot <- lineplot_creation(data_indic, "Richness", campagne)
+shannon_plot <- lineplot_creation(data_indic, "Shannon", campagne)
+simpson_plot <- lineplot_creation(data_indic, "Simpson", campagne)
+frise <- plot_grid(abun_plot, biom_plot, richness_plot,
+                       shannon_plot, simpson_plot)
+frise
+```
 
 ### Plot de la structure
 
-Visualize the structure of your data using various plotting techniques.
+Dans cette partie on s'intéresse à la structure en espèce de la communauté. Les figures présentées font références au protocole halieutique article 4.1. Le tableau ci-dessous représente la structure de la communauté de poisson en pourcentage présente par campagne.
+
+```{r, echo=FALSE, warning=FALSE}
+source("R/fct_structure_table.R")
+
+catch <- readRDS("data/catch.rds")
+species <- unique(catch['Nom_Scientifique'])[,1]
+
+data_brut <- data.frame(ID_campagne)
+for (sp in species){
+  data_brut <- cbind(data_brut, structure_table(dataset, sp))
+}
+position <- grep("tot_value", names(data_brut))
+data_brut <- data_brut[,c(position)] 
+tot <- rowSums(data_brut)
+data_brut <- cbind(ID_campagne, data_brut, tot)
+names(data_brut) <- c("ID_campagne",species,"Total")
+
+
+
+for (i in 1:nrow(data_brut)){
+   for (sp in 1:length(species)){
+     data_brut[i,sp+1] <- round(data_brut[i,sp+1]/data_brut$Total[i], digits = 2)
+   }
+}
+data_percent <- t(data_brut[,2:(length(species)+1)])
+#redefine row and column names
+colnames(data_percent) <- ID_campagne
+data_percent <- as.data.frame(cbind(species,data_percent))
+names(data_percent)[1] <- c("species")
+datatable(data_percent, callback = callback)
+
+```
+
+Cette figure représente l’abondance de chaque espèce par campagne par ordre d’importance et la courbe d’abondance cumulées en fonction du nombre d’espèce par ordre d’importance (Protocole halieutique 4.1).
+
+```{r, echo=FALSE, warning=FALSE, fig.height = 9, fig.width = 16}
+#### prepare data ####
+      data_t <- as.data.frame(t(data_brut[,2:(length(species)+1)]))
+      #rownames(data_t) <- species
+      colnames(data_t) <- ID_campagne
+      data_t <- cbind(species,data_t)
+      names(data_t) <- c("species", names(data_t)[2:length(names(data_t))])
+
+      # order the data to have the most present species
+      data <- as.data.frame(data_t[c("species","C1")])
+      names(data) <- c("species", "Abundance")
+      #data <- data %>% dplyr::arrange(desc(Abundance))
+      data <- data[order(data$Abundance, decreasing = TRUE), ]
+      data$species <- factor(data$species,data$species)
+
+      #### barplot ####
+      # Default bar plot
+      barplot <- ggplot(data, aes(x=species, y=Abundance, fill=species)) +
+        geom_bar(stat="identity", color="black",
+                 position=position_dodge())+
+      # Finished bar plot
+      labs(title=paste("Abundance per species for the survey ",
+                         "C1", sep=""))+
+        theme_classic() +
+        scale_fill_viridis_d()
+      # change the display of species for too many species
+      if (length(data$species) > 5){
+        # Set the threshold for displaying species names
+        threshold <- 5  # Adjust this value based on your preference
+
+        # Get the species names and filter them based on the threshold
+        species_names <- data$species
+        filtered_species_names <-
+          ifelse(seq_along(species_names) %% threshold == 0, species_names, "")
+
+        # Update x-axis labels with filtered species names
+        barplot <- barplot + scale_x_discrete(labels = filtered_species_names)}
+      
+      #### cumulative plot ####
+      # Create a cumulative sum of abundances
+      data$cumulative_abundance <- cumsum(data$Abundance)
+
+      # Create the cumulative abundance curve with number of species
+      # on the x-axis using ggplot2 and geom_step
+      cumul_plot <- ggplot(data, aes(x = seq_along(cumulative_abundance),
+                                          y = cumulative_abundance)) +
+        geom_step() +
+        labs(title = "Cumulative Abundance Curve",
+             x = "Number of Species",
+             y = "Cumulative Abundance")
+      
+      plot_grid(barplot, cumul_plot)
+```
+
+Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 3 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
 
 ## <i class="fa-solid fa-scroll"></i> Statistiques descriptives
 
 ### Plot des données
 
-La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable. <br>
+Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable. <br>
 
-```{r}
+```{r, echo=FALSE, warning=FALSE}
+source("R/fct_numeric_summary.R")
+
+data <- dataset$Abun
+datatable(numeric_summary(as.numeric(data), "Abun"),
+         callback = callback) 
+
+
+
+data <- as.data.frame(dataset$Abun)
+names(data) <- c("variable")
+ggplot(data, aes(x = variable))+
+  geom_histogram(fill="lightblue", color="black", bins = 50)+
+  labs(title = paste("Histogram of ", "Abun", sep=""),
+       x="Abun", y="Frequency")
 
 ```
 
+La partie du diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et l'enquête. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur. Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact.<br>
 
-La partie du diagramme d'interaction  permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et l'enquête.<br>
-La partie boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison.
+```{r, echo=FALSE, warning=FALSE}
+interaction.plot(x.factor=dataset$saison,
+                         trace.factor=dataset$traitement,
+                         trace.label = "traitment",
+                         response=as.numeric(dataset$Abun),
+                         main = paste("Interaction_plot of ", "Abun"," by season and traitment", sep=""),
+                         xlab = "", ylab = "")
+```
+
+La partie boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans notre exemple, la série d'abondances calculés dans la zone avec impact est comparé avec celle dans la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
+
+```{r, echo=FALSE, warning=FALSE}
+
+b1 <- ggplot(dataset, aes(x = traitement, y = Abun))+
+  geom_boxplot()+
+  labs(title = paste("Boxplot of ", "Abun"," by impact", sep=""),
+                x = "", y = "")
+
+b2 <- ggplot(dataset, aes(x = traitement, y = log(Abun+1)))+
+  geom_boxplot()+
+  labs(title = paste("Boxplot of ", "Abun"," by impact", sep=""),
+                x = "", y = "")
+plot_grid(b1,b2)
+
+```
+
 Après l'exploration des données, il est possible de passer à l'onglet suivant en appuyant sur le bouton "Choisir la probabilité de distribution" ou en cliquant sur“diagnostique d’analyse”.
 
 ### Diagnostique d'analyse
 
 Cet onglet permet de choisir et de visualiser la distribution de probabilité qui correspond le mieux à la variable expliquée. En gris, c'est l'histogramme de fréquence de la variable, en bleu c'est la fonction de densité et en vert c'est la distribution de probabilité. Les paramètres de chaque distribution de probabilité sont approximés à l'aide de la moyenne et de l’écart type de la variable. Vous pouvez changer le type de distribution de probabilité et si elle ne correspond pas du tout, un message d'avertissement apparaît.<br>
+
+```{r, echo=FALSE, warning=FALSE}
+
+```
+
 Lorsque vous êtes satisfait de la distribution des probabilités, vérifiez la phrase au-dessus du bouton "Passer à la modélisation". Il y a deux possibilités. Dans le cas où vous avez moins de 30 observations, la phrase dit : "Vous n'avez pas assez de valeurs pour passer à la partie modélisation". Dans ce cas, vous devez changer la variable de travail car il n'y a pas assez de valeur pour créer un modèle pertinent. A l'inverse, vous aurez : "Après avoir choisi une distribution de probabilité, vous pouvez passer à la construction du modèle". Lorsque vous avez terminé, appuyez sur le bouton "passer à la modélisation".
 
 ## <i class="fa-solid fa-fish-fins"></i> Modélisation
 
 ### Création des modèles
 
-Dans cette partie, vous créerez le modèle pour l'analyse.<br>
-Il existe 3 types de modèles : GLMM, GLM, Permanova. Les modèles linéaires généralisés (GLM) permettent d'étendre les idées de la modélisation linéaire à une classe plus large de types de réponses, telles que les données de comptage ou les réponses binaires.<br> 
-Les modèles linéaires généralisés constituent une approche commune pour un large éventail de problèmes de modélisation des réponses. Les réponses normales, de Poisson et binomiales sont les plus couramment utilisées, mais d'autres distributions peuvent également être utilisées. <br>
-Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.<br>
-PERmutational Multivariate ANalysis Of VAriance (PERMANOVA) est un test statistique non paramétrique à plusieurs variables. Il est utilisé pour comparer des groupes d'objets et tester l'hypothèse nulle selon laquelle les centroïdes et la dispersion des groupes, tels que définis par l'espace de mesure, sont équivalents pour tous les groupes. Le rejet de l'hypothèse nulle signifie que le centroïde et/ou la dispersion des objets sont différents entre les groupes. Le test est donc basé sur le calcul préalable de la distance entre deux objets inclus dans votre expérience. <br>
+Dans cette partie, vous créerez le modèle pour l'analyse.<br> Il existe 3 types de modèles : GLMM, GLM, Permanova. Les modèles linéaires généralisés (GLM) permettent d'étendre les idées de la modélisation linéaire à une classe plus large de types de réponses, telles que les données de comptage ou les réponses binaires.<br> Les modèles linéaires généralisés constituent une approche commune pour un large éventail de problèmes de modélisation des réponses. Les réponses normales, de Poisson et binomiales sont les plus couramment utilisées, mais d'autres distributions peuvent également être utilisées. <br> Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.<br> PERmutational Multivariate ANalysis Of VAriance (PERMANOVA) est un test statistique non paramétrique à plusieurs variables. Il est utilisé pour comparer des groupes d'objets et tester l'hypothèse nulle selon laquelle les centroïdes et la dispersion des groupes, tels que définis par l'espace de mesure, sont équivalents pour tous les groupes. Le rejet de l'hypothèse nulle signifie que le centroïde et/ou la dispersion des objets sont différents entre les groupes. Le test est donc basé sur le calcul préalable de la distance entre deux objets inclus dans votre expérience. <br>
 
-Selon le type de modèle que vous choisissez, vous aurez une première formulation différente du modèle :<br>
-GLMM → Biom ~ traitement * saison + (1|campagne) + (1|station)<br>
-GLM → Biom ~ traitement * saison<br>
-PERMANOVA → Biom ~ traitement * saison<br>
+Selon le type de modèle que vous choisissez, vous aurez une première formulation différente du modèle :<br> GLMM → Biom \~ traitement \* saison + (1\|campagne) + (1\|station)<br> GLM → Biom \~ traitement \* saison<br> PERMANOVA → Biom \~ traitement \* saison<br>
 
-Et pour GLMM et GLM, vous devrez choisir une distribution de probabilité. Par défaut, il propose la dernière distribution de probabilité que vous avez vérifiée dans la partie précédente.<br>
+Et pour GLMM et GLM, vous devrez choisir une distribution de probabilité. Par défaut, il propose la dernière distribution de probabilité que vous avez vérifiée dans la partie précédente. Attention la méthode utilisée pour la modélisation est une méthode itérative, il se peut donc que la distrubution qui semblait la plus adéquate dans la partie précédente n'est pas forcément celle qui permettra de mieux faire converger le modèle. Néanmoins la partie d'avant est là pour sélectionner un nombre de distribution possible pour ne pas avoir à tous tester ici.<br>
 
 Message sur le BACI !!! <br>
 
-Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br>
-La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
-L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br>
-Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene.
+Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br> La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
+
+```{r, echo=FALSE, warning=FALSE}
+
+```
+
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene.
+
+```{r, echo=FALSE, warning=FALSE}
+
+```
 
 ### Représentation des effets
 

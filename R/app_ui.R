@@ -24,15 +24,7 @@ app_ui <- function(request) {
     # Your application UI logic
     dashboardPage( # create the left part of the interface to choose the page
       skin = "blue",
-      dashboardHeader(title = tagList(shiny.i18n::usei18n(i18n),"GranulatShiny"),
-                    tags$li(class="dropdown",
-                              selectInput(inputId="lang",
-                                          label=i18n$t("Langue"),
-                                          choices = i18n$get_languages(),
-                                          selected = i18n$get_key_translation())
-                                          #icon=icon("flag"),
-                      #                    class= 'dropdown')
-                      )
+      dashboardHeader(title = tagList(shiny.i18n::usei18n(i18n),"GranulatShiny")
                       ),
       dashboardSidebar(sidebarMenu(
         id = "tabs",
@@ -71,6 +63,14 @@ app_ui <- function(request) {
           menuSubItem("Représentation des effets", tabName = "rep"),
           menuSubItem("Puissance statistique", tabName = "pui")
 
+        ),
+        tags$li(class="dropdown",
+                selectInput(inputId="lang",
+                            label=i18n$t("Langue"),
+                            choices = i18n$get_languages(),
+                            selected = i18n$get_key_translation())
+                #icon=icon("flag"),
+                #                    class= 'dropdown')
         )
       )),
       dashboardBody( # create the interface for each tab
