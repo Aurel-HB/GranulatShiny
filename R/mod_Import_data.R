@@ -32,6 +32,9 @@ mod_Import_data_ui <- function(id){
 mod_Import_data_server <- function(input, output, session, r){
   i18n <- golem::get_golem_options(which = "translator")
   i18n$set_translation_language("fr")
+  #be careful with the translation. If the sentence is not exactly write as the same
+  # in the translation file, it doesn't work
+  # you have to avoid comma and return to line
     ns <- session$ns
     # Mise en forme -----------------------------------------------------------
     # pour faire marcher conditionalpanel dans le UI (les inputs s'affichent une fois que le fichier operation est chargé)
@@ -65,8 +68,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier n'a pas le bon format !
-          Référez vous au format tutti_catch de la notice.",
+          text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format tutti_catch de la notice."),
           type = "fail"
         )
         return()
@@ -80,8 +82,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier n'a pas le bon format !
-          Référez vous au format tutti_catch de la notice.",
+          text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format tutti_catch de la notice."),
           type = "fail"
         )
         return()
@@ -100,10 +101,10 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
-            Référez vous au format classique tutti pour la saisie des dates.",
+          text = i18n$t("Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch. Référez vous au format classique tutti pour la saisie des dates."),
           type = "fail"
         )
+        return()
       }
       data11
     })
@@ -117,7 +118,8 @@ mod_Import_data_server <- function(input, output, session, r){
     output$tutti_operation <- renderUI({
       if(input$data == 2){return()}
       fileInput(ns("tutti_operation"),
-                "Sélectionnez le fichier Tutti operation (.csv)", accept = c(".csv"))
+                i18n$t("Sélectionnez le fichier Tutti operation (.csv)"),
+                accept = c(".csv"))
     })
 
     tutti_operation <- reactive({
@@ -137,8 +139,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier n'a pas le bon format !
-          Référez vous au format tutti_operation de la notice.",
+          text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice."),
           type = "fail"
         )
         return()
@@ -152,8 +153,7 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Le fichier n'a pas le bon format !
-          Référez vous au format tutti_operation de la notice.",
+          text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice."),
           type = "fail"
         )
         return()
@@ -172,10 +172,10 @@ mod_Import_data_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation.
-            Référez vous au format classique tutti pour la saisie des dates.",
+          text = i18n$t("Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates."),
           type = "fail"
         )
+        return()
       }
       data22
     })
@@ -198,7 +198,8 @@ mod_Import_data_server <- function(input, output, session, r){
       if(input$data == 2){return()}
       fileInput(
         ns("shpFile"),
-        "Sélectionnez les Shapefiles (.shp, .shx, .dbf)", accept = c(".shp", ".shx", ".dbf"),
+        i18n$t("Sélectionnez les Shapefiles (.shp .shx .dbf)"),
+        accept = c(".shp", ".shx", ".dbf"),
         multiple = T
       )
     })
@@ -231,14 +232,13 @@ mod_Import_data_server <- function(input, output, session, r){
           sendSweetAlert(
             session = session,
             title = "Alert !",
-            text = "Le fichier n'a pas le bon format !
-          Référez vous au format shapefile de la notice.",
+            text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice."),
             type = "fail"
           )
         }
 
         polygon <- shpFile[["geometry"]][[1]] # [[1]] pour SIEGMA [[2]] pour RESISTE,
-        # possible de rajouter un input pour le choix de la ligne pour les shapefiles avec plusieurs lignes
+        # possibility to add an input for the choice of line for shapefiles with several lines
         return(polygon)
       } else {
         return()
@@ -252,8 +252,7 @@ mod_Import_data_server <- function(input, output, session, r){
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
       if(input$data == 2){return()}
-      fileInput(ns("uploadSave"), "Charger les informations si vous avez une
-                    sauvegarde des paramètres de la zone étudiée (.csv)",
+      fileInput(ns("uploadSave"), i18n$t("Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv)"),
                 accept = c(".csv"))
     })
 
@@ -279,8 +278,7 @@ mod_Import_data_server <- function(input, output, session, r){
           sendSweetAlert(
             session = session,
             title = "Alert !",
-            text = "Le fichier n'a pas le bon format !
-          Référez vous au format sauvegarde de la notice.",
+            text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice."),
             type = "fail"
           )
           return()
@@ -292,8 +290,7 @@ mod_Import_data_server <- function(input, output, session, r){
           sendSweetAlert(
             session = session,
             title = "Alert !",
-            text = "Le fichier n'a pas le bon format !
-          Référez vous au format sauvegarde de la notice.",
+            text = i18n$t("Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice."),
             type = "fail"
           )
           return()

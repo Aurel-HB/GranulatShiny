@@ -8,9 +8,12 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Stat_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
-      box( title = "Summary",
+      box( title = i18n$t("Résumé"),
            status = "success", #  Valid statuses are: primary, success, info, warning, danger.
            solidHeader = TRUE,
            box(
@@ -23,12 +26,12 @@ mod_Stat_ui <- function(id){
         #tableOutput(ns("var_summary")),
         plotOutput(ns("hist")),
         downloadButton(ns("downloadPlot"),
-                       label = "Telecharger le graphique (.png)"),
-        checkboxInput(ns("outlier"), "Voulez-vous retirer les valeurs extrêmes ?"),
-        checkboxInput(ns("log"), "Voulez-vous passer au log ?"),
+                       label = i18n$t("Telecharger le graphique (.png)")),
+        checkboxInput(ns("outlier"), i18n$t("Voulez-vous retirer les valeurs extrêmes ?")),
+        checkboxInput(ns("log"), i18n$t("Voulez-vous passer au log ?")),
         textOutput(ns("info")),
         hr(),
-        actionButton("goloi", "Passer au choix de la loi de distribution",
+        actionButton("goloi", i18n$t("Passer au choix de la loi de distribution"),
                       icon = icon("ship"))
       ),
       box( title = "Interactionplot",
@@ -60,6 +63,9 @@ mod_Stat_ui <- function(id){
 #'
 #' @noRd
 mod_Stat_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     data_analyse <- reactive({
@@ -71,9 +77,11 @@ mod_Stat_server <- function(input, output, session, r){
     })
 
     output$info <- renderText({
-      "Attention si votre variable contient des valeurs manquantes ou des zéros,
-      vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle."
+      return(
+      i18n$t("Attention si votre variable contient des valeurs manquantes ou des zéros vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle.")
+      )
     })
+
 
     # variable is the vector of the chosen variable with or without transformation
     variable <- reactive({
@@ -155,7 +163,7 @@ mod_Stat_server <- function(input, output, session, r){
     output$choix_box <- renderUI({
       selectInput(
         ns("choix_box"),
-        "Sélectionner la covariable :",
+        i18n$t("Sélectionner la covariable :"),
         c("impact" = "1",
           "year" = "2",
           "campagne" = "3",
@@ -220,7 +228,7 @@ mod_Stat_server <- function(input, output, session, r){
     output$choix_interaction <- renderUI({
       selectInput(
         ns("choix_interaction"),
-        "Sélectionner l'interaction :",
+        i18n$t("Sélectionner l'interaction :"),
         c("traitement_saison" = "1",
           "traitement_year" = "2",
           "traitement_campagne" = "3",

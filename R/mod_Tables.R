@@ -8,11 +8,14 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Tables_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     selectInput(
       ns("list"),
-      "Quelle table afficher ?",
+      i18n$t("Quelle table afficher ?"),
       c(
         "Table complete" = "1",
         "Abondance" = "2",
@@ -22,16 +25,15 @@ mod_Tables_ui <- function(id){
       ),
     selected = "Table complete"
     ),
-    downloadButton(ns("downloadData"), label = "Telecharger la table (.csv)"),
+    downloadButton(ns("downloadData"), label = i18n$t("Telecharger la table (.csv)")),
     hr(),
-    downloadButton(ns("downloadSave"), label = "Telecharger les informations
-                   rentrées (.csv)"
+    downloadButton(ns("downloadSave"), label = i18n$t("Telecharger les informations rentrées (.csv)")
                    #style='width: 100%; overflow-x: scroll'),
                    ),
     hr(),
     uiOutput(ns("variable")),
-    actionButton("gostat1", "Statistiques exploratoires", icon = icon("ship")),
-    actionButton("gostat2", "Statistiques descriptives", icon = icon("ship"))
+    actionButton("gostat1", i18n$t("Statistiques exploratoires"), icon = icon("ship")),
+    actionButton("gostat2", i18n$t("Statistiques descriptives"), icon = icon("ship"))
     )
 }
 
@@ -39,6 +41,9 @@ mod_Tables_ui <- function(id){
 #'
 #' @noRd
 mod_Tables_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     save <- reactive({
@@ -76,7 +81,7 @@ mod_Tables_server <- function(input, output, session, r){
       if(is.null(data_forme())){return()}
       selectInput(
         ns("var"),
-        "Choisir un variable pour l'analyse univariée",
+        i18n$t("Choisir un variable pour les statistiques descriptives"),
         choices = levels(as.factor(variables())),
         selected = "Abun"
       )

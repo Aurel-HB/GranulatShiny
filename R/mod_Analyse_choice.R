@@ -102,8 +102,7 @@ mod_Analyse_choice_server <- function(input, output, session, r){
         sendSweetAlert(
           session = session,
           title = "Alert !",
-          text = "La loi de probabilité choisie n'est pas appropriée !
-          Veuillez changer de loi.",
+          text = i18n$t("La loi de probabilité choisie n'est pas appropriée ! Veuillez changer de loi."),
           type = "fail"
         )
         return()

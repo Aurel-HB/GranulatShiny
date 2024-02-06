@@ -10,10 +10,6 @@
 mod_Ref_ui <- function(id){
   ns <- NS(id)
   tagList(
-    #verbatimTextOutput(ns("summary")),
-    #verbatimTextOutput(ns("summary1")),
-    #verbatimTextOutput(ns("summary2")),
-    #verbatimTextOutput(ns("summary3")),
     uiOutput(ns("reference"))
   )
 }
@@ -22,6 +18,8 @@ mod_Ref_ui <- function(id){
 #'
 #' @noRd
 mod_Ref_server <- function(input, output, session, r){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     tutti_catch <- reactive({
@@ -36,30 +34,11 @@ mod_Ref_server <- function(input, output, session, r){
       r$upload
     })
 
-    ##### check point ######
-    #output$summary <- renderPrint({
-    #  #if(is.null(tutti_catch())){return("No data")}
-    #  summary(tutti_catch())
-    #})
-    #output$summary1 <- renderPrint({
-    #  if(is.null(tutti_operation())){return("No data")}
-    #  summary(tutti_operation())
-    #})
-    #output$summary2 <- renderPrint({
-    #  if(is.null(shape())){return("No data")}
-    #  summary(shape())
-    #})
-    #output$summary3 <- renderPrint({
-    #  if(is.null(upload())){return("No data")}
-    #  module()[[1]]
-    #})
-    ########################
-
     # table des stations de référence
     output$reference <- renderUI({
       checkboxGroupInput(
         ns("reference"),
-        label = "Si besoin, séléctionner les stations à retirer :",
+        label = i18n$t("Si besoin séléctionner les stations à retirer :"),
         choices = unique(tutti_operation_bis()[which(is.na(tutti_operation_bis()$impact_date_1)), ]$Code_Station),
         inline = T
       )

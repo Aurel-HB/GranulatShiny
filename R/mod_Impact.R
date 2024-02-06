@@ -8,6 +8,8 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Impact_ui <- function(id){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
       #verbatimTextOutput(ns("testobjet")),
@@ -20,6 +22,8 @@ mod_Impact_ui <- function(id){
 #'
 #' @noRd
 mod_Impact_server <- function(input, output, session, r){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     ########### charge the data in the mod #####
@@ -43,7 +47,7 @@ mod_Impact_server <- function(input, output, session, r){
         if(is.null(tutti_operation())){return()}
         dateRangeInput(
           ns("dates"),
-          "Dates de la période d'activité :",
+          i18n$t("Dates de la période d'activité :"),
           start = min(tutti_operation()$DateDeb),
           end = max(tutti_operation()$DateDeb),
           #start = min(as.Date(
@@ -64,7 +68,7 @@ mod_Impact_server <- function(input, output, session, r){
     output$stationOut <- renderUI({
       selectInput(
         ns("station"),
-        "Stations à l'intérieur de la zone d'étude :",
+        i18n$t("Stations à l'intérieur de la zone d'étude :"),
         multiple = T,
         choices = levels(as.factor(tutti_operation()$Code_Station))
       )

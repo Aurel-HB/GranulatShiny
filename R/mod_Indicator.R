@@ -8,11 +8,15 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Indicator_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     box(
       dataTableOutput(ns("diversity")),
-      downloadButton(ns("downloadData"), label = "Telecharger le tableau (.csv)"),
+      downloadButton(ns("downloadData"),
+                     label = i18n$t("Telecharger le tableau (.csv)")),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
@@ -25,16 +29,17 @@ mod_Indicator_ui <- function(id){
       plotOutput(ns("lineplots")),
       #telecharger le graphique
       downloadButton(ns("downloadPlot"),
-                     label = "Telecharger le graphique (.png)"),
+                     label = i18n$t("Telecharger le graphique (.png)")),
       collapsible = T,
       collapsed = T,
       solidHeader = TRUE,
       status = "info",
       width = NULL,
-      title = "Représentation des indicateurs"
+      title = i18n$t("Représentation des indicateurs")
       ),
     hr(),
-    actionButton("struct", "Structure de la communeauté", icon = icon("ship"))
+    actionButton("struct", i18n$t("Structure de la communeauté"),
+                 icon = icon("ship"))
   )
 }
 
@@ -42,6 +47,9 @@ mod_Indicator_ui <- function(id){
 #'
 #' @noRd
 mod_Indicator_server <- function (input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- session$ns
   dataset <- reactive({
     if(is.null(r$data_forme)){return()}
@@ -103,7 +111,7 @@ mod_Indicator_server <- function (input, output, session, r){
   output$choix_campagne <- renderUI({
     selectInput(
       ns("choix_campagne"),
-      "Sélectionner la campagne :",
+      i18n$t("Sélectionner la campagne :"),
       ID_campagne(),
       selected = ID_campagne()[1]
     )

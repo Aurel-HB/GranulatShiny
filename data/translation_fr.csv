@@ -7,6 +7,43 @@ Statistiques descriptives,Descriptive statistics
 Statistiques inférentielles,Modelling
 Bienvenue sur l'application GranulatShiny,Welcome to the GranulatShiny application
 Auteurs,Authors
-pipo,pipoing
+Guide utilisateur, User guide
 Avez-vous vos propres données ?,Do you have your own data?
-Sélectionnez le fichier Tutti Catch (.csv),Select the Tutti file (.csv)
+Sélectionnez le fichier Tutti Catch (.csv),Select the Tutti Catch file (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format tutti_catch de la notice.,The file is in the wrong format! Please refer to the tutti_catch format in the instructions.
+Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_catch file. Refer to the classic tutti format for entering dates.
+Sélectionnez le fichier Tutti operation (.csv),Select the Tutti Operation file (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice.,The file is in the wrong format! Please refer to the tutti_operation format in the instructions.
+Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_operation file. Refer to the classic tutti format for entering dates.
+Sélectionnez les Shapefiles (.shp .shx .dbf),Select the shapefiles (.shp .shx .dbf)
+Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice.,The file is in the wrong format! Please refer to the shapefile format in the instructions.
+Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv),Load the information if you have a backup of the parameters for the area under study (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice.,The file is in the wrong format! Please refer to the save format in the instructions.
+Dates de la période d'activité :,Dates of activity period
+Stations à l'intérieur de la zone d'étude :,Stations in the study area
+Si besoin séléctionner les stations à retirer :,If necessary select the stations to be removed:
+Stations d'impact,Impact stations
+Stations de référence,Reference stations
+Mettre en forme,Formatting
+Quelle table afficher ?,Which table display?
+Telecharger la table (.csv),Download the table (.csv)
+Telecharger les informations rentrées (.csv),Download the parametrization (.csv)
+Choisir un variable pour les statistiques descriptives,Choose a variable for the descriptive statistics
+Telecharger le tableau (.csv),Download the table (.csv)
+Telecharger le graphique (.png),Download the plot (.png)
+Représentation des indicateurs,Indicators representation
+Structure de la communeauté,Structure of the community
+Sélectionner la campagne :,Select the survey
+Résumé,Summary
+Voulez-vous retirer les valeurs extrêmes ?,Do you want to remove the ouliers?
+Voulez-vous passer au log ?,Do you want to transform in logarithm?
+Passer au choix de la loi de distribution,Choosing the probility distribution
+Sélectionner la covariable :,Select the covariate:
+Sélectionner l'interaction :,Select the interaction
+Sélectionnez la loi de distribution,Select the probility distribution
+Après avoir choisi une distribution vous pouvez passer à la construction du modèle,Once you have chosen a distribution you can move on to building the model
+La courbe bleue correspond à la fonction de densité de la variable,The blue curve corresponds to the density function of the variable
+La courbe verte correspond à la loi de distribution tel que les paramètres sont estimés à partir de la moyenne et de l'écart-type de la variable,The green curve corresponds to the probability distribution as estimated from the mean and standard deviation of the variable
+Attention si votre variable contient des valeurs manquantes ou des zéros vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle.,Note that if your variable contains missing values or zeros you will not be able to use a log transformation (lognormal distribution) in the model.
+Lien URL vers les documents de références,URL link to reference documents
+La loi de probabilité choisie n'est pas appropriée ! Veuillez changer de loi.,The probability law chosen is not appropriate! Please change the law.

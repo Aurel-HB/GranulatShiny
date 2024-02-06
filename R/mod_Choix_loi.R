@@ -8,6 +8,9 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Choix_loi_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     box( title = textOutput(ns("variable_y")),
@@ -19,7 +22,7 @@ mod_Choix_loi_ui <- function(id){
     ),
     selectInput(
       ns("loi"),
-      "Sélectionnez la loi de distribution",
+      i18n$t("Sélectionnez la loi de distribution"),
       c(
         "Normale",
         "Binomiale",
@@ -44,7 +47,7 @@ mod_Choix_loi_ui <- function(id){
          textOutput(ns("nb_value"))
          ),
     hr(),
-    actionButton("go_modelo", "Statistiques inférentielles", icon = icon("ship"))
+    actionButton("go_modelo", i18n$t("Statistiques inférentielles"), icon = icon("ship"))
   )
 }
 
@@ -52,6 +55,9 @@ mod_Choix_loi_ui <- function(id){
 #'
 #' @noRd
 mod_Choix_loi_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- session$ns
 
   data_analyse <- reactive({
@@ -81,8 +87,9 @@ mod_Choix_loi_server <- function(input, output, session, r){
     )
   })
 
-  output$density_text <- renderText({
-    "La courbe bleue correspond à la fonction de densité de la variable"
+  output$density_text <- renderText({return(
+    i18n$t("La courbe bleue correspond à la fonction de densité de la variable")
+  )
   })
 
   output$legend_law <- renderUI({
@@ -94,8 +101,9 @@ mod_Choix_loi_server <- function(input, output, session, r){
   })
 
   output$law_text <- renderText({
-    "La courbe verte correspond à la loi de distribution tel que les paramètres
-    sont estimés à partir de la moyenne et de l'écart-type de la variable"
+    return(
+      i18n$t("La courbe verte correspond à la loi de distribution tel que les paramètres sont estimés à partir de la moyenne et de l'écart-type de la variable")
+      )
   })
 
   data_analyse <- reactive({
@@ -121,8 +129,7 @@ mod_Choix_loi_server <- function(input, output, session, r){
   output$nb_value <- renderText({
     if (is.null(nb_value())){return()}
     if(nb_value() >= 30){
-      return("Après avoir choisi une distribution, vous pouvez passer à la
-             construction du modèle")
+      return(i18n$t("Après avoir choisi une distribution vous pouvez passer à la construction du modèle"))
     }
     if(nb_value() < 30){
       return("Vous n'avez pas assez de données pour réaliser un GLM ou un GLMM")

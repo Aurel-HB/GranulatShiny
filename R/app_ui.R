@@ -90,11 +90,11 @@ app_ui <- function(request) {
                          )  ,
             mainPanel(
               tabBox(id = "tab",
-                tabPanel("Stations d'impact", mod_Impact_ui("Impact_1")
+                tabPanel(i18n$t("Stations d'impact"), mod_Impact_ui("Impact_1")
                          )),
               tabBox(id = "tab_reference",
                      tabPanel(
-                       "Stations de référence", mod_Ref_ui("Ref_1")
+                       i18n$t("Stations de référence"), mod_Ref_ui("Ref_1")
                      )),
               mod_Map_ui("Map_1")
             )

@@ -8,6 +8,9 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Prepare_modelling_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     #Input des glmms
@@ -52,6 +55,9 @@ mod_Prepare_modelling_ui <- function(id){
 #'
 #' @noRd
 mod_Prepare_modelling_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
     # GLMMs -------------------------------------------------------------------
     # Onglet Creation

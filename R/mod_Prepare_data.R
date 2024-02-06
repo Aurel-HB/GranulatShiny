@@ -20,6 +20,8 @@ mod_Prepare_data_ui <- function(id){
 #'
 #' @noRd
 mod_Prepare_data_server <- function(input, output, session, r){
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     module <- reactive({
@@ -84,7 +86,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
    output$button <- renderUI({
      if(is.null(tutti_catch_filtre())){return()}
      if(is.null(tutti_operation_filtre())){return()}
-     actionButton(ns("go"), "Mettre en forme",
+     actionButton(ns("go"), i18n$t("Mettre en forme"),
                   icon = icon("dragon", style='color: #22A433'))
    })
 
