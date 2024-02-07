@@ -100,7 +100,9 @@ app_server <- function(input, output, session) {
   observeEvent(input$lang, {
     shiny.i18n::update_lang(input$lang,session)
   })
-
+  observe({
+    r$lang <- input$lang
+  })
 
 
 }

@@ -46,7 +46,14 @@ Les boutons avec une flèche permettent de télécharger des résultats de l'app
 actionButton("tel", "Telecharger la table",icon = icon("download"))
 ```
 
-Pour passer à la suite appuyer sur le bouton start de la page d'accueil.
+Enfin, ceux avec un cercle contenant un i son des aides que l'on faire afficher pour mieux comprendre un graphique ou autre.
+
+```{r, echo=FALSE, warning=FALSE}
+actionButton("info", "",icon = icon("circle-info"))
+```
+
+
+Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil dans l'application.
 
 ## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
 
@@ -56,7 +63,8 @@ La première étape de l'application est l'importation des données.<br> Si vous
 
 Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
 
-Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement. Mais en faisant ce choix, vous acceptez de faire l’analyse sur une concession fictive dans le Golfe de Gascogne. Cette concession est en exploitation de 2000 à 2030 avec un suivi tous les 5 ans. Il y a 10 stations dans la concession et 10 stations hors de la concession. Pour éviter toutes confusions, les espèces présentes dans ce jeu de données sont fictives également. Donc en aucun cas vous ne pouvez utiliser ce jeu de données pour la réalisation d’un rapport officiel.
+Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement. En faisant le choix de travailler à partir des données mises à disposition avec l’outil, vous acceptez de faire l’analyse sur une concession fictive qui serait située dans le Golfe de Gascogne. Pour ce jeu de données fictif, on considère une concession en exploitation de 2000 à 2030, pour laquelle un suivi du compartiment halieutique a été mis en place tous les 5 ans. Le plan d’échantillonnage fictif prévoit l’échantillonnage de 10 stations dans la concession et 10 stations hors de la concession. Ce choix ne correspond pas à un plan d’échantillonnage qui aurait été élaboré en connaissance des conditions environnementales du site (i.e. faciès sédimentaires, habitats benthiques) et ne correspond donc pas aux recommandations du protocole halieutique de référence. Pour éviter toute confusion, les espèces présentes dans ce jeu de données sont fictives également. Ce jeu de données a une vocation pédagogique, il ne correspond à aucun cas réel et ne peut donc apparaître dans des documents à valeur administrative (i.e. rapports de suivi, état initial de l’environnement, état de référence avant travaux…).
+
 
 ### Table
 
@@ -85,7 +93,8 @@ Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche s
 
 ### Plot des indicateurs
 
-Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance de la communauté en comparant la zone totale avec celle de la concession et celle en dehors de la concession.Les indicateurs présentés sont ceux référencés dans le protocole halieutique de 2011 article 4.1. Ce tableau représente l’abondance, la biomasse, la richesse, l’indicateur de Shannon et l’indicateur de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession et dans la totalité pour chaque campagne.
+Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance de la communauté en comparant la zone totale avec celle de la concession et celle en dehors de la concession. Les indicateurs présentés sont ceux référencés dans le protocole halieutique article 8.4.1. Ce tableau affiche les valeurs d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Elles sont calculées à partir des valeurs obtenues en chaque station échantillonnée. 
+
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_diversity_table.R")
@@ -113,7 +122,7 @@ show_data_indic <- data.frame("ID_campagne" = data_indic[,1], show_data_indic)
 datatable(show_data_indic, callback = callback)
 ```
 
-Cette figure représente les valeurs du tableau ci-dessus avec l’erreur standard associé à chaque valeur (Protocole halieutique 4.1) .
+Les graphiques proposés en dessous représentent les valeurs moyennes (point) et les percentiles 5 et 95 (barres hautes et basses) obtenus pour les mêmes indicateurs que ceux du tableau en fonction de la campagne sélectionnée (Protocole halieutique 8.4.1). L’intérêt de ces graphiques est  de pouvoir visualiser rapidement les différences entre la zone de concession et la zone de référence pour chaque indicateur.
 
 ```{r, echo=FALSE, warning=FALSE, fig.height = 9, fig.width = 16}
 source("R/fct_lineplot_creation.R")
@@ -130,7 +139,8 @@ frise
 
 ### Plot de la structure
 
-Dans cette partie on s'intéresse à la structure en espèce de la communauté. Les figures présentées font références au protocole halieutique article 4.1. Le tableau ci-dessous représente la structure de la communauté de poisson en pourcentage présente par campagne.
+Ce tableau représente le pourcentage de chaque espèce présente pour chaque campagne d'échantillonnage (Protocole halieutique 8.4.1). Le tableau permet de suivre l'évolution des populations d'espèces au fil du temps et offre une perspective précieuse sur les tendances de population. En observant les variations des pourcentages d'espèces d'une année à  l'autre il est possible de détecter des changements écologiques  significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Il permet aussi  d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin. Enfin, il permet d'évaluer l'impact de la gestion mises en place sur la communauté de poissons.
+
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_structure_table.R")
@@ -226,7 +236,8 @@ Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de n
 
 ### Plot des données
 
-Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable. <br>
+Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable Dans un premier temps le tableau renseigne sur le nombre de zéro présent, la longueur totale de la série de valeurs et un la fraction du nombres de zéros et valeurs manquantes sur le nombre de valeurs totales. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. Enfin, l’histogramme montre la répartition des valeurs en fréquence.
+ <br>
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_numeric_summary.R")
@@ -246,7 +257,8 @@ ggplot(data, aes(x = variable))+
 
 ```
 
-La partie du diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et l'enquête. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur. Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact.<br>
+Un diagramme d'interaction peut représenter la manière dont différentes entités ou variables interagissent entre elles et ainsi comprendre les dépendances qui existent entre elles. Dans GranulatShiny le diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et la campagne d’échantillonnage. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur.Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact.
+<br>
 
 ```{r, echo=FALSE, warning=FALSE}
 interaction.plot(x.factor=dataset$saison,
@@ -257,7 +269,7 @@ interaction.plot(x.factor=dataset$saison,
                          xlab = "", ylab = "")
 ```
 
-La partie boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans notre exemple, la série d'abondances calculés dans la zone avec impact est comparé avec celle dans la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
+La boite à moustache ou boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans GranulatShiny, la série de la variable expliquée (ici l'abondance) dans la zone avec impact est comparé avec celle de  la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -316,4 +328,5 @@ Visualize the effects of your models.
 
 ### Puissance statistique
 
-Understand and analyze the statistical power of your models.
+Cette partie est en cours de développement. L'outil antérieur construit par Mathis Cambreling fonctionne seulement pour le jeu de données ayant servi de base à ses calculs. L'outil n'étant pas généralisable, celui-ci a été retiré pour assurer la stabilité actuelle de l'application. Un autre outil est en cours de développement.<br>
+

@@ -2,9 +2,17 @@ fr,en
 Langue,Change language
 Page d'accueil,Home page
 Mise en forme des données,Data formatting
+Informations à rentrer,Input data
 Statistiques exploratoires,Exploratory analyses
+Plot des indicateurs,Indicators plot
+Plot de la structure,Structure plot
 Statistiques descriptives,Descriptive statistics
+Plot des données,Data plot
+Diagnostique d'analyse, Analysis approach
 Statistiques inférentielles,Modelling
+Création des modèles,Models creation
+Représentation des effets,Effects representation
+Puissance statistique, Statistical power
 Bienvenue sur l'application GranulatShiny,Welcome to the GranulatShiny application
 Auteurs,Authors
 Guide utilisateur, User guide

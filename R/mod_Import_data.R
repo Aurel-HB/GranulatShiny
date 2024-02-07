@@ -123,7 +123,7 @@ mod_Import_data_server <- function(input, output, session, r){
     })
 
     tutti_operation <- reactive({
-      #if you wnat to use the package data
+      #if you want to use the package data
       if(input$data == 2){
         data22 <- operation
         data22$DateDeb <-

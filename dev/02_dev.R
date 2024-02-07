@@ -93,6 +93,7 @@ golem::add_fct("diversity_table")
 golem::add_fct("lineplot_creation")
 golem::add_fct("structure_table")
 golem::add_fct("summary_report")
+golem::add_fct("text_list_translator")
 
 
 ## External resources
@@ -107,10 +108,12 @@ catch <- readRDS("catch.rds")
 operation <- readRDS("operation.rds")
 polygon <- readRDS("polygon.rds")
 sauvegarde <- readRDS("sauvegarde.rds")
+list_translate <- readRDS("list_translate.rds")
 usethis::use_data(catch)
 usethis::use_data(operation)
 usethis::use_data(polygon)
 usethis::use_data(sauvegarde)
+usethis::use_data(list_translate)
 file.edit()
 ## Tests ----
 ## Add one line by test you want to create

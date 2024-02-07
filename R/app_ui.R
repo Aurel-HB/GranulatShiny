@@ -38,30 +38,30 @@ app_ui <- function(request) {
           i18n$t("Mise en forme des données"),
           tabName = "forme",
           icon = icon("wand-magic-sparkles"),
-          menuSubItem("Informations à rentrer", tabName = "donnees"),
+          menuSubItem(i18n$t("Informations à rentrer"), tabName = "donnees"),
           menuSubItem("Tables", tabName = "table")
         ),
         menuItem(
           i18n$t("Statistiques exploratoires"),
           tabName = "exploratory",
           icon = icon("eye"),
-          menuSubItem("Plot des indicateurs", tabName = "Indic"),
-          menuSubItem("Plot de la structure", tabName = "Struc")
+          menuSubItem(i18n$t("Plot des indicateurs"), tabName = "Indic"),
+          menuSubItem(i18n$t("Plot de la structure"), tabName = "Struc")
         ),
         menuItem(
           i18n$t("Statistiques descriptives"),
           tabName = "descriptive",
           icon = icon("scroll"),
-          menuSubItem("Plot des données", tabName = "plot"),
-          menuSubItem("Diagnostique d'analyse", tabName = "Diag")
+          menuSubItem(i18n$t("Plot des données"), tabName = "plot"),
+          menuSubItem(i18n$t("Diagnostique d'analyse"), tabName = "Diag")
         ),
         menuItem(
           i18n$t("Statistiques inférentielles"),
           tabName = "glmm",
           icon = icon("fish-fins"),
-          menuSubItem("Création des modèles", tabName = "mod"),
-          menuSubItem("Représentation des effets", tabName = "rep"),
-          menuSubItem("Puissance statistique", tabName = "pui")
+          menuSubItem(i18n$t("Création des modèles"), tabName = "mod"),
+          menuSubItem(i18n$t("Représentation des effets"), tabName = "rep"),
+          menuSubItem(i18n$t("Puissance statistique"), tabName = "pui")
 
         ),
         tags$li(class="dropdown",
@@ -85,8 +85,7 @@ app_ui <- function(request) {
           tabItem(
             tabName = "donnees",
             sidebarPanel(mod_Import_data_ui("Import_data_1"),
-                         mod_Prepare_data_ui("Prepare_data_1")#,
-                         #actionButton("go", "Mettre en forme")
+                         mod_Prepare_data_ui("Prepare_data_1")
                          )  ,
             mainPanel(
               tabBox(id = "tab",

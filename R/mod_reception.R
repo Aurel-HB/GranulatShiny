@@ -35,7 +35,7 @@ mod_reception_ui <- function(id){
                       actionButton("start", "start", icon = icon("ship"))
                  ),
     img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px")
-    )
+  )
 }
 
 #' reception Server Functions

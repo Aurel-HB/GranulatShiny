@@ -16,7 +16,9 @@ mod_Puissance_ui <- function(id){
     # Inputs pour parametrer le test de puissance
     #sidebarPanel(
       h1(i18n$t("En cours de développement")),
-      textOutput(ns("explain"))
+      sidebarPanel(
+        textOutput(ns("explain"))
+      )
     #),
     #Output du grah
     #mainPanel(
@@ -32,11 +34,12 @@ mod_Puissance_ui <- function(id){
 mod_Puissance_server <- function(input, output, session, r){
     ns <- session$ns
 
+    text_info <- reactive({
+      as.character(list_translate[r$lang][1])
+    })
+
     output$explain <- renderText({
-      "L'outil antérieur construit par Mathis Cambreling fonctionne seulement pour le jeu
-      de données ayant servi de base à ses calculs. L'outil n'étant pas
-      généralisable, celui-ci a été retiré pour assurer la stabilité actuelle
-      de l'application. Un autre outil est en cours de développement."
+      text_info()
     })
 }
 
