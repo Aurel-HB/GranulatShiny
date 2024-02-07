@@ -21,6 +21,9 @@ mod_Analyse_choice_ui <- function(id){
 #'
 #' @noRd
 mod_Analyse_choice_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     # Mise en forme des expression reactives

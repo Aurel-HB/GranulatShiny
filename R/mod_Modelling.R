@@ -8,6 +8,9 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Modelling_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     box( solidHeader = FALSE,
@@ -19,15 +22,15 @@ mod_Modelling_ui <- function(id){
          #formulation du modèle
          verbatimTextOutput(ns("modele")),
          downloadButton(ns("downloadModel"),
-                        label = "Telecharger le modele (.rds)"),
+                        label = i18n$t("Telecharger le modele (.rds)")),
          downloadButton(ns("downloadSummary"),
-                        label = "Telecharger le summary (.txt)")
+                        label = i18n$t("Telecharger le summary (.txt)"))
     ),
       #plot de vérification
     box(
       plotOutput(ns("verification")),
       downloadButton(ns("downloadPlot"),
-                     label = "Telecharger le graphique (.png)"),
+                     label = i18n$t("Telecharger le graphique (.png)")),
       width = NULL,
       style = "overflow-x: scroll;",
       collapsible = T,
@@ -42,6 +45,9 @@ mod_Modelling_ui <- function(id){
 #'
 #' @noRd
 mod_Modelling_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     # GLMMs -------------------------------------------------------------------
@@ -153,7 +159,7 @@ mod_Modelling_server <- function(input, output, session, r){
       if(is.null(modele())){return()}
       selectInput(
         ns("choix_sortie"),
-        "Afficher les sorties :",
+        i18n$t("Afficher les sorties :"),
         c(
           "Anova" = "1",
           "Summary" = "2"
@@ -170,7 +176,7 @@ mod_Modelling_server <- function(input, output, session, r){
     observeEvent(r$go2,{
       output$modele <- renderPrint({
         if(is.null(r$choix_sortie)){return()}
-        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle.")}
+        if(class(modele()) == "try-error"){return(i18n$t("Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle."))}
         if (methode() %in% c(1, 2)) {
           if (r$choix_sortie == "1") {
             Anova(modele()[[choix_modele()]], type = "III")
@@ -226,7 +232,7 @@ mod_Modelling_server <- function(input, output, session, r){
       residual <- reactive({
         if (is.null(r$choix_sortie)){return()}
         if (methode()== 3){return()}
-        if(class(modele()) == "try-error"){return("Il y a une erreur lors de la modélisation")}
+        if(class(modele()) == "try-error"){return(i18n$t("Il y a une erreur lors de la modélisation"))}
         #plotQQunif(simulateResiduals(modele()[[choix_modele()]]))
         plot(simulateResiduals(modele()[[choix_modele()]]))
       })

@@ -8,11 +8,14 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Puissance_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     # Inputs pour parametrer le test de puissance
     #sidebarPanel(
-      h1("En cours de développement"),
+      h1(i18n$t("En cours de développement")),
       textOutput(ns("explain"))
     #),
     #Output du grah
@@ -30,8 +33,8 @@ mod_Puissance_server <- function(input, output, session, r){
     ns <- session$ns
 
     output$explain <- renderText({
-      "L'outil construit par Mathis Cambreling fonctionne seulement pour le jeu
-      de données ayant servi de base aux calculs. L'outil n'étant pas
+      "L'outil antérieur construit par Mathis Cambreling fonctionne seulement pour le jeu
+      de données ayant servi de base à ses calculs. L'outil n'étant pas
       généralisable, celui-ci a été retiré pour assurer la stabilité actuelle
       de l'application. Un autre outil est en cours de développement."
     })

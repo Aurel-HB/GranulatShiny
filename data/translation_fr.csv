@@ -37,13 +37,33 @@ Sélectionner la campagne :,Select the survey
 Résumé,Summary
 Voulez-vous retirer les valeurs extrêmes ?,Do you want to remove the ouliers?
 Voulez-vous passer au log ?,Do you want to transform in logarithm?
-Passer au choix de la loi de distribution,Choosing the probility distribution
+Passer au choix de la loi de distribution,Choosing the probability distribution
 Sélectionner la covariable :,Select the covariate:
 Sélectionner l'interaction :,Select the interaction
-Sélectionnez la loi de distribution,Select the probility distribution
+Sélectionnez la loi de distribution,Select the probability distribution
 Après avoir choisi une distribution vous pouvez passer à la construction du modèle,Once you have chosen a distribution you can move on to building the model
 La courbe bleue correspond à la fonction de densité de la variable,The blue curve corresponds to the density function of the variable
 La courbe verte correspond à la loi de distribution tel que les paramètres sont estimés à partir de la moyenne et de l'écart-type de la variable,The green curve corresponds to the probability distribution as estimated from the mean and standard deviation of the variable
 Attention si votre variable contient des valeurs manquantes ou des zéros vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle.,Note that if your variable contains missing values or zeros you will not be able to use a log transformation (lognormal distribution) in the model.
 Lien URL vers les documents de références,URL link to reference documents
 La loi de probabilité choisie n'est pas appropriée ! Veuillez changer de loi.,The probability law chosen is not appropriate! Please change the law.
+Sélectionnez la méthode statistique, Select the statistical method
+Voulez-vous retirer l'interaction ?,Do you want remove the interaction?
+Lancer la modélisation,start modelling
+La variable Y choisie est,The chosen variable Y is
+Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle.,Note that if the interaction has no effect it is automatically removed from the model.
+Ajouter une covariable ?,Add a covariate?
+Ajouter une ou plusieurs covariables ?,Add one or more covariates?
+Afficher les résultats du modèle :,Display model results:
+Voir les effets,See the effects
+Telecharger le modele (.rds),Download the model (.rds)
+Telecharger le summary (.txt),Download the summary (.txt)
+Afficher les sorties :,Display the outputs:
+Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle.,There is an error in the modelling. Please change the distribution or the model.
+Il y a une erreur lors de la modélisation,There is an error in the modelling
+Formulation du modèle :,Model formulation:
+Covariable,Covariate
+Choississez un prédicteur,Choose a predictor
+Choississez un second prédicteur,Choose a second predictor
+Fixez une valeur de la covariable ,Set a value for the covariate 
+En cours de développement,In development

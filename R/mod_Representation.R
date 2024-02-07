@@ -8,11 +8,14 @@
 #'
 #' @importFrom shiny NS tagList
 mod_Representation_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     # Inputs pour parametrer le graph
     sidebarPanel(
-      h4(strong("Formulation du modèle :")),
+      h4(strong(i18n$t("Formulation du modèle :"))),
       htmlOutput(ns("ecriture_modele")),
       hr(),
       #choix du terme
@@ -25,7 +28,7 @@ mod_Representation_ui <- function(id){
         width = "100%"
         ),
       box(
-        title = "Covariable",
+        title = i18n$t("Covariable"),
         solidHeader = TRUE,
         status = "success",
         color = "lime",
@@ -41,8 +44,7 @@ mod_Representation_ui <- function(id){
       #uiOutput(ns("largeur_plot")),
       #uiOutput(ns("hauteur_plot")),
       #telecharger le graphique
-      downloadButton(ns("downloadPlot_effet"), label = "Telecharger
-                     le graphique (.png)")
+      downloadButton(ns("downloadPlot_effet"), label = i18n$t("Telecharger le graphique (.png)"))
     ),
     #Output du grah
     mainPanel( box(
@@ -61,6 +63,9 @@ mod_Representation_ui <- function(id){
 #'
 #' @noRd
 mod_Representation_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     # import of the data
@@ -79,7 +84,7 @@ mod_Representation_server <- function(input, output, session, r){
         if(is.null(modele())){return()}
         selectInput(
           ns("pred_1"),
-          "Choississez un prédicteur",
+          i18n$t("Choississez un prédicteur"),
           choices = c("traitement", "saison", r$covariable),
           multiple = F,
           selected = c("traitement")  # You can set default selected values if needed
@@ -92,7 +97,7 @@ mod_Representation_server <- function(input, output, session, r){
         choix <- c("traitement", "saison", r$covariable)
         selectInput(
           ns("pred_2"),
-          "Choississez un second prédicteur",
+          i18n$t("Choississez un second prédicteur"),
           choices = choix[!(choix %in% input$pred_1)],
           multiple = F,
           selected = c("saison")  # You can set default selected values if needed
@@ -105,7 +110,7 @@ mod_Representation_server <- function(input, output, session, r){
         if(is.null(r$covariable)){return()}
         selectInput(
           ns("cov_1"),
-          paste("Fixez une valeur de la covariable ", r$covariable[1], sep = ""),
+          paste(i18n$t("Fixez une valeur de la covariable "), r$covariable[1], sep = ""),
           choices = r$data_analyse[, r$covariable[1]],
           multiple = F
         )
@@ -118,7 +123,7 @@ mod_Representation_server <- function(input, output, session, r){
       if(length(r$covariable) < 2){return()}
       selectInput(
         ns("cov_2"),
-        paste("Fixez une valeur de la covariable ", r$covariable[2], sep = ""),
+        paste(i18n$t("Fixez une valeur de la covariable "), r$covariable[2], sep = ""),
         choices = r$data_analyse[, r$covariable[2]],
         multiple = F
       )
@@ -131,7 +136,7 @@ mod_Representation_server <- function(input, output, session, r){
         if(length(r$covariable) < 3){return()}
         selectInput(
           ns("cov_3"),
-          paste("Fixez une valeur de la covariable ", r$covariable[3], sep = ""),
+          paste(i18n$t("Fixez une valeur de la covariable "), r$covariable[3], sep = ""),
           choices = r$data_analyse[, r$covariable[3]],
           multiple = F
         )
@@ -258,25 +263,25 @@ mod_Representation_server <- function(input, output, session, r){
     #  }
     #})
 
-    output$largeur_plot <- renderUI({
-      if(input$post_hoc == F){return()}
-      numericInput(
-        ns("largeur_plot"),
-        "Régler la largeur des lettres",
-        value = NULL,
-        step = 0.1
-      )
-    })
-
-    output$hauteur_plot <- renderUI({
-      if(input$post_hoc == F){return()}
-      numericInput(
-        ns("hauteur_plot"),
-        "Régler la hauteur des lettres",
-        value = NULL,
-        step = 0.1
-      )
-    })
+    #output$largeur_plot <- renderUI({
+    #  if(input$post_hoc == F){return()}
+    #  numericInput(
+    #    ns("largeur_plot"),
+    #    "Régler la largeur des lettres",
+    #    value = NULL,
+    #    step = 0.1
+    #  )
+    #})
+#
+    #output$hauteur_plot <- renderUI({
+    #  if(input$post_hoc == F){return()}
+    #  numericInput(
+    #    ns("hauteur_plot"),
+    #    "Régler la hauteur des lettres",
+    #    value = NULL,
+    #    step = 0.1
+    #  )
+    #})
 
 
     ##Plot des effets avec lettre post hoc

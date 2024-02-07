@@ -17,7 +17,7 @@ mod_Prepare_modelling_ui <- function(id){
       uiOutput(ns("variable_y")),
       selectInput(
         ns("methode"),
-        "Sélectionnez la méthode statistique",
+        i18n$t("Sélectionnez la méthode statistique"),
         c(
           "GLMM" = "1",
           "GLM" = "2",
@@ -26,16 +26,16 @@ mod_Prepare_modelling_ui <- function(id){
       ),
       uiOutput(ns("distribution")),
       uiOutput(ns("covariable")),
-      checkboxInput(ns("interaction"), "Voulez-vous retirer l'interaction ?"),
+      checkboxInput(ns("interaction"), i18n$t("Voulez-vous retirer l'interaction ?")),
       textOutput(ns("info")),
 
       hr(),
-      h4(strong("Formulation du modèle :")),
+      h4(strong(i18n$t("Formulation du modèle :"))),
       htmlOutput(ns("ecriture_modele")),
       #htmlOutput(ns("ecriture_distribution")),
       #verbatimTextOutput(ns("test")),
       hr(),
-      actionButton(ns("go2"), "Lancer la modélisation",
+      actionButton(ns("go2"), i18n$t("Lancer la modélisation"),
                    icon = icon("dragon", style='color: #22A433')),
       hr(),
       uiOutput(ns("choix_modele")),
@@ -66,14 +66,14 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
 
     output$variable_y <-
       renderUI({
-        selectInput(ns("y"), "La variable Y choisie est", choices = r$var_name)
+        selectInput(ns("y"), i18n$t("La variable Y choisie est"), choices = r$var_name)
       })
 
     output$distribution <- renderUI({
       if(input$methode == 3){return()}
       selectInput(
         ns("distribution"),
-        "Sélectionnez la loi de distribution",
+        i18n$t("Sélectionnez la loi de distribution"),
         c(
           "Normale",
           "Binomiale" = "binomial",
@@ -87,8 +87,9 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       )
     })
 
-    output$info <- renderText({
-      "Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle."
+    output$info <- renderText({return(
+      i18n$t("Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle.")
+    )
     })
 
     covariable <- reactive({
@@ -109,7 +110,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         if(input$methode == 1){
           selectInput(
             ns("covariable"),
-            "Ajouter une covariable ?",
+            i18n$t("Ajouter une covariable ?"),
             choices = c("year"),
             selected = F,
             multiple = T
@@ -117,7 +118,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
         }else{
           selectInput(
             ns("covariable"),
-            "Ajouter une ou plusieurs covariables ?",
+            i18n$t("Ajouter une ou plusieurs covariables ?"),
             choices = covariable(),
             selected = F,
             multiple = T
@@ -191,7 +192,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
         selectInput(
           ns("choix_modele"),
-          "Afficher les résultats du modèle :",
+          i18n$t("Afficher les résultats du modèle :"),
           c("initial" = "1", "final" = "2"),
           selected = "2"
         )
@@ -212,7 +213,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
 
     output$go_represent <- renderUI({
       if(is.null(r$modele)){return()}
-      actionButton("go_represent", "Voir les effets", icon = icon("ship"))
+      actionButton("go_represent", i18n$t("Voir les effets"), icon = icon("ship"))
     })
 
     ### check point###
