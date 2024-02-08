@@ -11,8 +11,6 @@ mod_Prepare_data_ui <- function(id){
   ns <- NS(id)
   tagList(
     uiOutput(ns("button"))
-    #actionButton(ns("go"), "Mettre en forme",icon = icon("dragon"))
-
   )
 }
 

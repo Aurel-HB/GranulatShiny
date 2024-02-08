@@ -31,7 +31,7 @@ mod_Choix_loi_ui <- function(id){
         "Gamma log",
         "Lognormale"
       )),
-    box(title = "Legende",
+    box(title = i18n$t("Legende"),
         collapsible = FALSE,
         solidHeader = TRUE,
         status = "info",
@@ -68,7 +68,7 @@ mod_Choix_loi_server <- function(input, output, session, r){
   # Render UI parametrage glmms
 
   output$variable_y <- renderText({
-    paste("La variable est ", r$var_name, sep = "")
+    paste(i18n$t("La variable est"), r$var_name, sep = " ")
   })
 
   loi <- reactive({

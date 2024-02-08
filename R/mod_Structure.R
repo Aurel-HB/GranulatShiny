@@ -15,6 +15,8 @@ mod_Structure_ui <- function(id){
   tagList(
     #verbatimTextOutput(ns("test")),
     box(
+      actionButton(ns("info"), "",icon = icon("circle-info")),
+      hr(),
       dataTableOutput(ns("percent")),
       downloadButton(ns("downloadData"),
                      label = i18n$t("Telecharger le tableau (.csv)")),
@@ -26,7 +28,9 @@ mod_Structure_ui <- function(id){
     ),
     box(
       uiOutput(ns("choix_campagne")),
-      plotOutput(ns("plot")),
+      actionButton(ns("info2"), "",icon = icon("circle-info")),
+      actionButton(ns("info3"), "",icon = icon("circle-info")),
+      plotOutput(ns("plot"), width = "100%"),
       #telecharger le graphique
       downloadButton(ns("downloadPlot"),
                      label = i18n$t("Telecharger le graphique (.png)")),
@@ -213,6 +217,37 @@ mod_Structure_server <- function (input, output, session, r){
         )
       })
 
+    ##### information #####
+    observeEvent(input$info,{
+      message <- as.character(list_translate[r$lang][4,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    observeEvent(input$info2,{
+      message <- as.character(list_translate[r$lang][5,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    observeEvent(input$info3,{
+      message <- as.character(list_translate[r$lang][6,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+    ######
 }
 
 ## To be copied in the UI

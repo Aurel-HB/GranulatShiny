@@ -21,8 +21,9 @@ mod_Import_data_ui <- function(id){
       uiOutput(ns("tutti_operation")),
       uiOutput(ns("shpFile")),
       uiOutput(ns("uploadSave")),
+      hr(),
+      textOutput(ns("message")),
       hr()
-
   )
 }
 
@@ -315,6 +316,12 @@ mod_Import_data_server <- function(input, output, session, r){
     })
 
 
+    #####
+    output$message <- renderText({
+      if(input$data == 1){return()}
+      message <- as.character(list_translate[r$lang][1,1])
+      return(message)
+    })
 }
 
 ## To be copied in the UI

@@ -14,6 +14,8 @@ mod_Indicator_ui <- function(id){
   ns <- NS(id)
   tagList(
     box(
+      actionButton(ns("info"), "",icon = icon("circle-info")),
+      hr(),
       dataTableOutput(ns("diversity")),
       downloadButton(ns("downloadData"),
                      label = i18n$t("Telecharger le tableau (.csv)")),
@@ -26,7 +28,8 @@ mod_Indicator_ui <- function(id){
     #verbatimTextOutput(ns("test")),
     box(
       uiOutput(ns("choix_campagne")),
-      plotOutput(ns("lineplots")),
+      actionButton(ns("info2"), "",icon = icon("circle-info")),
+      plotOutput(ns("lineplots"),width = "100%"),
       #telecharger le graphique
       downloadButton(ns("downloadPlot"),
                      label = i18n$t("Telecharger le graphique (.png)")),
@@ -164,6 +167,28 @@ mod_Indicator_server <- function (input, output, session, r){
         }
       )
     })
+
+  ##### information #####
+  observeEvent(input$info,{
+    message <- as.character(list_translate[r$lang][2,1])
+    sendSweetAlert(
+      session = session,
+      title = "",
+      text = message,
+      type = "info"
+    )
+  })
+
+  observeEvent(input$info2,{
+    message <- as.character(list_translate[r$lang][3,1])
+    sendSweetAlert(
+      session = session,
+      title = "",
+      text = message,
+      type = "info"
+    )
+  })
+  ######
 
 }
 

@@ -17,6 +17,7 @@ mod_Stat_ui <- function(id){
            status = "success", #  Valid statuses are: primary, success, info, warning, danger.
            solidHeader = TRUE,
            box(
+             actionButton(ns("info2"), "",icon = icon("circle-info")),
              tableOutput(ns("var_summary")),
              width = NULL,
              style = "overflow-x: scroll;",
@@ -41,6 +42,7 @@ mod_Stat_ui <- function(id){
            collapsed = TRUE,
            style = "overflow-x: scroll;",
            uiOutput(ns("choix_interaction")),
+           actionButton(ns("info3"), "",icon = icon("circle-info")),
            plotOutput(ns("interact"))
       ),
       box( title = "Boxplot",
@@ -49,6 +51,7 @@ mod_Stat_ui <- function(id){
         collapsible = TRUE,
         collapsed = TRUE,
         uiOutput(ns("choix_box")),
+        actionButton(ns("info4"), "",icon = icon("circle-info")),
         plotOutput(ns("boxplot"))
       )
       #box(title = "Coplot",
@@ -82,6 +85,37 @@ mod_Stat_server <- function(input, output, session, r){
       )
     })
 
+    ##### information #####
+    observeEvent(input$info2,{
+      message <- as.character(list_translate[r$lang][7,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    observeEvent(input$info3,{
+      message <- as.character(list_translate[r$lang][8,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    observeEvent(input$info4,{
+      message <- as.character(list_translate[r$lang][9,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+    ######
 
     # variable is the vector of the chosen variable with or without transformation
     variable <- reactive({
