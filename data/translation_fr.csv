@@ -15,6 +15,8 @@ Représentation des effets,Effects representation
 Puissance statistique, Statistical power
 Bienvenue sur l'application GranulatShiny,Welcome to the GranulatShiny application
 Auteurs,Authors
+Lien URL vers les documents de références,URL link to reference documents
+Lien URL vers les documents d'inforamtions,URL link to information documents
 Guide utilisateur, User guide
 Avez-vous vos propres données ?,Do you have your own data?
 Sélectionnez le fichier Tutti Catch (.csv),Select the Tutti Catch file (.csv)
@@ -55,7 +57,6 @@ La courbe bleue correspond à la fonction de densité de la variable,The blue cu
 La courbe verte correspond à la loi de distribution tel que les paramètres sont estimés à partir de la moyenne et de l'écart-type de la variable,The green curve corresponds to the probability distribution as estimated from the mean and standard deviation of the variable
 Attention si votre variable contient des valeurs manquantes ou des zéros vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle.,Note that if your variable contains missing values or zeros you will not be able to use a log transformation (lognormal distribution) in the model.
 La variable est,The variable is
-Lien URL vers les documents de références,URL link to reference documents
 La loi de probabilité choisie n'est pas appropriée ! Veuillez changer de loi.,The probability law chosen is not appropriate! Please change the law.
 Sélectionnez la méthode statistique, Select the statistical method
 Voulez-vous retirer l'interaction ?,Do you want remove the interaction?

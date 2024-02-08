@@ -32,6 +32,11 @@ mod_reception_ui <- function(id){
                       uiOutput(ns("ref_file_url_4")),
                       uiOutput(ns("ref_file_url_5")),
                       hr(),
+         h5(i18n$t("Lien URL vers les documents d'informations")),
+         uiOutput(ns("inf_file_url_1")),
+         uiOutput(ns("inf_file_url_2")),
+         uiOutput(ns("inf_file_url_3")),
+         hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
     img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px")
@@ -65,7 +70,7 @@ mod_reception_server <- function(input, output, session, r){
 
     #"URL link of reference document: ",
     output$ref_file_url_1 <- renderUI({
-      url <- a("WGEXT", href="https://ices-library.figshare.com/articles/report/Working_Group_on_the_Effects_of_Extraction_of_Marine_Sediments_on_the_Marine_Ecosystem_WGEXT_/18621728/1")
+      url <- a("CRR_WGEXT", href="https://ices-library.figshare.com/articles/report/Effects_of_extraction_of_marine_sediments_on_the_marine_environment_2005-2011/18624086")
       tagList(url)
     })
     output$ref_file_url_2 <- renderUI({
@@ -84,6 +89,25 @@ mod_reception_server <- function(input, output, session, r){
     #  url <- a("", href="")
     #  tagList("URL link: ", url)
     #})
+
+
+    #"URL link of information document: ",
+    output$inf_file_url_1 <- renderUI({
+      url <- a("Scientific_report_WGEXT", href="https://ices-library.figshare.com/articles/report/Working_Group_on_the_Effects_of_Extraction_of_Marine_Sediments_on_the_Marine_Ecosystem_WGEXT_/18621728/1")
+      tagList(url)
+    })
+    output$inf_file_url_2 <- renderUI({
+      url <- a("Economie_bleue_granulats_marins", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
+      tagList(url)
+    })
+    output$inf_file_url_3 <- renderUI({
+      url <- a("UNPG_sables_graviers_mer", href="https://sablesetgraviersenmer.fr/")
+      tagList(url)
+    })
+    output$inf_file_url_3 <- renderUI({
+      url <- a("Expertise_granulats_marins", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins")
+      tagList(url)
+    })
 
 }
 
