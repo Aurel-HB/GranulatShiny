@@ -36,6 +36,7 @@ mod_reception_ui <- function(id){
          uiOutput(ns("inf_file_url_1")),
          uiOutput(ns("inf_file_url_2")),
          uiOutput(ns("inf_file_url_3")),
+         uiOutput(ns("inf_file_url_4")),
          hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
@@ -104,7 +105,7 @@ mod_reception_server <- function(input, output, session, r){
       url <- a("UNPG_sables_graviers_mer", href="https://sablesetgraviersenmer.fr/")
       tagList(url)
     })
-    output$inf_file_url_3 <- renderUI({
+    output$inf_file_url_4 <- renderUI({
       url <- a("Expertise_granulats_marins", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins")
       tagList(url)
     })
