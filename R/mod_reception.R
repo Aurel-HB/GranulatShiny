@@ -65,9 +65,9 @@ mod_reception_server <- function(input, output, session, r){
       Laure Simplet, Vincent Badts, Laurent Dubroca, Camille Vogel", sep=""))
     })
 
-    observeEvent(input$guide, {
-      browseURL(paste("file://", "www/apps_guide.html", sep=""))
-    })
+    #observeEvent(input$guide, {
+    #  browseURL(paste("file://", "www/apps_guide.html", sep=""))
+    #})
 
     #"URL link of reference document: ",
     output$ref_file_url_1 <- renderUI({
