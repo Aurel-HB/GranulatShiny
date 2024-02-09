@@ -37,6 +37,7 @@ mod_reception_ui <- function(id){
          uiOutput(ns("inf_file_url_2")),
          uiOutput(ns("inf_file_url_3")),
          uiOutput(ns("inf_file_url_4")),
+         uiOutput(ns("inf_file_url_5")),
          hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
@@ -86,10 +87,6 @@ mod_reception_server <- function(input, output, session, r){
       url <- a("Guide_technique_etude_impact", href="https://www.mineralinfo.fr/fr/actualite/actualite/elaboration-des-etudes-dimpact-granulats-marins-guide-technique-2023")
       tagList(url)
     })
-    #output$ref_file_url_5 <- renderUI({
-    #  url <- a("", href="")
-    #  tagList("URL link: ", url)
-    #})
 
 
     #"URL link of information document: ",
@@ -107,6 +104,10 @@ mod_reception_server <- function(input, output, session, r){
     })
     output$inf_file_url_4 <- renderUI({
       url <- a("Expertise_granulats_marins", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins")
+      tagList(url)
+    })
+    output$inf_file_url_5 <- renderUI({
+      url <- a("Impact_exploitation_granulats_marins", href="https://www.vie-publique.fr/rapport/126797-exploration-ou-exploitation-des-ressources-minerales-marines")
       tagList(url)
     })
 
