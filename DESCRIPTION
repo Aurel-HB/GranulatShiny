@@ -1,8 +1,16 @@
-Package: myGranulatShiny
+Package: GranulatShiny
 Title: Interface Granulat
 Version: 0.0.0.9000
-Authors@R: 
-    person("Hebert--Burggraeve", "Aurel", , "Aurel.Hebert.Burggraeve@ifremer.fr", role = c("cre", "aut"))
+Authors@R: c(
+    person("Aurel", "Hebert--Burggraeve", , "aurelhb722@gmail.com", role = c("cre", "aut"),
+           comment = c(ORCID = "0009-0000-3031-4340")),
+    person("Mathis", "Cambreling", role = "aut"),
+    person("Jehanne", "Rivet", role = "aut"),
+    person("Laure", "Simplet", role = "ctb"),
+    person("Vincent", "Badts", role = "ctb"),
+    person("Laurent", "Dubroca", , "Laurent.Dubroca@ifremer.fr", role = "aut"),
+    person("Camille", "Vogel", , "camille.vogel@ifremer.fr", role = "aut")
+  )
 Description: PKG_DESC.
 License: MIT + file LICENSE
 Depends: 

@@ -21,21 +21,47 @@
 ## to change the name in the app_sys() function in app_config.R /!/
 ##
 golem::fill_desc(
-  pkg_name = "myGranulatShiny", # The Name of the package containing the App
+  pkg_name = "GranulatShiny", # The Name of the package containing the App
   pkg_title = "Interface Granulat", # The Title of the package containing the App
   pkg_description = "PKG_DESC.", # The Description of the package containing the App
-  author_first_name = "Hebert--Burggraeve", # Your First Name
-  author_last_name = "Aurel", # Your Last Name
-  author_email = "Aurel.Hebert.Burggraeve@ifremer.fr", # Your Email
+  author_first_name = "X", # Your First Name
+  author_last_name = "X", # Your Last Name
+  author_email = "X", # Your Email
   repo_url = NULL # The URL of the GitHub Repo (optional)
 )
+
+desc::desc_set_authors(c(person(given = "Aurel",
+                                family = "Hebert--Burggraeve",
+                                role = c("cre", "aut"),
+                                email = "aurelhb722@gmail.com",
+                                comment = c(ORCID = "0009-0000-3031-4340")),
+                         person(given = "Mathis",
+                                family = "Cambreling",
+                                role = "aut"),
+                         person(given = "Jehanne",
+                                family = "Rivet",
+                                role = "aut"),
+                         person(given = "Laure",
+                                family = "Simplet",
+                                role = "ctb"),
+                         person(given = "Vincent",
+                                family = "Badts",
+                                role = "ctb"),
+                         person(given = "Laurent",
+                                family = "Dubroca",
+                                role = "aut",
+                                email = "Laurent.Dubroca@ifremer.fr"),
+                         person(given = "Camille",
+                                family = "Vogel",
+                                role = "aut",
+                                email = "camille.vogel@ifremer.fr")))
 
 ## Set {golem} options ----
 golem::set_golem_options()
 
 ## Create Common Files ----
 ## See ?usethis for more information
-usethis::use_mit_license( "Hebert--Burggraeve Aurel" )  # You can set another license here
+usethis::use_mit_license( "CeCILL-C" )  # You can set another license here
 usethis::use_readme_rmd( open = FALSE )
 usethis::use_code_of_conduct()
 usethis::use_lifecycle_badge( "Experimental" )

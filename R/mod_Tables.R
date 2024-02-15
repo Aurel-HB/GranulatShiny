@@ -90,7 +90,7 @@ mod_Tables_server <- function(input, output, session, r){
     data_analyse <- reactive({
       if(is.null(data_forme())){return()}
       if(is.null(input$var)){return()}
-      if((input$var %in% names(data_forme()))== FALSE){return()}
+      if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
       v <- data_forme()[[1]][input$var]
       y <- data_forme()[[1]]["year"]
       l <- data_forme()[[1]]["station"]

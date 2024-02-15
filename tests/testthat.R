@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/articles/special-files.html
 
 library(testthat)
-library(myGranulatShiny)
+library(GranulatShiny)
 
-test_check("myGranulatShiny")
+test_check("GranulatShiny")

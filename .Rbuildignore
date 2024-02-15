@@ -3,3 +3,4 @@
 ^app\.R$
 ^rsconnect$
 ^LICENSE\.md$
+^codecov\.yml$
