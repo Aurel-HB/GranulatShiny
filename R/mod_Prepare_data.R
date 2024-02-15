@@ -42,6 +42,10 @@ mod_Prepare_data_server <- function(input, output, session, r){
       r$zones
     })
 
+    check_concession <- reactive({
+      r$check_concession
+    })
+
     # sauvegarde des inputs
     save <- reactive({
       save <- data.frame(
@@ -84,6 +88,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
    output$button <- renderUI({
      if(is.null(tutti_catch_filtre())){return()}
      if(is.null(tutti_operation_filtre())){return()}
+     if(check_concession()==FALSE){return()}
      actionButton(ns("go"), i18n$t("Mettre en forme"),
                   icon = icon("dragon", style='color: #22A433'))
    })

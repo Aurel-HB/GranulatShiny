@@ -143,8 +143,14 @@ mod_Structure_server <- function (input, output, session, r){
                  position=position_dodge())+
       # Finished bar plot
       labs(title=paste("Abundance per species for the survey ",
-                         input$choix_campagne, sep=""))+
+                         input$choix_campagne, sep=""), fill = NULL)+
         theme_classic() +
+        # Reduce the size of the plot
+        theme(
+          legend.position = "bottom",
+          legend.box = "horizontal",
+          legend.margin = margin(t = 0, unit = "cm"), # Adjust margin if needed
+          legend.text=element_text(size=8))+ # Adjust legend text size if needed
         scale_fill_viridis_d()
       # change the display of species for too many species
       if (length(data$species) > 5){
@@ -188,7 +194,9 @@ mod_Structure_server <- function (input, output, session, r){
       #       x = "Cumulative Abundance",
       #       y = "Number of Species")
 
-      return(plot_grid(barplot, cumul_plot))
+      p <- plot_grid(cumul_plot, NULL, ncol = 1, rel_heights = c(3,2))
+
+      return(plot_grid(barplot,p, ncol = 2, rel_widths = c(5,4)))
     })
 
     output$plot <- renderPlot({

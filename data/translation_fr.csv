@@ -25,6 +25,7 @@ Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch. Réfé
 Sélectionnez le fichier Tutti operation (.csv),Select the Tutti Operation file (.csv)
 Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice.,The file is in the wrong format! Please refer to the tutti_operation format in the instructions.
 Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_operation file. Refer to the classic tutti format for entering dates.
+Vos fichiers ne correspondent pas à la même concession.,Your files do not correspond to the same concession.
 Sélectionnez les Shapefiles (.shp .shx .dbf),Select the shapefiles (.shp .shx .dbf)
 Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice.,The file is in the wrong format! Please refer to the shapefile format in the instructions.
 Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv),Load the information if you have a backup of the parameters for the area under study (.csv)

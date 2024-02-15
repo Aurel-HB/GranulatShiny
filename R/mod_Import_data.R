@@ -181,7 +181,32 @@ mod_Import_data_server <- function(input, output, session, r){
       data22
     })
 
-    #exporation of the dataset
+    #check if the document are from the same concession
+    check <- reactive({
+      if(is.null(tutti_catch())){return()}
+      if(is.null(tutti_operation())){return()}
+      for(i in length(unique(tutti_catch()['Trait']))){
+        if(unique(tutti_catch()['Trait'])[i,1]==unique(tutti_operation()['Code_Station'][i,1])){
+          check <- TRUE
+        }else{
+          check <- FALSE
+          sendSweetAlert(
+            session = session,
+            title = "Alert !",
+            text = i18n$t("Vos fichiers ne correspondent pas à la même concession."),
+            type = "fail"
+          )
+          }
+      }
+      check
+    })
+
+    observe({
+      r$check_concession <- check()
+    })
+
+    #exportation of the dataset
+
     observe({
       r$tutti_catch <- tutti_catch()
     })
