@@ -10,6 +10,10 @@ output:
 
 # <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
 
+```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
+knitr::include_graphics("inst/app/www/favicon.png")
+```
+
 ## <i class="fa-solid fa-dungeon"></i> Page d'accueil
 
 ```{r, echo=FALSE, warning=FALSE, results = FALSE, message=FALSE}
@@ -18,12 +22,10 @@ library(DT)
 library(ggplot2)
 library(cowplot)
 library(dplyr)
-```
-
-Welcome to the user guide for your app! <br>
-
-```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
-knitr::include_graphics("inst/app/www/favicon.png")
+library(leaflet)
+library(RColorBrewer)
+library(lme4)
+library(DHARMa)
 ```
 
 <br> GranulatShiny est une application Shiny qui automatise le traitement statistique des données collectées dans le cadre des enquêtes dédiées aux ressources halieutiques et à l'ichtyofaune sur les concessions d'extraction de granulats marins. L'application produit des figures et des tableaux standardisés basés sur le "Protocole halieutique", et fournit une interface graphique interactive pour l'analyse sans aucune compétence en codage. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons.
@@ -46,7 +48,7 @@ Les boutons avec une flèche permettent de télécharger des résultats de l'app
 actionButton("tel", "Telecharger la table",icon = icon("download"))
 ```
 
-Enfin, ceux avec un cercle contenant un i son des aides que l'on faire afficher pour mieux comprendre un graphique ou autre.
+Enfin, ceux avec un cercle contenant un i sont des aides que l'on peut faire afficher pour mieux comprendre un graphique ou autres objets proposés par l'application.
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("info", "",icon = icon("circle-info"))
@@ -60,6 +62,61 @@ Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil
 ### Informations à rentrer
 
 La première étape de l'application est l'importation des données.<br> Si vous avez vos données, vous devez sélectionner les 2 premiers fichiers : TuttiCatch et TuttiOperation. Seul le format csv est pris en charge. Le tableau Capture concerne les données de capture provenant de l'échantillonnage des pêcheries et le tableau Opération correspond à toutes les informations dérivées des stations d'échantillonnage (type d'engin, durée des traits de chalut, coordonnées gps, etc.).<br> Attention, si vous n'appliquez pas le bon fichier, un message d'avertissement apparaîtra sur l'interface.<br> Si vous voyez ce message, je vous recommande d'ouvrir l'avis pour comparer le fichier attendu avec votre fichier.Après avoir appliqué le fichier TuttiOperation, une carte apparaîtra et vous aurez la possibilité d'interagir avec les cases Stations d'impact et Stations de référence.
+
+```{r, echo=FALSE, warning=FALSE}
+
+tutti_operation <- readRDS("data/operation.rds")
+map_station <- tutti_operation %>% dplyr::filter(Annee == 1999)
+polygon <- readRDS("data/polygon.rds")
+
+#leaflet
+carte <-
+  leaflet() %>% addTiles() %>% addPolygons(
+    data = polygon,
+    opacity = 1,
+    dashArray = "5,10",
+    label = "Zone de la concession",
+    labelOptions = labelOptions(textsize = "15px"),
+    weight = 3,
+    fillOpacity = 0.1,
+    color = "black"
+  )
+
+for (i in 1:nrow(map_station)) {
+  if (grepl("H", map_station$Code_Station[i])) {
+    carte <-
+      carte %>% addPolylines(
+        lng = c(map_station$LongDeb[i], map_station$LongFin[i]) ,
+        lat = c(map_station$LatDeb[i], map_station$LatFin[i]),
+        label =  paste(
+          map_station$Code_Station[i],
+          ": Zone",
+          map_station$zones[i],
+          "Station impactée du",
+          as.Date(map_station$impact_date_1[i]),
+          "au",
+          map_station$impact_date_2[i]
+        ),
+        labelOptions = labelOptions(textsize = "15px"),
+        color = brewer.pal(n = 9, name = "Reds"),
+        opacity = 0.8
+      )
+  } else {
+    carte <-
+      carte %>% addPolylines(
+        lng = c(map_station$LongDeb[i], map_station$LongFin[i]) ,
+        lat = c(map_station$LatDeb[i], map_station$LatFin[i]),
+        label = paste(map_station$Code_Station[i], ": Station de référence"),
+        labelOptions = labelOptions(textsize = "15px"),
+        color = brewer.pal(n = 9, name = "Blues"),
+        opacity = 0.8
+      )
+  }
+}
+carte <- carte %>% setView(lng = map_station["LongDeb"][1,1],
+                             lat = map_station["LatDeb"][1,1], zoom = 11)
+carte
+```
 
 Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
 
@@ -198,8 +255,15 @@ Cette figure représente l’abondance de chaque espèce par campagne par ordre 
                  position=position_dodge())+
       # Finished bar plot
       labs(title=paste("Abundance per species for the survey ",
-                         "C1", sep=""))+
+                         "C1", sep=""),
+           fill = "")+
         theme_classic() +
+        # Reduce the size of the plot
+        theme(
+          legend.position = "bottom",
+          legend.box = "horizontal",
+          legend.margin = margin(t = 0, unit = "cm"), # Adjust margin if needed
+          legend.text=element_text(size=8))+ # Adjust legend text size if needed
         scale_fill_viridis_d()
       # change the display of species for too many species
       if (length(data$species) > 5){
@@ -227,7 +291,9 @@ Cette figure représente l’abondance de chaque espèce par campagne par ordre 
              x = "Number of Species",
              y = "Cumulative Abundance")
       
-      plot_grid(barplot, cumul_plot)
+      p <- plot_grid(cumul_plot, NULL, ncol = 1, rel_heights = c(3,2))
+
+      plot_grid(barplot,p, ncol = 2, rel_widths = c(5,4))
 ```
 
 Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 3 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
@@ -290,10 +356,19 @@ Après l'exploration des données, il est possible de passer à l'onglet suivant
 
 ### Diagnostique d'analyse
 
-Cet onglet permet de choisir et de visualiser la distribution de probabilité qui correspond le mieux à la variable expliquée. En gris, c'est l'histogramme de fréquence de la variable, en bleu c'est la fonction de densité et en vert c'est la distribution de probabilité. Les paramètres de chaque distribution de probabilité sont approximés à l'aide de la moyenne et de l’écart type de la variable. Vous pouvez changer le type de distribution de probabilité et si elle ne correspond pas du tout, un message d'avertissement apparaît.<br>
+Cet onglet permet de choisir et de visualiser la distribution de probabilité qui correspond le mieux à la variable expliquée. En gris, c'est l'histogramme de fréquence de la variable, en bleu c'est la fonction de densité et en vert c'est la distribution de probabilité. Les paramètres de chaque distribution de probabilité sont approximés à l'aide de la moyenne et de l’écart type de la variable. Vous pouvez changer le type de distribution de probabilité et si elle ne correspond pas du tout, un message d'avertissement apparaît. Dans l'exemple c'est l'abondance qui est représenté et la loi choisie est une loi Lognormale.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
+source("R/fct_probability_distribution.R")
 
+ggplot(data = dataset, aes(x = Abun, y = after_stat(density))) +
+        geom_histogram(colour = "black", fill = "grey", bins = 100) +
+        geom_density(alpha = .3, fill = "blue") +
+        geom_area(aes( y= probability_distribution(dataset$Abun, "Lognormale")),
+                  color="darkslategray", fill = "darkseagreen",
+                  alpha = 0.4, linewidth = 1)+
+        xlab("Abun") +
+        theme_minimal()
 ```
 
 Lorsque vous êtes satisfait de la distribution des probabilités, vérifiez la phrase au-dessus du bouton "Passer à la modélisation". Il y a deux possibilités. Dans le cas où vous avez moins de 30 observations, la phrase dit : "Vous n'avez pas assez de valeurs pour passer à la partie modélisation". Dans ce cas, vous devez changer la variable de travail car il n'y a pas assez de valeur pour créer un modèle pertinent. A l'inverse, vous aurez : "Après avoir choisi une distribution de probabilité, vous pouvez passer à la construction du modèle". Lorsque vous avez terminé, appuyez sur le bouton "passer à la modélisation".
@@ -308,19 +383,22 @@ Selon le type de modèle que vous choisissez, vous aurez une première formulati
 
 Et pour GLMM et GLM, vous devrez choisir une distribution de probabilité. Par défaut, il propose la dernière distribution de probabilité que vous avez vérifiée dans la partie précédente. Attention la méthode utilisée pour la modélisation est une méthode itérative, il se peut donc que la distrubution qui semblait la plus adéquate dans la partie précédente n'est pas forcément celle qui permettra de mieux faire converger le modèle. Néanmoins la partie d'avant est là pour sélectionner un nombre de distribution possible pour ne pas avoir à tous tester ici.<br>
 
-Message sur le BACI !!! <br>
+Le suivi des concessions d'extraction de granulés est basé sur la méthode BACI (Before After Control Impact). La méthode BACI permet de tester les différences entre l'avant et l'après, et entre le contrôle et l'impact. Et pour chaque année de suivi, les enquêtes doivent être réparties dans les différentes saisons de la zone. <br>
 
 Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br> La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
 
+GLM <- glm(log(Abun) ~ traitement+saison, data = dataset, family = gaussian(link = identity))
+summary(GLM)
 ```
 
 L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test  de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.
 
 ```{r, echo=FALSE, warning=FALSE}
-
+plot(simulateResiduals(GLM))
 ```
+Dans le cas de l'exemple, le test de dispersion n'est pas significatif donc l'écart-type observé est proche de celui simulé. 
 
 ### Représentation des effets
 

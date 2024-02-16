@@ -6,6 +6,11 @@
 \usage{
 probability_distribution(vector, law)
 }
+\arguments{
+\item{vector}{an integer}
+
+\item{law}{an character with the name of the probability distribution}
+}
 \value{
 a vector density of a distribution probability
 }

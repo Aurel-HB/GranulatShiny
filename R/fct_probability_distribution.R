@@ -4,6 +4,9 @@
 #' and calculate the values of the probability distribution with the parameters
 #' of a database
 #'
+#' @param vector an integer
+#' @param law an character with the name of the probability distribution
+#'
 #' @return a vector density of a distribution probability
 #'
 #'
