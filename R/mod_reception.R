@@ -38,6 +38,7 @@ mod_reception_ui <- function(id){
          uiOutput(ns("inf_file_url_3")),
          uiOutput(ns("inf_file_url_4")),
          uiOutput(ns("inf_file_url_5")),
+         uiOutput(ns("inf_file_url_6")),
          hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
@@ -108,6 +109,10 @@ mod_reception_server <- function(input, output, session, r){
     })
     output$inf_file_url_5 <- renderUI({
       url <- a("Impact_exploitation_granulats_marins_(9)", href="https://www.vie-publique.fr/rapport/126797-exploration-ou-exploitation-des-ressources-minerales-marines")
+      tagList(url)
+    })
+    output$inf_file_url_6 <- renderUI({
+      url <- a("Cartographie_ressources_minérales_(10)", href="https://sextant.ifremer.fr/granulats-marins/Ressources-minerales")
       tagList(url)
     })
 

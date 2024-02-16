@@ -90,6 +90,7 @@ mod_Tables_server <- function(input, output, session, r){
     data_analyse <- reactive({
       if(is.null(data_forme())){return()}
       if(is.null(input$var)){return()}
+      # to avoid bug when you switch with another concession data :
       if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
       v <- data_forme()[[1]][input$var]
       y <- data_forme()[[1]]["year"]
