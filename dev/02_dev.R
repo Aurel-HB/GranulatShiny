@@ -104,17 +104,28 @@ golem::add_css_file( "custom" )
 
 ## Add internal datasets ----
 ## If you have data in your package
-catch <- readRDS("catch.rds")
-operation <- readRDS("operation.rds")
-polygon <- readRDS("polygon.rds")
-sauvegarde <- readRDS("sauvegarde.rds")
-list_translate <- readRDS("list_translate.rds")
+
+# this command are to remind that you to first import in your r environment
+# to then save as data in the app ####
+#catch <- readRDS("catch.rds")
+#operation <- readRDS("operation.rds")
+#polygon <- readRDS("polygon.rds")
+#sauvegarde <- readRDS("sauvegarde.rds")
+#list_translate <- readRDS("list_translate.rds")
+# Read the content of the text file
+#intro_content <- readLines("message_intro_fr.txt")
+# Join the lines into a single string
+#intro_text <- paste(intro_content, collapse = "\n")
+
 usethis::use_data(catch)
 usethis::use_data(operation)
 usethis::use_data(polygon)
 usethis::use_data(sauvegarde)
 usethis::use_data(list_translate)#overwrite = T
+usethis::use_data(intro_text_fr)
+usethis::use_data(intro_text_en)
 file.edit()
+
 ## Tests ----
 ## Add one line by test you want to create
 usethis::use_test( "app" )

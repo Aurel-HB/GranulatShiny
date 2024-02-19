@@ -16,9 +16,10 @@ mod_reception_ui <- function(id){
 
   tagList(
     h1(i18n$t("Bienvenue sur l'application GranulatShiny")),
-    box( solidHeader = F,
+    sidebarPanel(
+      box( solidHeader = F,
                       collapsible = F,
-                      width = 5,
+                      width = "100%",
                       textOutput(ns("author")),
                       br(),
                       actionButton(ns("guide"),
@@ -42,8 +43,25 @@ mod_reception_ui <- function(id){
          hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
-    img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px")
-  )
+      br()),
+    #img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px"),
+    mainPanel(
+      tags$style(HTML("
+      /* Define CSS styling for the box */
+      .scroll-box {
+        height: 50vh; /* Set height to 50% of the viewport height */
+        overflow-y: auto; /* Enable vertical scrolling */
+        padding: 10px; /* Add padding */
+      }
+    ")),
+      img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px"),
+    box( solidHeader = T,
+         collapsible = F,
+         title = i18n$t("Cadre pour l'extraction de granulats marins"),
+         status = "warning",
+         class = "scroll-box",  # Add class to apply custom styling
+         textOutput(ns("intro")))
+  ))
 }
 
 #' reception Server Functions
@@ -114,6 +132,20 @@ mod_reception_server <- function(input, output, session, r){
     output$inf_file_url_6 <- renderUI({
       url <- a("Cartographie_ressources_minérales_(10)", href="https://sextant.ifremer.fr/granulats-marins/Ressources-minerales")
       tagList(url)
+    })
+
+
+
+
+    # Output the intro text
+    output$intro <- renderText({
+      if(is.null(r$lang)){return()}
+      else if(r$lang == "fr"){
+        return(intro_text_fr)
+      }
+      else {#(r$lang == "en"){
+        return(intro_text_en)
+      }
     })
 
 }
