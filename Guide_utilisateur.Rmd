@@ -15,7 +15,6 @@ knitr::include_graphics("inst/app/www/favicon.png")
 ```
 
 ## <i class="fa-solid fa-dungeon"></i> Page d'accueil
-
 ```{r, echo=FALSE, warning=FALSE, results = FALSE, message=FALSE}
 library(shiny)
 library(DT)
