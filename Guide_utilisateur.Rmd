@@ -15,6 +15,7 @@ knitr::include_graphics("inst/app/www/favicon.png")
 ```
 
 ## <i class="fa-solid fa-dungeon"></i> Page d'accueil
+
 ```{r, echo=FALSE, warning=FALSE, results = FALSE, message=FALSE}
 library(shiny)
 library(DT)
@@ -43,7 +44,7 @@ Ceux portant un petit dragon désignent une étape obligatoire.
 actionButton("go", "Mettre en forme",icon = icon("dragon", style='color: #22A433'))
 ```
 
-Les boutons avec une flèche permettent de télécharger des résultats de l'application. Les formats sont (csv, png, txt, rds).
+Les boutons avec une flèche permettent de télécharger des résultats de l'application. Les formats possibles sont (csv, png, txt, rds).
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("tel", "Telecharger la table",icon = icon("download"))
@@ -55,14 +56,13 @@ Enfin, ceux avec un cercle contenant un i sont des aides que l'on peut faire aff
 actionButton("info", "",icon = icon("circle-info"))
 ```
 
-
 Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil dans l'application.
 
 ## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
 
 ### Informations à rentrer
 
-La première étape de l'application est l'importation des données.<br> Si vous avez vos données, vous devez sélectionner les 2 premiers fichiers : TuttiCatch et TuttiOperation. Seul le format csv est pris en charge. Le tableau Capture concerne les données de capture provenant de l'échantillonnage des pêcheries et le tableau Opération correspond à toutes les informations dérivées des stations d'échantillonnage (type d'engin, durée des traits de chalut, coordonnées gps, etc.).<br> Attention, si vous n'appliquez pas le bon fichier, un message d'avertissement apparaîtra sur l'interface.<br> Si vous voyez ce message, je vous recommande d'ouvrir l'avis pour comparer le fichier attendu avec votre fichier.Après avoir appliqué le fichier TuttiOperation, une carte apparaîtra et vous aurez la possibilité d'interagir avec les cases Stations d'impact et Stations de référence.
+La première étape de l'application est l'importation des données.<br> Si vous avez vos données, vous devez sélectionner les 2 premiers fichiers : TuttiCatch et TuttiOperation. Seul le format csv est pris en charge. Le tableau Capture concerne les données de capture provenant de l'échantillonnage des pêcheries et le tableau Opération correspond à toutes les informations dérivées des stations d'échantillonnage (type d'engin, durée des traits de chalut, coordonnées gps, etc.).<br> Attention, si vous n'appliquez pas le bon fichier, un message d'avertissement apparaîtra sur l'interface.<br> Si vous voyez ce message, il est recommandé d'ouvrir l'avis pour comparer le fichier attendu avec votre fichier. Après avoir appliqué le fichier TuttiOperation, une carte apparaîtra et vous aurez la possibilité d'interagir avec les cases Stations d'impact et Stations de référence.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -119,14 +119,13 @@ carte <- carte %>% setView(lng = map_station["LongDeb"][1,1],
 carte
 ```
 
-Vous pouvez importer les fichiers de forme de la zone d'étude. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient rouge pour la station impactée (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton pour passer à la partie suivante. Si vous n'appuyez pas sur le bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
+Pour une meilleure visualisation, vous pouvez importer les fichiers de forme de la zone d'étude. Dans ce cas, celle-ci s'affichera sur la carte. Dans la case stations d'impact, vous pouvez vérifier et modifier la période d'étude. Vous devez également écrire dans l'espace correspondant les stations qui sont impactées par le site d'extraction. La couleur des différents prélèvements devient alors rouge pour les stations impactées (un type de rouge par prélèvement) (figure ci-dessous). Dans la case stations de référence, vous pouvez indiquer s'il y a des stations à retirer de l'analyse.<br> Si vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez le télécharger et toutes les cases sont remplies automatiquement.<br> Enfin, lorsque vous êtes prêt, vous pouvez appuyer sur le bouton avec un dragon vert pour passer à la partie suivante. Si vous n'appuyez pas sur ce bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. Si vous avez plus d'un site à analyser, vous pouvez revenir dans cet onglet et changer les fichiers puis appuyer à nouveau sur le bouton.<br>
 
-Si vous n'avez pas de données vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement. En faisant le choix de travailler à partir des données mises à disposition avec l’outil, vous acceptez de faire l’analyse sur une concession fictive qui serait située dans le Golfe de Gascogne. Pour ce jeu de données fictif, on considère une concession en exploitation de 2000 à 2030, pour laquelle un suivi du compartiment halieutique a été mis en place tous les 5 ans. Le plan d’échantillonnage fictif prévoit l’échantillonnage de 10 stations dans la concession et 10 stations hors de la concession. Ce choix ne correspond pas à un plan d’échantillonnage qui aurait été élaboré en connaissance des conditions environnementales du site (i.e. faciès sédimentaires, habitats benthiques) et ne correspond donc pas aux recommandations du protocole halieutique de référence. Pour éviter toute confusion, les espèces présentes dans ce jeu de données sont fictives également. Ce jeu de données a une vocation pédagogique, il ne correspond à aucun cas réel et ne peut donc apparaître dans des documents à valeur administrative (i.e. rapports de suivi, état initial de l’environnement, état de référence avant travaux…).
-
+Si vous n'avez pas de données, vous pouvez l'indiquer et l'application chargera directement les données d'une concession factice. Les étapes décrites avant se feront automatiquement. En faisant le choix de travailler à partir des données mises à disposition avec l’outil, vous acceptez de faire l’analyse sur une concession fictive qui serait située dans le Golfe de Gascogne. Pour ce jeu de données fictif, on considère une concession en exploitation de 2000 à 2030, pour laquelle un suivi du compartiment halieutique a été mis en place tous les 5 ans. Le plan d’échantillonnage fictif prévoit l’échantillonnage de 10 stations dans la concession et 10 stations hors de la concession. Ce choix ne correspond pas à un plan d’échantillonnage qui aurait été élaboré en connaissance des conditions environnementales du site (i.e. faciès sédimentaires, habitats benthiques) et ne correspond donc pas aux recommandations du protocole halieutique de référence. Pour éviter toute confusion, les espèces présentes dans ce jeu de données sont fictives également. Ce jeu de données a une vocation pédagogique, il ne correspond à aucun cas réel et ne peut donc apparaître dans des documents à valeur administrative (i.e. rapports de suivi, état initial de l’environnement, état de référence avant travaux…).
 
 ### Table
 
-Dans l'onglet des tableaux, il y a un tableau de données à droite et une partie interactive à gauche. Le tableau affiché est calculé à partir des données renseignées dans la partie d'avant. Les fonctions de mises en formes du tableau vont calculer l'abundance, la biomasse et différents indicateurs de diversité pour chaque station et chaque campagne. La variable indicatrice de l'état de chaque station (sans traitement ou traitement) renseigne si la sation est dans la concession et donc impacté par les travaux ou si la station est en dehors de l'action de la concession.
+Dans l'onglet des tableaux, il y a un tableau de données à droite et une partie interactive à gauche. Le tableau affiché est calculé à partir des données renseignées dans la partie d'avant. Les fonctions de mises en formes du tableau vont calculer l'abundance, la biomasse et différents indicateurs de diversité pour chaque station et chaque campagne. La variable indicatrice de l'état de chaque station (sans traitement ou traitement) renseigne si la sation est dans la concession et donc impacté par les travaux ou si la station est en dehors de l'action de la concession. Dans le cas d'un état initiale, les stations dans la concession se voient attribuer l'état sans traitement jusqu'à la date de début d'exploitation.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -146,14 +145,13 @@ datatable(dataset, callback = callback)
 
 ```
 
-Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher". Il est possible de télécharger l'affichage du tableau de données et le paramétrage utilisé dans l'onglet des données de charge. Il faut ensuite choisir une variable expliquée sur laquelle effectuer la partie statistique descriptive. Néanmoins vous pouvez décidez de réaliser la partie statistique exploratoire ou de passer directement à la partie statistique descriptive.
+Vous pouvez changer l'affichage du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher". Il est possible de télécharger l'affichage du tableau de données et le paramétrage utilisé dans l'onglet d'importation des données. Il faut ensuite choisir une variable que l'on cherche à expliquer en fonction de l'environnement et de l'extraction sur laquelle effectuer l'analyse statistique. Néanmoins vous pouvez décidez de réaliser la partie statistique exploratoire qui s'intéresse à la communauté dans sa globalité ou de passer directement à la partie statistique descriptive qui se concentre sur une variable spécifique.
 
 ## <i class="fa-solid fa-eye"></i> Statistiques exploratoires
 
 ### Plot des indicateurs
 
-Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance de la communauté en comparant la zone totale avec celle de la concession et celle en dehors de la concession. Les indicateurs présentés sont ceux référencés dans le protocole halieutique article 8.4.1. Ce tableau affiche les valeurs d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Elles sont calculées à partir des valeurs obtenues en chaque station échantillonnée. 
-
+Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance de la communauté en comparant la zone totale avec celle de la concession et celle en dehors de la concession. Les indicateurs présentés sont ceux référencés dans le protocole halieutique article 8.4.1. Ce tableau affiche les valeurs d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson en moyenne à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Elles sont calculées à partir des valeurs obtenues en chaque station échantillonnée.
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_diversity_table.R")
@@ -181,7 +179,7 @@ show_data_indic <- data.frame("ID_campagne" = data_indic[,1], show_data_indic)
 datatable(show_data_indic, callback = callback)
 ```
 
-Les graphiques proposés en dessous représentent les valeurs moyennes (point) et les percentiles 5 et 95 (barres hautes et basses) obtenus pour les mêmes indicateurs que ceux du tableau en fonction de la campagne sélectionnée (Protocole halieutique 8.4.1). L’intérêt de ces graphiques est  de pouvoir visualiser rapidement les différences entre la zone de concession et la zone de référence pour chaque indicateur.
+Les graphiques proposés en dessous représentent les valeurs moyennes (points) et les percentiles 5 et 95 (barres hautes et basses) obtenus pour les mêmes indicateurs que ceux du tableau en fonction de la campagne sélectionnée (Protocole halieutique 8.4.1). L’intérêt de ces graphiques est de pouvoir visualiser rapidement les différences entre la zone de concession et la zone de référence pour chaque indicateur.
 
 ```{r, echo=FALSE, warning=FALSE, fig.height = 9, fig.width = 16}
 source("R/fct_lineplot_creation.R")
@@ -195,11 +193,11 @@ frise <- plot_grid(abun_plot, biom_plot, richness_plot,
                        shannon_plot, simpson_plot)
 frise
 ```
+<br> L'intérêt de ces approches est de pouvoir comparer la communauté halieutique à plusieurs échelles. Dans un premier temps, la comparaison est accès sur intérieur ou extérieur de la concession. Mais si les campagnes sont regardées les unes après les autres, il pourrait être possible de distinguer des changements au cours du temps. Il ya à la fois un aspect spatial et temporel.
 
 ### Plot de la structure
 
-Ce tableau représente le pourcentage de chaque espèce présente pour chaque campagne d'échantillonnage (Protocole halieutique 8.4.1). Le tableau permet de suivre l'évolution des populations d'espèces au fil du temps et offre une perspective précieuse sur les tendances de population. En observant les variations des pourcentages d'espèces d'une année à  l'autre il est possible de détecter des changements écologiques  significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Il permet aussi  d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin. Enfin, il permet d'évaluer l'impact de la gestion mises en place sur la communauté de poissons.
-
+Ce tableau représente le pourcentage de chaque espèce présente pour chaque campagne d'échantillonnage (Protocole halieutique 8.4.1). Le tableau permet de suivre l'évolution des populations d'espèces au fil du temps et offre une perspective sur les tendances de population. En observant les variations des pourcentages d'espèces d'une année à  l'autre il est possible de détecter des changements écologiques  significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Il permet aussi  d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin. Enfin, il permet d'évaluer l'impact de la gestion mise en place sur la communauté de poissons.
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_structure_table.R")
@@ -298,14 +296,14 @@ Cette figure représente l’abondance de chaque espèce par campagne par ordre 
       plot_grid(barplot,p, ncol = 2, rel_widths = c(5,4))
 ```
 
-Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 3 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
+La première figure représente l'abondance de chaque espèce pour une campagne dans un histogramme ordonné par ordre d’abondance décroissante. Cela permet d'identifier les espèces dominantes, de visualiser les tendances temporelles, de détecter les variations saisonnières et annuelles, de comparer les données entre différentes campagnes et de communiquer les résultats de manière claire et concise.
+La deuxième figure est une courbe d'abondance cumulée en fonction du nombre d'espèces par ordre d'abondance décroissante.  L'abondance cumulée se réfère à la somme cumulative des abondances des  espèces dans un ensemble de données, en commençant par l'espèce la plus  abondante et en ajoutant successivement les abondances des espèces  suivantes dans l'ordre décroissant. La courbe d'abondance cumulée permet d'évaluer la diversité et la  répartition des espèces dans un écosystème ou dans un échantillon  biologique. Plus la courbe est plate, plus la communauté est  diversifiée alors qu’une courbe qui  monte rapidement puis s'aplatit indique une communauté où quelques espèces sont très abondantes tandis que la plupart des espèces sont  rares. Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 3 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
 
 ## <i class="fa-solid fa-scroll"></i> Statistiques descriptives
 
 ### Plot des données
 
-Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable Dans un premier temps le tableau renseigne sur le nombre de zéro présent, la longueur totale de la série de valeurs et un la fraction du nombres de zéros et valeurs manquantes sur le nombre de valeurs totales. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. Enfin, l’histogramme montre la répartition des valeurs en fréquence.
- <br>
+Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable Dans un premier temps le tableau renseigne sur le nombre de zéro présent, la longueur totale de la série de valeurs et un la fraction du nombres de zéros et valeurs manquantes sur le nombre de valeurs totales. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. Enfin, l’histogramme montre la répartition des valeurs en fréquence. <br>
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_numeric_summary.R")
@@ -325,8 +323,7 @@ ggplot(data, aes(x = variable))+
 
 ```
 
-Un diagramme d'interaction peut représenter la manière dont différentes entités ou variables interagissent entre elles et ainsi comprendre les dépendances qui existent entre elles. Dans GranulatShiny le diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et la campagne d’échantillonnage. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur.Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact.
-<br>
+Dans la première boite bleue à gauche il est possible de visuliser des diagrammes d'intéractions. Un diagramme d'interaction peut représenter la manière dont différentes entités ou variables interagissent entre elles et ainsi comprendre les dépendances qui existent entre elles. Dans GranulatShiny le diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et la campagne d’échantillonnage. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur.Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact. <br>
 
 ```{r, echo=FALSE, warning=FALSE}
 interaction.plot(x.factor=dataset$saison,
@@ -337,7 +334,7 @@ interaction.plot(x.factor=dataset$saison,
                          xlab = "", ylab = "")
 ```
 
-La boite à moustache ou boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans GranulatShiny, la série de la variable expliquée (ici l'abondance) dans la zone avec impact est comparé avec celle de  la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
+Dans la deuxième boite bleue à gauche il est possible de visuliser des boites à moustaches. La boite à moustache ou boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans GranulatShiny, la série de la variable expliquée (ici l'abondance) dans la zone avec impact est comparé avec celle de la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -354,7 +351,7 @@ plot_grid(b1,b2)
 
 ```
 
-Après l'exploration des données, il est possible de passer à l'onglet suivant en appuyant sur le bouton "Choisir la probabilité de distribution" ou en cliquant sur“diagnostique d’analyse”.
+Après l'exploration des données, il est possible de passer à l'onglet suivant en appuyant sur le bouton "Choisir la probabilité de distribution" ou en cliquant sur “diagnostique d’analyse”.
 
 ### Diagnostique d'analyse
 
@@ -395,17 +392,18 @@ GLM <- glm(log(Abun) ~ traitement+saison, data = dataset, family = gaussian(link
 summary(GLM)
 ```
 
-L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test  de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
 plot(simulateResiduals(GLM))
 ```
+
 <br>Dans le cas de l'exemple, le test de dispersion n'est pas significatif donc l'écart-type observé est proche de celui simulé. Par contre, les tests de Kolmogorov-Smirnov et de Valeur aberrante sont signifcatifs, ils apparaisent en rouge, il y a donc un problème. Il est possible alors de chercher un autre modèle qui s'ajusterait mieux. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
 
 ### Représentation des effets
 
-Cette onglet permet de visualiser graphiquement les effets des variables explicatives sur la variable expliquée.
-D'abord vous devez choisir les deux prédicteurs à représenter.<br>
+Cette onglet permet de visualiser graphiquement les effets des variables explicatives sur la variable expliquée. D'abord vous devez choisir les deux prédicteurs à représenter.<br>
+
 ```{r, echo=FALSE, warning=FALSE}
       #choix du terme
       box(
@@ -425,8 +423,9 @@ D'abord vous devez choisir les deux prédicteurs à représenter.<br>
         width = "100%"
         )
 ```
-Si vous avez plusieurs covariables vous devez les fixer afin de pouvoir visualiser le graphique. Attention si vous avez réalisé un modèle de type PERMANOVA cette section n'est pas sollicité et la fenêtre graphique sera blanche. <br>
-Dans l'exemple d'un GLM qui regarde l'abundance totale en fonction du traitement et de la saison, voici le graphique obtenu :
+
+Si vous avez plusieurs covariables vous devez les fixer afin de pouvoir visualiser le graphique. Attention si vous avez réalisé un modèle de type PERMANOVA cette section n'est pas sollicité et la fenêtre graphique sera blanche. <br> Dans l'exemple d'un GLM qui regarde l'abundance totale en fonction du traitement et de la saison, voici le graphique obtenu :
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 ggpredict(GLM, terms = c("traitement", "saison"))|> plot()
 ```
@@ -434,4 +433,3 @@ ggpredict(GLM, terms = c("traitement", "saison"))|> plot()
 ### Puissance statistique
 
 Cette partie est en cours de développement. L'outil antérieur construit par Mathis Cambreling fonctionne seulement pour le jeu de données ayant servi de base à ses calculs. L'outil n'étant pas généralisable, celui-ci a été retiré pour assurer la stabilité actuelle de l'application. Un autre outil est en cours de développement.<br>
-
