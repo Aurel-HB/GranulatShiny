@@ -131,6 +131,7 @@ Dans l'onglet des tableaux, il y a un tableau de données à droite et une parti
 ```{r, echo=FALSE, warning=FALSE}
 
 dataset <- readRDS("data/complete_dataset.rds")
+dataset$saison <- factor(dataset$saison, levels = c("Winter","Spring", "Summer", "Autumn"))
 
 # Define the callback function to add custom HTML and CSS
 callback <- JS(
