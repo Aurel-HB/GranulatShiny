@@ -25,6 +25,8 @@ library(leaflet)
 library(RColorBrewer)
 library(lme4)
 library(DHARMa)
+library(shinydashboard)
+library(ggeffects)
 ```
 
 <br> GranulatShiny est une application Shiny qui automatise le traitement statistique des données collectées dans le cadre des enquêtes dédiées aux ressources halieutiques et à l'ichtyofaune sur les concessions d'extraction de granulats marins. L'application produit des figures et des tableaux standardisés basés sur le "Protocole halieutique", et fournit une interface graphique interactive pour l'analyse sans aucune compétence en codage. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons.
@@ -392,16 +394,41 @@ GLM <- glm(log(Abun) ~ traitement+saison, data = dataset, family = gaussian(link
 summary(GLM)
 ```
 
-L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test  de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer le résidu du modèle. Le premier graphique représente le résidu attendu par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test  de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
 plot(simulateResiduals(GLM))
 ```
-Dans le cas de l'exemple, le test de dispersion n'est pas significatif donc l'écart-type observé est proche de celui simulé. 
+<br>Dans le cas de l'exemple, le test de dispersion n'est pas significatif donc l'écart-type observé est proche de celui simulé. Par contre, les tests de Kolmogorov-Smirnov et de Valeur aberrante sont signifcatifs, ils apparaisent en rouge, il y a donc un problème. Il est possible alors de chercher un autre modèle qui s'ajusterait mieux. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
 
 ### Représentation des effets
 
-Visualize the effects of your models.
+Cette onglet permet de visualiser graphiquement les effets des variables explicatives sur la variable expliquée.
+D'abord vous devez choisir les deux prédicteurs à représenter.<br>
+```{r, echo=FALSE, warning=FALSE}
+      #choix du terme
+      box(
+        title = "Predictor",
+        solidHeader = TRUE,
+        status = "danger",
+        selectInput( "pred_1",
+          label = "Choississez un premier prédicteur",
+          choices = c("traitement","saison"),
+          multiple = F,
+          selected = c("traitement")),
+        selectInput("pred_2",
+          label = "Choississez un second prédicteur",
+          choices = c("traitement","saison"),
+          multiple = F,
+          selected = c("saison")),
+        width = "100%"
+        )
+```
+Si vous avez plusieurs covariables vous devez les fixer afin de pouvoir visualiser le graphique. Attention si vous avez réalisé un modèle de type PERMANOVA cette section n'est pas sollicité et la fenêtre graphique sera blanche. <br>
+Dans l'exemple d'un GLM qui regarde l'abundance totale en fonction du traitement et de la saison, voici le graphique obtenu :
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+ggpredict(GLM, terms = c("traitement", "saison"))|> plot()
+```
 
 ### Puissance statistique
 

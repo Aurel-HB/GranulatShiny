@@ -92,10 +92,15 @@ mod_Tables_server <- function(input, output, session, r){
       if(is.null(input$var)){return()}
       # to avoid bug when you switch with another concession data :
       if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
+      # to levels the season in the chronological order
+      permutation <- order(data_forme()[[1]]$date)
+      permuted <-data_forme()[[1]][permutation,]
+
       v <- data_forme()[[1]][input$var]
       y <- data_forme()[[1]]["year"]
       l <- data_forme()[[1]]["station"]
-      s <- data_forme()[[1]]["saison"]
+      s <- factor(data_forme()[[1]]$saison,
+                  unique(permuted$saison))
       t <- data_forme()[[1]]["traitement"]
       #i <- data_forme()[[1]]["interaction"]
       c <- data_forme()[[1]]["campagne"]
