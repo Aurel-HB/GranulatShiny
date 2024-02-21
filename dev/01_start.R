@@ -32,7 +32,7 @@ golem::fill_desc(
 
 desc::desc_set_authors(c(person(given = "Aurel",
                                 family = "Hebert--Burggraeve",
-                                role = c("cre", "aut"),
+                                role = c("aut"),
                                 email = "aurelhb722@gmail.com",
                                 comment = c(ORCID = "0009-0000-3031-4340")),
                          person(given = "Mathis",
