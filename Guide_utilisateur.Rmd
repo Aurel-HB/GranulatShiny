@@ -2,10 +2,12 @@
 title: "Guide_utilisateur"
 author: "Aurel Hebert Burggraeve"
 date: "2024-01-24"
-output:   
+output:
   html_document:
     toc: true
     toc_float: true
+  pdf_document:
+    toc: true
 ---
 
 # <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
