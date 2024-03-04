@@ -91,46 +91,46 @@ mod_reception_server <- function(input, output, session, r){
 
     #"URL link of reference document: ",
     output$ref_file_url_1 <- renderUI({
-      url <- a("CRR_WGEXT_(1)", href="https://ices-library.figshare.com/articles/report/Effects_of_extraction_of_marine_sediments_on_the_marine_environment_2005-2011/18624086")
+      url <- a("(1)_CRR_WGEXT", href="https://ices-library.figshare.com/articles/report/Effects_of_extraction_of_marine_sediments_on_the_marine_environment_2005-2011/18624086")
       tagList(url)
     })
     output$ref_file_url_2 <- renderUI({
-      url <- a("DOGGM_(2)", href="https://side.developpement-durable.gouv.fr/PACA/doc/SYRACUSE/385733/guide-methodologique-pour-l-elaboration-des-documents-d-orientations-pour-une-gestion-durable-des-gr")
+      url <- a("(2)_DOGGM", href="https://side.developpement-durable.gouv.fr/PACA/doc/SYRACUSE/385733/guide-methodologique-pour-l-elaboration-des-documents-d-orientations-pour-une-gestion-durable-des-gr")
       tagList(url)
     })
     output$ref_file_url_3 <- renderUI({
-      url <- a("Protocole_halieutique_(3)", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins/Protocoles/Ressources-halieutiques")
+      url <- a("(3)_Protocole_halieutique", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins/Protocoles/Ressources-halieutiques")
       tagList(url)
     })
     output$ref_file_url_4 <- renderUI({
-      url <- a("Guide_technique_etude_impact_(4)", href="https://www.mineralinfo.fr/fr/actualite/actualite/elaboration-des-etudes-dimpact-granulats-marins-guide-technique-2023")
+      url <- a("(4)_Guide_technique_etude_impact", href="https://www.mineralinfo.fr/fr/actualite/actualite/elaboration-des-etudes-dimpact-granulats-marins-guide-technique-2023")
       tagList(url)
     })
 
 
     #"URL link of information document: ",
     output$inf_file_url_1 <- renderUI({
-      url <- a("Scientific_report_WGEXT_(5)", href="https://ices-library.figshare.com/articles/report/Working_Group_on_the_Effects_of_Extraction_of_Marine_Sediments_on_the_Marine_Ecosystem_WGEXT_/18621728/1")
+      url <- a("(5)_Scientific_report_WGEXT", href="https://ices-library.figshare.com/articles/report/Working_Group_on_the_Effects_of_Extraction_of_Marine_Sediments_on_the_Marine_Ecosystem_WGEXT_/18621728/1")
       tagList(url)
     })
     output$inf_file_url_2 <- renderUI({
-      url <- a("Economie_bleue_granulats_marins_(6)", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
+      url <- a("(6)_Economie_bleue_granulats_marins", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
       tagList(url)
     })
     output$inf_file_url_3 <- renderUI({
-      url <- a("UNPG_sables_graviers_mer_(7)", href="https://sablesetgraviersenmer.fr/")
+      url <- a("(7)_UNPG_sables_graviers_mer", href="https://sablesetgraviersenmer.fr/")
       tagList(url)
     })
     output$inf_file_url_4 <- renderUI({
-      url <- a("Expertise_granulats_marins_(8)", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins")
+      url <- a("(8)_Expertise_granulats_marins", href="https://www.geo-ocean.fr/Expertise/Appui-a-la-Puissance-Publique/Les-granulats-marins/Granulats-marins")
       tagList(url)
     })
     output$inf_file_url_5 <- renderUI({
-      url <- a("Impact_exploitation_granulats_marins_(9)", href="https://www.vie-publique.fr/rapport/126797-exploration-ou-exploitation-des-ressources-minerales-marines")
+      url <- a("(9)_Impact_exploitation_granulats_marins", href="https://www.vie-publique.fr/rapport/126797-exploration-ou-exploitation-des-ressources-minerales-marines")
       tagList(url)
     })
     output$inf_file_url_6 <- renderUI({
-      url <- a("Cartographie_ressources_minérales_(10)", href="https://sextant.ifremer.fr/granulats-marins/Ressources-minerales")
+      url <- a("(10)_Cartographie_ressources_minérales", href="https://sextant.ifremer.fr/granulats-marins/Ressources-minerales")
       tagList(url)
     })
 
