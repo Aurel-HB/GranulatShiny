@@ -2,7 +2,7 @@ Package: GranulatShiny
 Title: Interface Granulat
 Version: 0.0.0.9000
 Authors@R: c(
-    person("Aurel", "Hebert--Burggraeve", , "aurelhb722@gmail.com", role = c("cre", "aut"),
+    person("Aurel", "Hebert--Burggraeve", , "aurelhb722@gmail.com", role = "aut",
            comment = c(ORCID = "0009-0000-3031-4340")),
     person("Mathis", "Cambreling", role = "aut"),
     person("Jehanne", "Rivet", role = "aut"),
