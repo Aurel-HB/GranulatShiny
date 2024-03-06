@@ -35,7 +35,9 @@ library(ggeffects)
 <br> GranulatShiny est une application Shiny qui facilite le traitement statistique des données collectées dans le cadre des états initiaux, états de référence avant travaux et suivis environnementaux dédiées aux ressources halieutiques et à l'ichtyofaune au sein des concessions d'extraction de granulats marins. L'application permet d'automatiser une partie de la mise en forme des données et du calcul d'indicateurs standards de biodiversité, et fournir des clés de décission pour les étapes plus avancées du traitement.<br>
 À partir des indicateurs calculés et des choix fait par l'utilisateur, l'application produit des figures et des tableaux dans des formats correspondants aux recommandations du Protocole halieutique de référence et dans le Guide méthodologique pour l’élaboration des Documents d’Orientation pour une Gestion durable des Granulats Marins (DOGGM). L'application fournit une interface graphique interactive basée sur le langage R dispensant l’utilisateur de sa maitrise pour se concentrer sur les paramètres d’intérêt pour le diagnostic des effets potentiels de l’extraction de granulats marins sur les ressources halieutiques. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons. Chaque approche va couvrir un attendu du Protocole halieutique de référence. L'approche dite explicative présente et analyse les données à léchelle de la communauté entière. L'approche descriptive présente et analyse les données à l'échelle d'une espèce. Et le recours à de l’analyse inférentielle est nécessaire pour évaluer de la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant extraction.
 
-<br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application. <br>Les boutons avec une icône bateau vous permettent de passer d'un onglet à un autre.
+<br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application. <br>
+
+Les boutons avec une icône bateau vous permettent de **passer d'un onglet à un autre**.
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("start", "start", icon = icon("ship"))
@@ -59,7 +61,7 @@ Enfin, ceux avec un cercle contenant un i sont des **aides** que l'on peut faire
 actionButton("info", "",icon = icon("circle-info"))
 ```
 
-Pour **passer à l'onglet suivant** appuyer sur le bouton start de la page d'accueil dans l'application.
+Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil dans l'application.
 
 ## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
 
