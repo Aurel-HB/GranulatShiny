@@ -1,0 +1,27 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# myGranulatShiny
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test coverage](https://codecov.io/gh/Aurel-HB/MyGranulat_test/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Aurel-HB/MyGranulat_test?branch=main)
+<!-- badges: end -->
+
+GranulatShiny is a Shiny app that automate the statistical processing of data collected as part of surveys dedicated to fishery resources and ichthyofauna on marine aggregate extraction concessions. The app produces standardized figures and tables based on the “Protocole halieutique”, and provides an interactive, graphical user interface for the analysis without with no coding skills required. GranulatShiny is composed of 3 statistic approaches (Explanatory, Descriptive and Inferential) that can be used primarily to quantify the influence of marine aggregate extraction concessions on fish communities.
+
+
+
+
