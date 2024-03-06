@@ -1,0 +1,82 @@
+fr,en
+Langue,Change language
+Page d'accueil,Home page
+Mise en forme des données,Data formatting
+Informations à rentrer,Input data
+Statistiques exploratoires,Exploratory analyses
+Plot des indicateurs,Indicators plot
+Plot de la structure,Structure plot
+Statistiques descriptives,Descriptive statistics
+Plot des données,Data plot
+Diagnostique d'analyse, Analysis approach
+Statistiques inférentielles,Modelling
+Création des modèles,Models creation
+Représentation des effets,Effects representation
+Puissance statistique, Statistical power
+Bienvenue sur l'application GranulatShiny,Welcome to the GranulatShiny application
+Auteurs,Authors
+Lien URL vers les documents de références,URL link to reference documents
+Lien URL vers les documents d'informations,URL link to information documents
+Guide utilisateur, User guide
+Cadre pour l'extraction de granulats marins, Marine aggregates extraction framework
+Avez-vous vos propres données ?,Do you have your own data?
+Sélectionnez le fichier Tutti Catch (.csv),Select the Tutti Catch file (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format tutti_catch de la notice.,The file is in the wrong format! Please refer to the tutti_catch format in the instructions.
+Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_catch file. Refer to the classic tutti format for entering dates.
+Sélectionnez le fichier Tutti operation (.csv),Select the Tutti Operation file (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice.,The file is in the wrong format! Please refer to the tutti_operation format in the instructions.
+Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_operation file. Refer to the classic tutti format for entering dates.
+Vos fichiers ne correspondent pas à la même concession.,Your files do not correspond to the same concession.
+Sélectionnez les Shapefiles (.shp .shx .dbf),Select the shapefiles (.shp .shx .dbf)
+Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice.,The file is in the wrong format! Please refer to the shapefile format in the instructions.
+Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv),Load the information if you have a backup of the parameters for the area under study (.csv)
+Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice.,The file is in the wrong format! Please refer to the save format in the instructions.
+Dates de la période d'activité :,Dates of activity period
+Stations à l'intérieur de la zone d'étude :,Stations in the study area
+Si besoin séléctionner les stations à retirer :,If necessary select the stations to be removed:
+Stations d'impact,Impact stations
+Stations de référence,Reference stations
+Mettre en forme,Formatting
+Quelle table afficher ?,Which table display?
+Telecharger la table (.csv),Download the table (.csv)
+Telecharger les informations rentrées (.csv),Download the parametrization (.csv)
+Choisir un variable pour les statistiques descriptives,Choose a variable for the descriptive statistics
+Telecharger le tableau (.csv),Download the table (.csv)
+Telecharger le graphique (.png),Download the plot (.png)
+Représentation des indicateurs,Indicators representation
+Structure de la communeauté,Structure of the community
+Sélectionner la campagne :,Select the survey
+Résumé,Summary
+Voulez-vous retirer les valeurs extrêmes ?,Do you want to remove the ouliers?
+Voulez-vous passer au log ?,Do you want to transform in logarithm?
+Passer au choix de la loi de distribution,Choosing the probability distribution
+Sélectionner la covariable :,Select the covariate:
+Sélectionner l'interaction :,Select the interaction
+Sélectionnez la loi de distribution,Select the probability distribution
+Legende,Legend
+Après avoir choisi une distribution vous pouvez passer à la construction du modèle,Once you have chosen a distribution you can move on to building the model
+La courbe bleue correspond à la fonction de densité de la variable,The blue curve corresponds to the density function of the variable
+La courbe verte correspond à la loi de distribution tel que les paramètres sont estimés à partir de la moyenne et de l'écart-type de la variable,The green curve corresponds to the probability distribution as estimated from the mean and standard deviation of the variable
+Attention si votre variable contient des valeurs manquantes ou des zéros vous ne pourrez pas utiliser de transformation log (loi lognormale) dans le modèle.,Note that if your variable contains missing values or zeros you will not be able to use a log transformation (lognormal distribution) in the model.
+La variable est,The variable is
+La loi de probabilité choisie n'est pas appropriée ! Veuillez changer de loi.,The probability law chosen is not appropriate! Please change the law.
+Sélectionnez la méthode statistique, Select the statistical method
+Voulez-vous retirer l'interaction ?,Do you want remove the interaction?
+Lancer la modélisation,start modelling
+La variable Y choisie est,The chosen variable Y is
+Attention si l'intéraction n'a pas d'effet elle est retirée automatiquement du modèle.,Note that if the interaction has no effect it is automatically removed from the model.
+Ajouter une covariable ?,Add a covariate?
+Ajouter une ou plusieurs covariables ?,Add one or more covariates?
+Afficher les résultats du modèle :,Display model results:
+Voir les effets,See the effects
+Telecharger le modele (.rds),Download the model (.rds)
+Telecharger le summary (.txt),Download the summary (.txt)
+Afficher les sorties :,Display the outputs:
+Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle.,There is an error in the modelling. Please change the distribution or the model.
+Il y a une erreur lors de la modélisation,There is an error in the modelling
+Formulation du modèle :,Model formulation:
+Covariable,Covariate
+Choississez un prédicteur,Choose a predictor
+Choississez un second prédicteur,Choose a second predictor
+Fixez une valeur de la covariable ,Set a value for the covariate 
+En cours de développement,In development
