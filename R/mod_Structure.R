@@ -15,7 +15,7 @@ mod_Structure_ui <- function(id){
   tagList(
     #verbatimTextOutput(ns("test")),
     box(
-      actionButton(ns("info"), "",icon = icon("circle-info")),
+      title =  actionButton(ns("info"), "",icon = icon("circle-info")),
       hr(),
       dataTableOutput(ns("percent")),
       downloadButton(ns("downloadData"),
@@ -57,7 +57,7 @@ mod_Structure_server <- function (input, output, session, r){
       if(is.null(r$data_forme)){return()}
       as.data.frame(r$data_forme[[1]])
       })
-    species <- reactive({r$species[,1]})
+    species <- reactive({r$species})
 
 
     data_brut <- reactive ({

@@ -31,7 +31,7 @@ Sélectionnez les Shapefiles (.shp .shx .dbf),Select the shapefiles (.shp .shx .
 Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice.,The file is in the wrong format! Please refer to the shapefile format in the instructions.
 Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv),Load the information if you have a backup of the parameters for the area under study (.csv)
 Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice.,The file is in the wrong format! Please refer to the save format in the instructions.
-Dates de la période d'activité :,Dates of activity period
+Dates de la période d'exploitation:,Dates of exploitation period
 Stations à l'intérieur de la zone d'étude :,Stations in the study area
 Si besoin séléctionner les stations à retirer :,If necessary select the stations to be removed:
 Stations d'impact,Impact stations

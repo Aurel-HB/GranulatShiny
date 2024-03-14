@@ -6,6 +6,8 @@
 #' @param data dataframe
 #' @param var_name character of 1 value
 #'
+#'need dplyr
+#'
 #' @return The return value is a dataframe with the value of chosen variable
 #' for interior, exterior of the concession and the globale sum
 #'

@@ -16,8 +16,9 @@ mod_Stat_ui <- function(id){
       box( title = i18n$t("Résumé"),
            status = "success", #  Valid statuses are: primary, success, info, warning, danger.
            solidHeader = TRUE,
+           uiOutput(ns("variable")),
            box(
-             actionButton(ns("info2"), "",icon = icon("circle-info")),
+             title = actionButton(ns("info2"), "",icon = icon("circle-info")),
              tableOutput(ns("var_summary")),
              width = NULL,
              style = "overflow-x: scroll;",
@@ -71,13 +72,58 @@ mod_Stat_server <- function(input, output, session, r){
   i18n$set_translation_language("fr")
     ns <- session$ns
 
-    data_analyse <- reactive({
-      r$data_analyse
+    data_forme <- reactive({
+      r$data_forme
     })
 
-    var_name <- reactive({
-      r$var_name
+    variables <- reactive({
+      n <- names(as.data.frame(data_forme()[[1]]))
+      var_expl <- c("year","station","date","saison","campagne","tow","hauled_surf",
+                    "traitement","interaction","time") # filter the explanatory variable
+      n <- n[!(n %in% var_expl)] # keep only the explicated value
+      n
     })
+
+    output$variable <- renderUI({
+      if(is.null(data_forme())){return()}
+      selectInput(
+        ns("var"),
+        i18n$t("Choisir un variable pour les statistiques descriptives"),
+        choices = levels(as.factor(variables())),
+        selected = "Abun"
+      )
+    })
+
+    data_analyse <- reactive({
+      if(is.null(data_forme())){return()}
+      if(is.null(input$var)){return()}
+      # to avoid bug when you switch with another concession data :
+      if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
+      # to levels the season in the chronological order
+      permutation <- order(data_forme()[[1]]$date)
+      permuted <-data_forme()[[1]][permutation,]
+
+      v <- data_forme()[[1]][input$var]
+      y <- data_forme()[[1]]["year"]
+      l <- data_forme()[[1]]["station"]
+      s <- factor(data_forme()[[1]]$saison,
+                  unique(permuted$saison))
+      t <- data_forme()[[1]]["traitement"]
+      #i <- data_forme()[[1]]["interaction"]
+      c <- data_forme()[[1]]["campagne"]
+      data <- data.frame(v, y, l, s, t, c) #i,c)
+      names(data) <- c(input$var, "year", "station", "saison", "traitement", "campagne") #"interaction", "campagne")
+      data
+    })
+
+    observe({
+      r$var_name <- input$var
+    })
+
+    observe({
+      r$data_analyse <- data_analyse()
+    })
+
 
     output$info <- renderText({
       return(
@@ -158,21 +204,21 @@ mod_Stat_server <- function(input, output, session, r){
       names(data) <- c("variable")
       ggplot(data, aes(x = variable))+
         geom_histogram(fill="lightblue", color="black", bins = 50)+
-        labs(title = paste("Histogram of ", var_name(), sep=""),
+        labs(title = paste("Histogram of ", r$var_name, sep=""),
              x=r$var_name, y="Frequency")
     })
     output$hist <- renderPlot({
       if(is.null(histogram())){return()}
       histogram()
       #hist(as.numeric(variable()),
-      #     main = paste("Histogram of ", var_name(), sep=""),
+      #     main = paste("Histogram of ", r$var_name, sep=""),
       #     xlab = r$var_name, ylab = "Frequency", col = "lightblue")
     })
 
     ## Exporter le graphique
     output$downloadPlot <- downloadHandler(
       filename = function() {
-        paste("histogram_", var_name(), ".png", sep = "")
+        paste("histogram_", r$var_name, ".png", sep = "")
       },
       content = function(file) {
         # Use tryCatch to handle errors with try(silent = TRUE)
@@ -213,35 +259,35 @@ mod_Stat_server <- function(input, output, session, r){
       if(input$choix_box == 1){
         boxplot(as.numeric(variable()) ~ data_variable()$traitement,
                 data = data_variable(),
-                main = paste("Boxplot of ", var_name()," by impact", sep=""),
+                main = paste("Boxplot of ", r$var_name," by impact", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 2){
         boxplot(as.numeric(variable()) ~ data_variable()$year,
                 data = data_variable(),
-                main = paste("Boxplot of ", var_name()," by year", sep=""),
+                main = paste("Boxplot of ", r$var_name," by year", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 3){
         boxplot(as.numeric(variable()) ~ data_variable()$campagne,
                 data = data_variable(),
-                main = paste("Boxplot of ", var_name()," by survey", sep=""),
+                main = paste("Boxplot of ", r$var_name," by survey", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 4){
         boxplot(as.numeric(variable()) ~ data_variable()$station,
                 data = data_variable(),
-                main = paste("Boxplot of ", var_name()," by station", sep=""),
+                main = paste("Boxplot of ", r$var_name," by station", sep=""),
                 xlab = "", ylab = ""
         )
       }
       if(input$choix_box == 5){
         boxplot(as.numeric(variable()) ~ data_variable()$saison,
                 data = data_variable(),
-                main = paste("Boxplot of ", var_name()," by season", sep=""),
+                main = paste("Boxplot of ", r$var_name," by season", sep=""),
                 xlab = "", ylab = ""
         )
       }
@@ -252,7 +298,7 @@ mod_Stat_server <- function(input, output, session, r){
     #  if(is.null(data_analyse())){return()}
     #  coplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$saison | data_analyse()$traitement,
     #         data = data_analyse(),
-    #         main = paste("Coplot of ", var_name()," by season and traitment", sep=""),
+    #         main = paste("Coplot of ", r$var_name," by season and traitment", sep=""),
     #         xlab = "", ylab = "", xlim = (c(min(as.numeric(data_analyse()[,1])),
     #                                         max(as.numeric(data_analyse()[,1]))))
     #         )
@@ -279,7 +325,7 @@ mod_Stat_server <- function(input, output, session, r){
                          trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
                          response=as.numeric(variable()),
-                         main = paste("Interaction_plot of ", var_name()," by season and traitment", sep=""),
+                         main = paste("Interaction_plot of ", r$var_name," by season and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 2){
@@ -287,7 +333,7 @@ mod_Stat_server <- function(input, output, session, r){
                          trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
                          response=as.numeric(variable()),
-                         main = paste("Interaction_plot of ", var_name()," by year and traitment", sep=""),
+                         main = paste("Interaction_plot of ", r$var_name," by year and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 3){
@@ -295,7 +341,7 @@ mod_Stat_server <- function(input, output, session, r){
                          trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
                          response=as.numeric(variable()),
-                         main = paste("Interaction_plot of ", var_name()," by survey and traitment", sep=""),
+                         main = paste("Interaction_plot of ", r$var_name," by survey and traitment", sep=""),
                          xlab = "", ylab = "")
       }
       if(input$choix_interaction == 4){
@@ -303,7 +349,7 @@ mod_Stat_server <- function(input, output, session, r){
                          trace.factor=data_variable()$traitement,
                          trace.label = "traitment",
                          response=as.numeric(variable()),
-                         main = paste("Interaction_plot of ", var_name()," by sation and traitment", sep=""),
+                         main = paste("Interaction_plot of ", r$var_name," by sation and traitment", sep=""),
                          xlab = "", ylab = "")
       }
     })

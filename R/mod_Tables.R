@@ -31,7 +31,6 @@ mod_Tables_ui <- function(id){
                    #style='width: 100%; overflow-x: scroll'),
                    ),
     hr(),
-    uiOutput(ns("variable")),
     actionButton("gostat1", i18n$t("Statistiques exploratoires"), icon = icon("ship")),
     actionButton("gostat2", i18n$t("Statistiques descriptives"), icon = icon("ship"))
     )
@@ -69,50 +68,6 @@ mod_Tables_server <- function(input, output, session, r){
       }
     )
 
-    variables <- reactive({
-      n <- names(as.data.frame(data_forme()[[1]]))
-      var_expl <- c("year","station","date","saison","campagne","tow","hauled_surf",
-               "traitement","interaction","time") # filter the explanatory variable
-      n <- n[!(n %in% var_expl)] # keep only the explicated value
-      n
-      })
-
-    output$variable <- renderUI({
-      if(is.null(data_forme())){return()}
-      selectInput(
-        ns("var"),
-        i18n$t("Choisir un variable pour les statistiques descriptives"),
-        choices = levels(as.factor(variables())),
-        selected = "Abun"
-      )
-    })
-
-    data_analyse <- reactive({
-      if(is.null(data_forme())){return()}
-      if(is.null(input$var)){return()}
-      # to avoid bug when you switch with another concession data :
-      if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
-      # to levels the season in the chronological order
-      permutation <- order(data_forme()[[1]]$date)
-      permuted <-data_forme()[[1]][permutation,]
-
-      v <- data_forme()[[1]][input$var]
-      y <- data_forme()[[1]]["year"]
-      l <- data_forme()[[1]]["station"]
-      s <- factor(data_forme()[[1]]$saison,
-                  unique(permuted$saison))
-      t <- data_forme()[[1]]["traitement"]
-      #i <- data_forme()[[1]]["interaction"]
-      c <- data_forme()[[1]]["campagne"]
-      data <- data.frame(v, y, l, s, t, c) #i,c)
-      names(data) <- c(input$var, "year", "station", "saison", "traitement", "campagne") #"interaction", "campagne")
-      data
-    })
-
-    observe({
-      r$var_name <- input$var
-    })
-
     #Telecharger les données
     nom_data <-
       c("Table complete",
@@ -130,9 +85,6 @@ mod_Tables_server <- function(input, output, session, r){
       }
     )
 
-    observe({
-      r$data_analyse <- data_analyse()
-    })
 
     observe({
       r$indice <- indice()

@@ -14,7 +14,7 @@ mod_Indicator_ui <- function(id){
   ns <- NS(id)
   tagList(
     box(
-      actionButton(ns("info"), "",icon = icon("circle-info")),
+      title =  actionButton(ns("info"), "",icon = icon("circle-info")),
       hr(),
       dataTableOutput(ns("diversity")),
       downloadButton(ns("downloadData"),
@@ -41,7 +41,7 @@ mod_Indicator_ui <- function(id){
       title = i18n$t("Représentation des indicateurs")
       ),
     hr(),
-    actionButton("struct", i18n$t("Structure de la communeauté"),
+    actionButton("struct", i18n$t("Structure de la communauté"),
                  icon = icon("ship"))
   )
 }

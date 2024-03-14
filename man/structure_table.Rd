@@ -9,7 +9,9 @@ structure_table(data, var_name)
 \arguments{
 \item{data}{dataframe}
 
-\item{var_name}{character of 1 value}
+\item{var_name}{character of 1 value
+
+need dplyr}
 }
 \value{
 The return value is a dataframe with the value of chosen variable

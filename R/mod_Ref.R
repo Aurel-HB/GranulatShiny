@@ -92,7 +92,7 @@ mod_Ref_server <- function(input, output, session, r){
       if (is.null(station_ban())) {
         tutti_catch()
       } else {
-        tutti_catch()[-which(tutti_catch()$Trait %in% station_ban()), ]
+        tutti_catch()[-which(tutti_catch()$Code_Station %in% station_ban()), ]
       }
     })
 

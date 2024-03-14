@@ -64,7 +64,7 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   # catch table shapping - ABUNDANCE
 
   tutti_catch_abun <-
-    tutti_catch %>% select("Annee", "Trait", "Nom_Scientifique", "Nombre", "DateDeb")
+    tutti_catch %>% select("Annee", "Code_Station", "Nom_Scientifique", "Nombre", "DateDeb")
 
   {
     names(tutti_catch_abun)[1] <- "year"
@@ -144,7 +144,7 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   # catch table shapping - BIOMASS
 
   tutti_catch_biom <-
-    tutti_catch %>% select("Annee", "Trait", "Nom_Scientifique", "Poids", "DateDeb")
+    tutti_catch %>% select("Annee", "Code_Station", "Nom_Scientifique", "Poids", "DateDeb")
 
   {
     names(tutti_catch_biom)[1] <- "year"

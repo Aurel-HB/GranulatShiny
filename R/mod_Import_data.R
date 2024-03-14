@@ -17,8 +17,8 @@ mod_Import_data_ui <- function(id){
         i18n$t("Avez-vous vos propres données ?"),
         c("oui" = "1", "non" = "2")
       ),
-      uiOutput(ns("tutti_catch")),
       uiOutput(ns("tutti_operation")),
+      uiOutput(ns("tutti_catch")),
       uiOutput(ns("shpFile")),
       uiOutput(ns("uploadSave")),
       hr(),
@@ -41,7 +41,7 @@ mod_Import_data_server <- function(input, output, session, r){
     # pour faire marcher conditionalpanel dans le UI (les inputs s'affichent une fois que le fichier operation est chargé)
 
 
-    format_catch <- c("Campagne","Annee","Trait","Nom_Scientifique","Code_Campagne",
+    format_catch <- c("Serie","Annee","Code_Station","Nom_Scientifique","Serie_Partielle",
                 "Nombre","Poids","Pmoy","longueurmoy","DateDeb","LatDeb",
                 "LongDeb","DateFin","LatFin","LongFin")
 
@@ -185,8 +185,8 @@ mod_Import_data_server <- function(input, output, session, r){
     check <- reactive({
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
-      for(i in length(unique(tutti_catch()['Trait']))){
-        if(unique(tutti_catch()['Trait'])[i,1]==unique(tutti_operation()['Code_Station'][i,1])){
+      for(i in length(unique(tutti_catch()['Code_Station']))){
+        if(sort(unique(tutti_catch()$Code_Station))[i]== sort(unique(tutti_operation()$Code_Station))[i]){
           check <- TRUE
         }else{
           check <- FALSE

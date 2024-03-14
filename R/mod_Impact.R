@@ -47,7 +47,7 @@ mod_Impact_server <- function(input, output, session, r){
         if(is.null(tutti_operation())){return()}
         dateRangeInput(
           ns("dates"),
-          i18n$t("Dates de la période d'activité :"),
+          i18n$t("Dates de la période d'exploitation :"),
           start = min(tutti_operation()$DateDeb),
           end = max(tutti_operation()$DateDeb),
           #start = min(as.Date(
