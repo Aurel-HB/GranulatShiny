@@ -66,7 +66,9 @@ mod_Prepare_data_server <- function(input, output, session, r){
 
     species <- reactive({
       if(is.null(tutti_catch_filtre())){return()}
-      return(unique(tutti_catch_filtre()$Nom_Scientifique))
+      species <- unique(tutti_catch_filtre()$Nom_Scientifique)
+      species <- str_replace(species, " ", ".")
+      return(species)
     })
 
     observe({

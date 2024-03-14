@@ -47,15 +47,14 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_operation$hauled_surf <-
     tutti_operation$Horizontal_opening * tutti_operation$Distance
 
-  # variable campagne
-  survey_Date <- sort(unique(tutti_operation$date))
-  survey_ID <- c(1:length(survey_Date))
-  ref <- data.frame(survey_Date,survey_ID)
+  # variable campagne calculate by the combination of Annee and Serie_Partielle
+  survey_Date <- sort(unique(tutti_operation$year))
+  survey_ID <- unique(tutti_operation$campagne)
 
   for(i_tutti in 1:nrow(tutti_operation)){
-    for (i_ref in 1:nrow(ref)){
-      if (tutti_operation$date[i_tutti] == ref$survey_Date[i_ref]){
-        tutti_operation$campagne[i_tutti] <- ref$survey_ID[i_ref]
+    for (i_ref in 1:length(survey_Date)){
+      if (tutti_operation$year[i_tutti] == survey_Date[i_ref]){
+        tutti_operation$campagne[i_tutti] <- tutti_operation$campagne[i_tutti] + length(survey_ID)*(i_ref-1)
       }
     }
   }
@@ -226,7 +225,7 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_biom_wide$interaction<-interaction(tutti_catch_biom_wide$traitement, tutti_catch_biom_wide$saison, sep=":")
   tutti_catch_biom_wide <- tutti_catch_biom_wide %>% relocate(1:8, interaction)
   ## Virer les espaces
-  colnames(tutti_catch_abun_wide)<-str_replace(colnames(tutti_catch_abun_wide), " ", "_")
-  colnames(tutti_catch_biom_wide)<-str_replace(colnames(tutti_catch_biom_wide), " ", "_")
+  colnames(tutti_catch_abun_wide)<-str_replace(colnames(tutti_catch_abun_wide), " ", ".")
+  colnames(tutti_catch_biom_wide)<-str_replace(colnames(tutti_catch_biom_wide), " ", ".")
   return(list(tutti_catch_abun_wide, tutti_catch_biom_wide))
 }
