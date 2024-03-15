@@ -26,7 +26,7 @@ probability_distribution <- function(vector, law){
   if (law == "Poisson"){
     dist_vector <- dpois(vector,lambda = moy)
   }
-  if (law == "Binomiale negative"){
+  if (law == "Binomiale négative"){
     dist_vector <- dnbinom(vector, mu = moy, size =  1/((sd**2-moy)/moy**2))
   }
   if (law == "Gamma log"){

@@ -121,7 +121,7 @@ usethis::use_data(catch)
 usethis::use_data(operation)
 usethis::use_data(polygon)
 usethis::use_data(sauvegarde)
-usethis::use_data(list_translate)#overwrite = T
+usethis::use_data(list_translate)#,overwrite = T)
 usethis::use_data(intro_text_fr)
 usethis::use_data(intro_text_en)
 file.edit()

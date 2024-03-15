@@ -46,16 +46,23 @@ glm_maker <-
       }
 
     } else if (family == "Normale") {
+      family <- gaussian(link = identity)
+      family_bis<-parse(text="gaussian(link = identity)")[[1]]
+
       if (interaction == F) {
         mod <-
-          lm(formule,
-             data = data)
+          glm(formule,
+              data = data,
+              family = family)
         mod[["call"]][["formula"]]<-language
+        mod[["call"]][["family"]]<-family_bis
         if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
           mod_f <-
-            lm(formule_bis,
-               data = data)
+            glm(formule_bis,
+                data = data,
+                family = family)
           mod_f[["call"]][["formula"]]<-language_bis
+          mod_f[["call"]][["family"]]<-family_bis
           list(mod, mod_f)
         } else {
           list(mod, mod)
@@ -63,11 +70,35 @@ glm_maker <-
       }
       else if (interaction == T) {
         mod_f <-
-          lm(formule_bis,
-             data = data)
+          glm(formule_bis,
+              data = data,
+              family = family)
         mod_f[["call"]][["formula"]]<-language_bis
+        mod_f[["call"]][["family"]]<-family_bis
         list(mod_f, mod_f)
       }
+      #if (interaction == F) {
+      #  mod <-
+      #    lm(formule,
+      #       data = data)
+      #  mod[["call"]][["formula"]]<-language
+      #  if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
+      #    mod_f <-
+      #      lm(formule_bis,
+      #         data = data)
+      #    mod_f[["call"]][["formula"]]<-language_bis
+      #    list(mod, mod_f)
+      #  } else {
+      #    list(mod, mod)
+      #  }
+      #}
+      #else if (interaction == T) {
+      #  mod_f <-
+      #    lm(formule_bis,
+      #       data = data)
+      #  mod_f[["call"]][["formula"]]<-language_bis
+      #  list(mod_f, mod_f)
+      #}
     } else if (family == "Lognormale") {
         family <- gaussian(link = identity)
         family_bis<-parse(text="gaussian(link = identity)")[[1]]

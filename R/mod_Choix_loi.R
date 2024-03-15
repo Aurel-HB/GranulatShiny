@@ -27,7 +27,7 @@ mod_Choix_loi_ui <- function(id){
         "Normale",
         "Binomiale",
         "Poisson",
-        "Binomiale negative",
+        "Binomiale négative",
         "Gamma log",
         "Lognormale"
       )),

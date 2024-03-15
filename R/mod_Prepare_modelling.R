@@ -105,6 +105,8 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       cov
     })
 
+   # output$test <- renderPrint({class(covariable())})
+
     output$covariable <-
       renderUI({
         if(input$methode == 1){
@@ -119,7 +121,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
           selectInput(
             ns("covariable"),
             i18n$t("Ajouter une ou plusieurs covariables ?"),
-            choices = covariable(),
+            choices = c("year","station","campagne"),#covariable(),
             selected = F,
             multiple = T
           )

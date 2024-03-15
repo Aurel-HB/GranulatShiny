@@ -21,6 +21,7 @@ mod_Import_data_ui <- function(id){
       uiOutput(ns("tutti_catch")),
       uiOutput(ns("shpFile")),
       uiOutput(ns("uploadSave")),
+      uiOutput(ns("viewduplica")),
       hr(),
       textOutput(ns("message")),
       hr()
@@ -181,7 +182,7 @@ mod_Import_data_server <- function(input, output, session, r){
       data22
     })
 
-    #check if the document are from the same concession
+    #check if the document are from the same concession ####
     check <- reactive({
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
@@ -205,7 +206,50 @@ mod_Import_data_server <- function(input, output, session, r){
       r$check_concession <- check()
     })
 
-    #exportation of the dataset
+    #check if there is duplica in the catch dataset ####
+    duplica <- reactive({
+      if(is.null(tutti_catch())){return()}
+      duplica <- {tutti_catch()} %>%
+        dplyr::group_by(Annee, Code_Station, Nom_Scientifique, Serie_Partielle) %>%
+        dplyr::summarise(n = dplyr::n(), .groups = "drop") %>%
+        dplyr::filter(n > 1L)
+      if ( nrow(duplica) == 0){
+        check_duplica <- TRUE
+      } else{
+        check_duplica <- FALSE
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = i18n$t("Votre fichier tutti_catch contient des lignes en double. Si vous faites du sous-échantillonage assurez vous de bien les rassembler en une seule ligne avant importation dans GranulatShiny."),
+          type = "fail"
+        )
+      }
+      list(duplica, check_duplica)
+    })
+
+    observe({
+      r$check_duplica <- duplica()[[2]]
+    })
+
+    output$viewduplica <- renderUI({
+      if(is.null(tutti_catch())){return()}
+      if(r$check_duplica==TRUE){return()}
+      if(r$check_duplica==FALSE){return(
+        downloadButton(ns("duplica"), label = i18n$t("Telecharger la liste des lignes en double (.csv)"))
+      )}
+    })
+
+    output$duplica <- downloadHandler(
+      filename = function() {
+        paste("duplica", ".csv", sep = "")
+      },
+      content = function(file) {
+        write.csv(duplica()[[1]],  file)
+      }
+    )
+
+
+    #exportation of the dataset ####
 
     observe({
       r$tutti_catch <- tutti_catch()
@@ -222,6 +266,7 @@ mod_Import_data_server <- function(input, output, session, r){
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
       if(input$data == 2){return()}
+      if(r$check_duplica==FALSE){return()}
       fileInput(
         ns("shpFile"),
         i18n$t("Sélectionnez les Shapefiles (.shp .shx .dbf)"),
@@ -277,6 +322,7 @@ mod_Import_data_server <- function(input, output, session, r){
     output$uploadSave <- renderUI({
       if(is.null(tutti_catch())){return()}
       if(is.null(tutti_operation())){return()}
+      if(r$check_duplica==FALSE){return()}
       if(input$data == 2){return()}
       fileInput(ns("uploadSave"), i18n$t("Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv)"),
                 accept = c(".csv"))

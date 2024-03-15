@@ -27,11 +27,13 @@ Sélectionnez le fichier Tutti operation (.csv),Select the Tutti Operation file 
 Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice.,The file is in the wrong format! Please refer to the tutti_operation format in the instructions.
 Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_operation file. Refer to the classic tutti format for entering dates.
 Vos fichiers ne correspondent pas à la même concession.,Your files do not correspond to the same concession.
+Votre fichier tutti_catch contient des lignes en double. Si vous faites du sous-échantillonage assurez vous de bien les rassembler en une seule ligne avant importation dans GranulatShiny.,Your tutti_catch file contains duplicate lines. If you are sub-sampling make sure you combine them into a single line before importing them into GranulatShiny.
+Telecharger la liste des lignes en double (.csv),Download the list of duplicate lines (.csv)
 Sélectionnez les Shapefiles (.shp .shx .dbf),Select the shapefiles (.shp .shx .dbf)
 Le fichier n'a pas le bon format ! Référez vous au format shapefile de la notice.,The file is in the wrong format! Please refer to the shapefile format in the instructions.
 Charger les informations si vous avez une sauvegarde des paramètres de la zone étudiée (.csv),Load the information if you have a backup of the parameters for the area under study (.csv)
 Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice.,The file is in the wrong format! Please refer to the save format in the instructions.
-Dates de la période d'exploitation:,Dates of exploitation period
+Dates de la période d'exploitation :,Dates of exploitation period
 Stations à l'intérieur de la zone d'étude :,Stations in the study area
 Si besoin séléctionner les stations à retirer :,If necessary select the stations to be removed:
 Stations d'impact,Impact stations
@@ -47,6 +49,7 @@ Représentation des indicateurs,Indicators representation
 Structure de la communeauté,Structure of the community
 Sélectionner la campagne :,Select the survey
 Résumé,Summary
+Boite à moustache, Boxplot
 Voulez-vous retirer les valeurs extrêmes ?,Do you want to remove the ouliers?
 Voulez-vous passer au log ?,Do you want to transform in logarithm?
 Passer au choix de la loi de distribution,Choosing the probability distribution

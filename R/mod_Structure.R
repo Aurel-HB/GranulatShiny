@@ -138,7 +138,10 @@ mod_Structure_server <- function (input, output, session, r){
 
       #### barplot ####
       # Default bar plot
-      barplot <- ggplot(data, aes(x=species, y=Abundance, fill=species)) +
+      abun_tot <- sum(data$Abundance)
+      barplot <- ggplot(data %>%
+                          dplyr::filter(Abundance > 0.01*abun_tot),
+                        aes(x=species, y=Abundance, fill=species)) +
         geom_bar(stat="identity", color="black",
                  position=position_dodge())+
       # Finished bar plot
