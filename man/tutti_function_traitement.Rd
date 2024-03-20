@@ -9,7 +9,8 @@ tutti_function_traitement(
   tutti_operation,
   liste_station,
   liste_dates,
-  zones
+  zones,
+  trawl_opening
 )
 }
 \arguments{
@@ -22,11 +23,13 @@ tutti_function_traitement(
 \item{liste_dates}{dataframe}
 
 \item{zones}{integer}
+
+\item{trawl_opening}{numeric}
 }
 \value{
 The return value is a list of 2 dataframe
 }
 \description{
-Mise en forme de la table à partir du format tutti
-Table formatting using tutti format
+Table formatting using GranulatShiny format
+use dplyr and tidyr
 }

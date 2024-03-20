@@ -14,7 +14,9 @@ mod_Impact_ui <- function(id){
   tagList(
       #verbatimTextOutput(ns("testobjet")),
       uiOutput(ns("datesOut")),
-      uiOutput(ns("stationOut"))
+      uiOutput(ns("stationOut")),
+      hr(),
+      uiOutput(ns("trawl_opening"))
   )
 }
 
@@ -41,7 +43,7 @@ mod_Impact_server <- function(input, output, session, r){
       r$upload
     })
 
-    ########## creation of the traitment ####
+    ########## creation of the traitement ####
     output$datesOut <-
       renderUI({
         if(is.null(tutti_operation())){return()}
@@ -74,11 +76,30 @@ mod_Impact_server <- function(input, output, session, r){
       )
     })
 
+    # integration of the trawl_opening to calculate hauled surface
+    output$trawl_opening <- renderUI({
+      numericInput(
+        ns("trawl_opening"),
+        i18n$t("Ouverture horizontale du chalut de campagne"),
+        14,
+        min = 1,
+        max = 100
+      )
+    })
+
+    observe({
+      if(is.null(input$trawl_opening)){return()}
+      r$trawl_opening <- as.numeric(input$trawl_opening)
+    })
+
+
+
     #### this allow to directly use the upload
     observeEvent(upload(), {
       updateSelectInput(inputId =  "station", selected = upload()[[1]][[1]])
       updateDateRangeInput(inputId = "dates", start = upload()[[2]][[1]],
                            end = upload()[[3]][[1]] )
+      updateSelectInput(inputId = "trawl_opening", selected = upload()[[5]][[1]])
     })
 
     ls1 <- reactive({

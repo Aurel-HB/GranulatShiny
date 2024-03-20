@@ -53,6 +53,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
         dates_deb = as.Date(NA),
         dates_fin = as.Date(NA),
         ban = as.character(NA),
+        trawl_opening = as.numeric(NA),
         stringsAsFactors = FALSE
       )
       save$stations <-
@@ -60,6 +61,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
       save$dates_deb <- module()[[2]][[1]][1]
       save$dates_fin <- module()[[2]][[1]][2]
       save$ban <- paste(as.character(station_ban()), collapse = "/")
+      save$trawl_opening <- r$trawl_opening
       save
     })
 
@@ -83,7 +85,8 @@ mod_Prepare_data_server <- function(input, output, session, r){
                       tutti_operation_filtre(),
                       module()[[1]],
                       module()[[2]],
-                      zones())
+                      zones(),
+                      r$trawl_opening)
     }) # data_forme est une liste de 5 tableaux
 
 
@@ -92,6 +95,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
      if(is.null(tutti_operation_filtre())){return()}
      if(check_concession()==FALSE){return()}
      if(r$check_duplica==FALSE){return()}
+     if(is.null(r$trawl_opening)){return()}
      actionButton(ns("go"), i18n$t("Mettre en forme"),
                   icon = icon("dragon", style='color: #22A433'))
    })

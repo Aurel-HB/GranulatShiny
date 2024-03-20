@@ -51,7 +51,7 @@
 #'
 #'
 
-dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 8, start_lat = 44, start_long = -2){
+dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, start_lat = 44, start_long = -2){
 
   #dataframe skeleton ####
   catch <- data.frame("Campagne" = rep(NA, 1),"Annee" = rep(NA, 1),
@@ -85,7 +85,8 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 8, st
   #####
 
   #year ####
-  year <- c(rep(start_year-1,80), rep(start_year,80), rep(start_year+5,80),
+  year <- c(rep(start_year-2,80), rep(start_year-1,80),
+            rep(start_year,80), rep(start_year+5,80),
             rep(start_year+10,80), rep(start_year+15,80),
             rep(start_year+20,80), rep(start_year+25,80), rep(start_year+30,80))
   #####
@@ -273,7 +274,7 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 8, st
                           "DateDeb" = optot$DateDeb,
                           "LatDeb" = optot$LatDeb,"LongDeb" = optot$LongDeb,
                           "DateFin" = optot$DateFin,"LatFin" = optot$LatFin,
-                          "LongFin" = optot$LongFin,"Distance" = c(1.2e-5))
+                          "LongFin" = optot$LongFin,"Distance" = c(1200))
 
 
 return(list(catch, operation, impact_polygon))

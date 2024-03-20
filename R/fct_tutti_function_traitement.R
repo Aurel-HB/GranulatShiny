@@ -1,20 +1,22 @@
 #' tutti_function_traitement
 #'
-#' @description Mise en forme de la table à partir du format tutti
-#' Table formatting using tutti format
+#' @description Table formatting using GranulatShiny format
+#'use dplyr and tidyr
 #'
 #' @param tutti_catch dataframe
 #' @param tutti_operation dataframe
 #' @param liste_station character
 #' @param liste_dates dataframe
 #' @param zones integer
+#' @param trawl_opening numeric
 #'
 #'
 #' @return The return value is a list of 2 dataframe
 #'
 #'
 
-tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station, liste_dates, zones) {
+tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station,
+                                     liste_dates, zones, trawl_opening) {
   # operation table shapping
 
 
@@ -42,8 +44,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     }
 
 
-  tutti_operation$Distance <- tutti_operation$Distance / 1000
-  tutti_operation$Horizontal_opening <- 0.01
+  tutti_operation$Distance <- tutti_operation$Distance
+  tutti_operation$Horizontal_opening <- trawl_opening
   tutti_operation$hauled_surf <-
     tutti_operation$Horizontal_opening * tutti_operation$Distance
 
@@ -75,8 +77,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   ## saison
   # Extract month and day
-  tutti_catch_abun$month <- format(tutti_catch_abun$date, "%m")
-  tutti_catch_abun$day <- format(tutti_catch_abun$date, "%d")
+  tutti_catch_abun$month <- format.Date(tutti_catch_abun$date, "%m")
+  tutti_catch_abun$day <- format.Date(tutti_catch_abun$date, "%d")
 
   # Convert month and day to numeric if needed
   tutti_catch_abun$month <- as.numeric(tutti_catch_abun$month)
@@ -124,6 +126,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_abun <-
     tutti_catch_abun %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
 
+  # Transform number of fishes in density
+  tutti_catch_abun$abun <- tutti_catch_abun$abun / tutti_catch_abun$hauled_surf
 
 
   tutti_catch_abun_wide <-
@@ -140,7 +144,7 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
   tutti_catch_abun_wide$interaction<-interaction(tutti_catch_abun_wide$traitement, tutti_catch_abun_wide$saison, sep=":")
   tutti_catch_abun_wide <- tutti_catch_abun_wide %>% relocate(1:8, interaction)
 
-  # catch table shapping - BIOMASS
+  # catch table shapping - BIOMASS ####
 
   tutti_catch_biom <-
     tutti_catch %>% select("Annee", "Code_Station", "Nom_Scientifique", "Poids", "DateDeb")
@@ -155,8 +159,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   ## saison
   # Extract month and day
-  tutti_catch_biom$month <- format(tutti_catch_biom$date, "%m")
-  tutti_catch_biom$day <- format(tutti_catch_biom$date, "%d")
+  tutti_catch_biom$month <- format.Date(tutti_catch_biom$date, "%m")
+  tutti_catch_biom$day <- format.Date(tutti_catch_biom$date, "%d")
 
   # Convert month and day to numeric if needed
   tutti_catch_biom$month <- as.numeric(tutti_catch_biom$month)
@@ -207,6 +211,9 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   tutti_catch_biom <-
     tutti_catch_biom %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
+
+  # Transform biomass in biomass (kg/m^2)
+  tutti_catch_biom$biom <- tutti_catch_biom$biom / tutti_catch_biom$hauled_surf
 
 
   tutti_catch_biom_wide <-

@@ -328,7 +328,7 @@ mod_Import_data_server <- function(input, output, session, r){
                 accept = c(".csv"))
     })
 
-    format_sauvegarde <- c("","stations","dates_deb","dates_fin","ban")
+    format_sauvegarde <- c("","stations","dates_deb","dates_fin","ban","trawl_opening")
 
     upload <- reactive({
 
@@ -338,7 +338,8 @@ mod_Import_data_server <- function(input, output, session, r){
         dates_deb <- file_save$dates_deb
         dates_fin <- file_save$dates_fin
         ban <- strsplit(as.character(file_save$ban), split = "/")
-        list_save <- list(station, dates_deb, dates_fin, ban)
+        trawl_opening <- 14
+        list_save <- list(station, dates_deb, dates_fin, ban, trawl_opening)
         return(list_save)
       }
 

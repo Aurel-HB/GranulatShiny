@@ -197,7 +197,7 @@ mod_Stat_server <- function(input, output, session, r){
     output$var_summary <- renderTable({
       if(is.null(data_analyse())){return()}
       numeric_summary(as.numeric(data_analyse()[,1]), names(data_analyse())[1])
-    })
+    }) # the summary is made on the variable without transformation
 
     #### boxplot part ####
     output$choix_box <- renderUI({

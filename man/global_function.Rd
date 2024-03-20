@@ -9,7 +9,8 @@ global_function(
   tutti_operation,
   liste_station,
   liste_dates,
-  zones
+  zones,
+  trawl_opening
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ global_function(
 \item{liste_dates}{dataframe}
 
 \item{zones}{integer}
+
+\item{trawl_opening}{numeric}
 }
 \value{
 a list of 5 datatable
