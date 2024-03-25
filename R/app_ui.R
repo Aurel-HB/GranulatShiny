@@ -9,6 +9,7 @@
 #' @import tidyr
 #' @import leaflet
 #' @import shinycssloaders
+#' @importFrom DT DTOutput
 #'
 #'
 #' @noRd

@@ -44,10 +44,11 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     }
 
 
-  tutti_operation$Distance <- tutti_operation$Distance
-  tutti_operation$Horizontal_opening <- trawl_opening
+  tutti_operation$Distance <- tutti_operation$Distance/1000 # to pass in km
+  tutti_operation$Horizontal_opening <- trawl_opening/1000
   tutti_operation$hauled_surf <-
-    tutti_operation$Horizontal_opening * tutti_operation$Distance
+    round(tutti_operation$Horizontal_opening * tutti_operation$Distance,
+          digits = 6)
 
   # variable campagne calculate by the combination of Annee and Serie_Partielle
   survey_Date <- sort(unique(tutti_operation$year))
@@ -58,6 +59,18 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
       if (tutti_operation$year[i_tutti] == survey_Date[i_ref]){
         tutti_operation$campagne[i_tutti] <- tutti_operation$campagne[i_tutti] + length(survey_ID)*(i_ref-1)
       }
+    }
+  }
+
+  # in the specific case there is a gap in the survey (2022_serie1 to 2023_serie2)
+  real_nb_survey <- seq(1,length(unique(tutti_operation$campagne)),1)
+  tutti_campagne <- sort(unique(tutti_operation$campagne))
+  for( i in 1:length(real_nb_survey)){
+    if(real_nb_survey[i] != tutti_campagne[i]){
+      tutti_operation <-
+        tutti_operation %>% dplyr::mutate(campagne = ifelse(campagne == tutti_campagne[i],
+                                                            real_nb_survey[i],
+                                                            campagne))
     }
   }
 
@@ -127,13 +140,16 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     tutti_catch_abun %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
 
   # Transform number of fishes in density
-  tutti_catch_abun$abun <- tutti_catch_abun$abun / tutti_catch_abun$hauled_surf
+  tutti_catch_abun$abun <- round(tutti_catch_abun$abun / tutti_catch_abun$hauled_surf,
+                                 digits = 3)
 
 
   tutti_catch_abun_wide <-
-    pivot_wider(tutti_catch_abun, #tutti_catch_abun[,-4] pour faire en relatif
+    pivot_wider(tutti_catch_abun,
                 names_from = "species",
-                values_from = "abun") # abun_km2 pour faire en relatif
+                values_from = "abun") # reduce nb of rows and increase nb columns
+  # the species in line become columns and a row is a station/date
+
   ## traitement
   traitement<-NA
   traitement<-rep("Sans impact", nrow(tutti_catch_abun_wide))
@@ -213,7 +229,8 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     tutti_catch_biom %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
 
   # Transform biomass in biomass (kg/m^2)
-  tutti_catch_biom$biom <- tutti_catch_biom$biom / tutti_catch_biom$hauled_surf
+  tutti_catch_biom$biom <- round(tutti_catch_biom$biom / tutti_catch_biom$hauled_surf,
+                                 digits = 3)
 
 
   tutti_catch_biom_wide <-

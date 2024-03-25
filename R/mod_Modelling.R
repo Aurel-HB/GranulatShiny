@@ -28,6 +28,7 @@ mod_Modelling_ui <- function(id){
     ),
       #plot de vérification
     box(
+      actionButton(ns("info"), "",icon = icon("circle-info")),
       plotOutput(ns("verification")),
       downloadButton(ns("downloadPlot"),
                      label = i18n$t("Telecharger le graphique (.png)")),
@@ -241,7 +242,18 @@ mod_Modelling_server <- function(input, output, session, r){
       })
     })
 
-    ## Exporter le graphique
+    ##### information #####
+    observeEvent(input$info,{
+      message <- as.character(list_translate[r$lang][10,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    ## Exporter le graphique ####
     output$downloadPlot <- downloadHandler(
       filename = function() {
         paste("plot_residual",".png", sep = "")

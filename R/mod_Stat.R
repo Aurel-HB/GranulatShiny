@@ -74,11 +74,13 @@ mod_Stat_server <- function(input, output, session, r){
     ns <- session$ns
 
     data_forme <- reactive({
-      r$data_forme
+      if(is.null(r$data_form_modif)){return(r$data_forme[[1]])} else {
+        r$data_form_modif
+      }
     })
 
     variables <- reactive({
-      n <- names(as.data.frame(data_forme()[[1]]))
+      n <- names(as.data.frame(data_forme()))
       var_expl <- c("year","station","date","saison","campagne","tow","hauled_surf",
                     "traitement","interaction","time") # filter the explanatory variable
       n <- n[!(n %in% var_expl)] # keep only the explicated value
@@ -95,23 +97,24 @@ mod_Stat_server <- function(input, output, session, r){
       )
     })
 
+    # this create the table with the interest variables and co variables
     data_analyse <- reactive({
       if(is.null(data_forme())){return()}
       if(is.null(input$var)){return()}
       # to avoid bug when you switch with another concession data :
-      if((input$var %in% names(data_forme()[[1]]))== FALSE){return()}
+      if((input$var %in% names(data_forme()))== FALSE){return()}
       # to levels the season in the chronological order
-      permutation <- order(data_forme()[[1]]$date)
-      permuted <-data_forme()[[1]][permutation,]
+      permutation <- order(data_forme()$date)
+      permuted <-data_forme()[permutation,]
 
-      v <- data_forme()[[1]][input$var]
-      y <- data_forme()[[1]]["year"]
-      l <- data_forme()[[1]]["station"]
-      s <- factor(data_forme()[[1]]$saison,
+      v <- data_forme()[input$var]
+      y <- data_forme()["year"]
+      l <- data_forme()["station"]
+      s <- factor(data_forme()$saison,
                   unique(permuted$saison))
-      t <- data_forme()[[1]]["traitement"]
-      #i <- data_forme()[[1]]["interaction"]
-      c <- data_forme()[[1]]["campagne"]
+      t <- data_forme()["traitement"]
+      #i <- data_forme()["interaction"]
+      c <- data_forme()["campagne"]
       data <- data.frame(v, y, l, s, t, c) #i,c)
       names(data) <- c(input$var, "year", "station", "saison", "traitement", "campagne") #"interaction", "campagne")
       data
@@ -134,16 +137,6 @@ mod_Stat_server <- function(input, output, session, r){
 
     ##### information #####
     observeEvent(input$info2,{
-      message <- as.character(list_translate[r$lang][7,1])
-      sendSweetAlert(
-        session = session,
-        title = "",
-        text = message,
-        type = "info"
-      )
-    })
-
-    observeEvent(input$info3,{
       message <- as.character(list_translate[r$lang][8,1])
       sendSweetAlert(
         session = session,
@@ -152,6 +145,7 @@ mod_Stat_server <- function(input, output, session, r){
         type = "info"
       )
     })
+
 
     observeEvent(input$info4,{
       message <- as.character(list_translate[r$lang][9,1])

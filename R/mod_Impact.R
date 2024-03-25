@@ -80,7 +80,7 @@ mod_Impact_server <- function(input, output, session, r){
     output$trawl_opening <- renderUI({
       numericInput(
         ns("trawl_opening"),
-        i18n$t("Ouverture horizontale du chalut de campagne"),
+        i18n$t("Ouverture horizontale du chalut de campagne (en m)"),
         14,
         min = 1,
         max = 100
@@ -99,7 +99,7 @@ mod_Impact_server <- function(input, output, session, r){
       updateSelectInput(inputId =  "station", selected = upload()[[1]][[1]])
       updateDateRangeInput(inputId = "dates", start = upload()[[2]][[1]],
                            end = upload()[[3]][[1]] )
-      updateSelectInput(inputId = "trawl_opening", selected = upload()[[5]][[1]])
+      updateNumericInput(inputId = "trawl_opening", value = upload()[[5]][[1]])
     })
 
     ls1 <- reactive({

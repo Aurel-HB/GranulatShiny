@@ -25,6 +25,7 @@
 #' @import sf
 #' @import ggeffects
 #' @import cowplot
+#' @import DT
 #'
 #' @noRd
 app_server <- function(input, output, session) {

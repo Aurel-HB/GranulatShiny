@@ -7,6 +7,10 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import dplyr
+#' @import vegan
+#' @import ggplot2
+#'
 mod_Structure_ui <- function(id){
   # calling the translator sent as a golem option
   i18n <- golem::get_golem_options(which = "translator")
@@ -30,6 +34,7 @@ mod_Structure_ui <- function(id){
       uiOutput(ns("choix_campagne")),
       actionButton(ns("info2"), "",icon = icon("circle-info")),
       actionButton(ns("info3"), "",icon = icon("circle-info")),
+      actionButton(ns("info4"), "",icon = icon("circle-info")),
       plotOutput(ns("plot"), width = "100%"),
       #telecharger le graphique
       downloadButton(ns("downloadPlot"),
@@ -55,7 +60,11 @@ mod_Structure_server <- function (input, output, session, r){
     ns <- session$ns
     dataset <- reactive({
       if(is.null(r$data_forme)){return()}
-      as.data.frame(r$data_forme[[1]])
+      if(is.null(r$data_form_modif)){
+        return(r$data_forme[[1]])
+      } else {
+        return(r$data_form_modif)
+      }
       })
     species <- reactive({r$species})
 
@@ -182,22 +191,27 @@ mod_Structure_server <- function (input, output, session, r){
              x = "Number of Species",
              y = "Cumulative Abundance")
 
-      # Create the cumulative abundance curve using ggplot2 and stat_ecdf
-      #cumul_plot <- ggplot(data, aes(y = cumulative_abundance)) +
-      #  stat_ecdf(geom = "step", pad = F) +
-      #  labs(title = "Cumulative Abundance Curve",
-      #       x = "Cumulative Abundance",
-      #       y = "Cumulative Probability")
+      #### Species accumulation curves ####
+      indice_campagne <- as.integer(substr(input$choix_campagne,
+                                           start = 2, stop = 2))
+      SAC <- specaccum(dataset() %>%
+                         dplyr::filter(campagne==indice_campagne) %>%
+                         dplyr::select(species()), "random")
+      table_SAC <- data.frame(site = SAC$sites, richness = SAC$richness,
+                              sd = SAC$sd)# table_SAC export the information
+      #from the list generate by speccacum
+      SAC_plot <- ggplot(table_SAC, aes(site))+
+        geom_ribbon(aes(ymin = richness - sd,
+                        ymax = richness + sd), fill = "lightblue")+
+        geom_line(aes(y=richness), color="blue")+
+        #geom_errorbar(aes(ymin=richness-sd, ymax=richness+sd), width=.2,
+        #              position=position_dodge(0.5)) +
+        labs(title = "Species accumulation curves",
+             x = "Number of Sites",
+             y = "Number of Species")
 
-      # Create a rarefaction curve using ggplot2
-      #cumul_plot <- ggplot(data, aes(x = cumulative_abundance,
-      #                                    y = seq_along(cumulative_abundance)))+
-      #  geom_line() +
-      #  labs(title = "Rarefaction Curve",
-      #       x = "Cumulative Abundance",
-      #       y = "Number of Species")
-
-      p <- plot_grid(cumul_plot, NULL, ncol = 1, rel_heights = c(3,2))
+      ### prepare the plot to be display ####
+      p <- plot_grid(cumul_plot, SAC_plot, ncol = 1, rel_heights = c(5,5))
 
       return(plot_grid(barplot,p, ncol = 2, rel_widths = c(5,4)))
     })
@@ -251,6 +265,16 @@ mod_Structure_server <- function (input, output, session, r){
 
     observeEvent(input$info3,{
       message <- as.character(list_translate[r$lang][6,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
+    observeEvent(input$info4,{
+      message <- as.character(list_translate[r$lang][7,1])
       sendSweetAlert(
         session = session,
         title = "",

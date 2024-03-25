@@ -35,6 +35,7 @@ Charger les informations si vous avez une sauvegarde des paramètres de la zone 
 Le fichier n'a pas le bon format ! Référez vous au format sauvegarde de la notice.,The file is in the wrong format! Please refer to the save format in the instructions.
 Dates de la période d'exploitation :,Dates of exploitation period
 Stations à l'intérieur de la zone d'étude :,Stations in the study area
+Ouverture horizontale du chalut de campagne (en m), Horizontal opening of the trawl net (in m)
 Si besoin séléctionner les stations à retirer :,If necessary select the stations to be removed:
 Stations d'impact,Impact stations
 Stations de référence,Reference stations
@@ -42,6 +43,7 @@ Mettre en forme,Formatting
 Quelle table afficher ?,Which table display?
 Telecharger la table (.csv),Download the table (.csv)
 Telecharger les informations rentrées (.csv),Download the parametrization (.csv)
+Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2, Table units: area in km2 _ abundance in km2 _ biomass in kg/km2 _ species name in km2
 Choisir un variable pour les statistiques descriptives,Choose a variable for the descriptive statistics
 Telecharger le tableau (.csv),Download the table (.csv)
 Telecharger le graphique (.png),Download the plot (.png)

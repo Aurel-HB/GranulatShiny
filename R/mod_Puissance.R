@@ -35,7 +35,7 @@ mod_Puissance_server <- function(input, output, session, r){
     ns <- session$ns
 
     text_info <- reactive({
-      as.character(list_translate[r$lang][10,1])
+      as.character(list_translate[r$lang][11,1])
     })
 
     output$explain <- renderText({

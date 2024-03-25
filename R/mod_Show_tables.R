@@ -7,16 +7,25 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
+#' @import DT
+#'
 mod_Show_tables_ui <- function(id){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
   ns <- NS(id)
   tagList(
     box(
-        dataTableOutput(ns("contents")),
+        #dataTableOutput(ns("table")),
+        title = actionButton(ns("info"), "",icon = icon("circle-info")),
+        DTOutput(ns("table")),
+        #actionButton(ns("finish"), i18n$t("Valider changement")),
         width = NULL,
         style = "overflow-x: scroll;",
         collapsible = T,
         solidHeader = TRUE
-      )
+      )#,
+    #verbatimTextOutput(ns("test"))
     )
 }
 
@@ -24,18 +33,79 @@ mod_Show_tables_ui <- function(id){
 #'
 #' @noRd
 mod_Show_tables_server <- function(input, output, session, r){
+  # calling the translator sent as a golem option
+  i18n <- golem::get_golem_options(which = "translator")
+  i18n$set_translation_language("fr")
     ns <- session$ns
 
     data_forme <- reactive({
-      r$data_forme
+      r$data_forme[[as.integer(r$indice)]]
     })
 
-    #outPut de la table
-    output$contents <- renderDataTable({
-      if(is.null(data_forme())){return()}
-      data_forme()[[as.integer(r$indice)]]
+    observeEvent(input$info,{
+      message <- as.character(
+        i18n$t(
+          "Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2"
+          )
+      )
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
 
-    }, options = list("pageLength" = 10))
+    #output$test <- renderPrint({
+    #  head(data())
+    #})
+
+    #outPut de la table
+    output$table <- renderDT({
+      # Create a datatable with 'saison' column editable
+      datatable(data_forme(),
+                editable = list(target = 'cell',
+                                disable = list(columns = c(0,1,2,4,
+                                                           5,6,7,8,9,10,
+                                                           11,12,13,14))),
+                rownames = FALSE)
+    })
+
+
+    observe({
+      #saveRDS(data_forme(),"table_modif_season.rds")
+      r$table_modif_season <- data_forme()
+      # this new variable will save the change from the user
+    })
+
+    # Update the data when a cell is edited
+    newData <- reactive({
+      if(is.null(input$table_cell_edit)){return(data_forme())}
+      info <- input$table_cell_edit
+      #str(info)
+
+      # Extract the row and column index and the updated value
+      row <- info$row
+      col <- info$col + 1 # Adjust for 1-based indexing
+      value <- info$value
+
+      # Update the data
+      #newData <- readRDS("table_modif_season.rds")
+      newData <- r$table_modif_season
+      newData[row, col] <- value
+      #saveRDS(newData, "table_modif_season.rds")
+      r$table_modif_season <- newData
+      newData
+    })
+
+    data <- eventReactive(input$table_cell_edit,{
+      newData()
+    })
+
+    observe({
+      r$data_form_modif <- data()
+    })
+
 }
 
 ## To be copied in the UI

@@ -48,12 +48,12 @@ diversity_table <- function(data, var_name){
       }
       tot <- as.numeric(c(tot, temp[var_name][j,1]))
     }
-    Var_int[i,1] <- round(mean(int), digits = 2)
-    Var_int[i,2] <- round(stats::sd(int), digits = 2)
-    Var_ext[i,1] <- round(mean(ext), digits = 2)
-    Var_ext[i,2] <- round(stats::sd(ext), digits = 2)
-    Var_tot[i,1] <- round(mean(tot), digits = 2)
-    Var_tot[i,2] <- round(stats::sd(tot), digits = 2)
+    Var_int[i,1] <- round(mean(int), digits = 3)
+    Var_int[i,2] <- round(stats::sd(int), digits = 3)
+    Var_ext[i,1] <- round(mean(ext), digits = 3)
+    Var_ext[i,2] <- round(stats::sd(ext), digits = 3)
+    Var_tot[i,1] <- round(mean(tot), digits = 3)
+    Var_tot[i,2] <- round(stats::sd(tot), digits = 3)
   }
 
 

@@ -56,7 +56,11 @@ mod_Indicator_server <- function (input, output, session, r){
   ns <- session$ns
   dataset <- reactive({
     if(is.null(r$data_forme)){return()}
-    as.data.frame(r$data_forme[[1]])
+    if(is.null(r$data_form_modif)){
+      return(r$data_forme[[1]])
+      } else {
+      return(r$data_form_modif)
+    }
     })
   #output$test <- renderPrint({class(input$choix_campagne)})
 
