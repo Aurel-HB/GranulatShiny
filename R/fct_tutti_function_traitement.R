@@ -141,7 +141,7 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
 
   # Transform number of fishes in density
   tutti_catch_abun$abun <- round(tutti_catch_abun$abun / tutti_catch_abun$hauled_surf,
-                                 digits = 3)
+                                 digits = 0)
 
 
   tutti_catch_abun_wide <-

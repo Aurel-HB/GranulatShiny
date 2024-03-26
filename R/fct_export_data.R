@@ -22,8 +22,8 @@ export_data <- function(path, catch, operation, impact_polygon){
   st_write(impact_polygon, dsn = paste(path, "shapefile"), layer = output_filename, driver = "ESRI Shapefile", append=FALSE)
 
   # export csv ###
-  write.csv(catch, paste(path,"catch.csv"), row.names=FALSE)
-  write.csv(operation, paste(path,"operation.csv"), row.names=FALSE)
+  write.csv(catch, paste(path,"catch.csv", sep =""), row.names=FALSE)
+  write.csv(operation, paste(path,"operation.csv", sep =""), row.names=FALSE)
   #####
 
 }

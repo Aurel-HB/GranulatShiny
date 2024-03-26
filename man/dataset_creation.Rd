@@ -42,22 +42,22 @@ a list of 3 data frame, 3 shape file (shp, shx, dbf) :
  The number of species per (station,season,year) is determined randomly
  by probability distribution :
 species 1 no effect####
-rnbinom(640, mu=2000, size = 0.2)
+rnbinom(720, mu=100, size = 1.1)
 ####
 species 2 processing effect####
  less variance and it's possible to have several 0
- rnbinom(1, mu=3000, size = 0.1)
-high variance, no 0 and possible very high value
-rlnorm(1, meanlog = 8, sdlog = 1.1)
+ rnbinom(1, mu=20, size = 3)
+to model the effect when process we keep only value < 15
+rnbinom(1, mu=20, size = 3) < 15
 ####
 species 3  season effect and interaction processing*season####
 less variance and it's possible to have several 0
-rnbinom(1, mu=2000, size = 0.3)
+rnbinom(1, mu=10, size = 1.1)
 the gamma have high variance, no 0 and high value
 it is easiest to control an increase than with the lnorm
-if "summer" = rgamma(1, shape = 3, scale = 600)
-if "winter" = rgamma(1, shape = 3, scale = 100)
-#same for spring and autumn = rgamma(1, shape = 3, scale = 300)
+if "summer" = rgamma(1, shape = 3, scale = 60)
+if "winter" = rgamma(1, shape = 3, scale = 10)
+#same for spring and autumn = rgamma(1, shape = 3, scale = 30)
 
 Some parameters needed in the standard format of the app have been fixed
 the distance of one station sample is fixed at 1.2e-5

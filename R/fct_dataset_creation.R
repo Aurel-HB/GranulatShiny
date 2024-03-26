@@ -15,22 +15,25 @@
 #'  The number of species per (station,season,year) is determined randomly
 #'  by probability distribution :
 #' species 1 no effect####
-#' rnbinom(640, mu=2000, size = 0.2)
+#' rnbinom(720, mu=100, size = 1.1)
 #' ####
 #' species 2 processing effect####
 #'  less variance and it's possible to have several 0
-#'  rnbinom(1, mu=3000, size = 0.1)
-#' high variance, no 0 and possible very high value
-#' rlnorm(1, meanlog = 8, sdlog = 1.1)
+#'  rnbinom(1, mu=20, size = 3)
+#' to model the effect when process we keep only value < 15
+#' rnbinom(1, mu=20, size = 3) < 15
 #' ####
 #' species 3  season effect and interaction processing*season####
 #' less variance and it's possible to have several 0
-#' rnbinom(1, mu=2000, size = 0.3)
+#' rnbinom(1, mu=100, size = 1)
 #' the gamma have high variance, no 0 and high value
 #' it is easiest to control an increase than with the lnorm
-#' if "summer" = rgamma(1, shape = 3, scale = 600)
-#' if "winter" = rgamma(1, shape = 3, scale = 100)
-#' #same for spring and autumn = rgamma(1, shape = 3, scale = 300)
+#' if "summer" = rgamma(1, shape = 2, scale = 300)
+#' if "winter" = rgamma(1, shape = 2, scale = 50)
+#' #same for spring and autumn = rgamma(1, shape = 2, scale = 150)
+#' ####
+#' species 4 no effect but big variation pop dynamics
+#' rnbinom(1, mu=100, size = 0.1)
 #'
 #' Some parameters needed in the standard format of the app have been fixed
 #' the distance of one station sample is fixed at 1.2e-5
@@ -81,7 +84,7 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, st
     station_impact <- c(station_impact, paste("H",i,sep=""))
     station_ref <- c(station_ref, paste("B",i,sep=""))
   }
-  stations <- rep(c(station_impact, station_ref), 32)
+  stations <- rep(c(station_impact, station_ref), 36)
   #####
 
   #year ####
@@ -105,29 +108,34 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, st
   # match season, year, catch ####
   #c1 = catch_species1
   c1 <- data.frame(year, season, stations, campagne,
-                   "nombre" = round(rnbinom(640, mu=2000, size = 0.2), digits = 2))
-  c2 <- data.frame(year, season, stations, campagne, "nombre" = rep(0,640))
-  c3 <- data.frame(year, season, stations, campagne, "nombre" = rep(0,640))
-  c4 <- data.frame(year, season, stations, campagne, "nombre" = rep(0,640))
+                   "nombre" = rnbinom(720, mu=100, size = 1.1))
+  c2 <- data.frame(year, season, stations, campagne, "nombre" = rep(0,720))
+  c3 <- data.frame(year, season, stations, campagne, "nombre" = rep(0,720))
+  c4 <- data.frame(year, season, stations, campagne,
+                   "nombre" = rnbinom(720, mu=100, size = 0.1))
 
-  for (indice in 1:640){
+  for (indice in 1:720){
     ## test for s2##
     if (grepl("H", c2$stations[indice]) & c2$year[indice] >= start_year){
-      c2$nombre[indice] <- round(rnbinom(1, mu=3000, size = 0.1), digits = 2)
+      value <- rnbinom(1, mu=20, size = 3)
+      while (value > 15) {
+        value <- rnbinom(1, mu=20, size = 3)
+      }
+      c2$nombre[indice] <- value
     } else {
-      c2$nombre[indice] <- round(rlnorm(1, meanlog = 8, sdlog = 1.1), digits = 2)
+      c2$nombre[indice] <- rnbinom(1, mu=20, size = 3)
     }
 
     ## test for s3##
     if (grepl("H", c3$stations[indice]) & c3$year[indice] >= start_year){
-      c3$nombre[indice] <- round(rnbinom(1, mu=2000, size = 0.3), digits = 2)
+      c3$nombre[indice] <- rnbinom(1, mu=100, size = 1)
     } else {
       if (c3$season[indice] == "summer"){
-        c3$nombre[indice] <- round(rgamma(1, shape = 3, scale = 600), digits = 2)
+        c3$nombre[indice] <- round(rgamma(1, shape = 2, scale = 300), digits = 2)
       } else   if (c3$season[indice] == "winter"){
-        c3$nombre[indice] <- round(rgamma(1, shape = 3, scale = 100), digits = 2)
+        c3$nombre[indice] <- round(rgamma(1, shape = 2, scale = 50), digits = 2)
       } else { #same for spring and autumn
-        c3$nombre[indice] <- round(rgamma(1, shape = 3, scale = 300), digits = 2)
+        c3$nombre[indice] <- round(rgamma(1, shape = 2, scale = 150), digits = 2)
       }
     }
   }
@@ -138,7 +146,7 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, st
 
   DateDeb <- c()
   DateFin <- c()
-  for (indice in 1:640){
+  for (indice in 1:720){
     if (c3$season[indice] == "summer"){
       DateDeb <- c(DateDeb, paste("01/07/", c3$year[indice], " 00:00", sep = ""))
       DateFin <- c(DateFin, paste("01/07/", c3$year[indice], " 00:00", sep = ""))
@@ -160,6 +168,8 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, st
                    "Poids" = c2$nombre*2, DateDeb, DateFin)
   c3 <- data.frame(c3, "Nom_Scientifique"= c("Leedsischthys.problematicus"),
                    "Poids" = c3$nombre*10, DateDeb, DateFin)
+  c4 <- data.frame(c4, "Nom_Scientifique"= c("Latimeria.chalumnae"),
+                   "Poids" = c3$nombre*0.5, DateDeb, DateFin)
 
 
 
@@ -244,13 +254,14 @@ dataset_creation <- function(start_year = 2000, end_year = 2030, nb_year = 9, st
   c1 <- merge(map_station, c1, by.x = "trait", by.y = "stations")
   c2 <- merge(map_station, c2, by.x = "trait", by.y = "stations")
   c3 <- merge(map_station, c3, by.x = "trait", by.y = "stations")
+  c4 <- merge(map_station, c4, by.x = "trait", by.y = "stations")
 
-  tot <- rbind(c1,c2,c3)
+  tot <- rbind(c1,c2,c3,c4)
 
   ####
-  catch <- data.frame("Campagne" = rep("SHINY", length(tot[,1])),"Annee" = tot$year,
-                      "Trait" = tot$trait,"Nom_Scientifique" = tot$Nom_Scientifique,
-                      "Code_Campagne" = tot$campagne,"Nombre" = tot$nombre,
+  catch <- data.frame("Serie" = rep("SHINY", length(tot[,1])),"Annee" = tot$year,
+                      "Code_Station" = tot$trait,"Nom_Scientifique" = tot$Nom_Scientifique,
+                      "Serie_Partielle" = tot$campagne,"Nombre" = tot$nombre,
                       "Poids" = tot$Poids,"Pmoy" = rep(NA, length(tot[,1])),
                       "longueurmoy" = rep(NA, length(tot[,1])),"DateDeb" = tot$DateDeb,
                       "LatDeb" = tot$LatDeb,"LongDeb" = tot$LongDeb,
