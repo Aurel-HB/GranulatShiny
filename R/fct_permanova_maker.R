@@ -44,3 +44,14 @@ permanova_maker <-
     }
 
   }
+
+
+#prepare for adonis
+#vector <- decostand(species["Limanda.limanda"],"chi.square", MARGIN = 2)
+# vector <- data.frame(as.numeric(vector[1,]))
+# names(vector) <- "spcecies"
+# dist <- vegdist(vector, method = "euclidean")
+# result <- adonis2(dist~traitement*saison, data = data.Table.complete)
+
+
+

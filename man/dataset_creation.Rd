@@ -52,12 +52,15 @@ rnbinom(1, mu=20, size = 3) < 15
 ####
 species 3  season effect and interaction processing*season####
 less variance and it's possible to have several 0
-rnbinom(1, mu=10, size = 1.1)
+rnbinom(1, mu=100, size = 1)
 the gamma have high variance, no 0 and high value
 it is easiest to control an increase than with the lnorm
-if "summer" = rgamma(1, shape = 3, scale = 60)
-if "winter" = rgamma(1, shape = 3, scale = 10)
-#same for spring and autumn = rgamma(1, shape = 3, scale = 30)
+if "summer" = rgamma(1, shape = 2, scale = 300)
+if "winter" = rgamma(1, shape = 2, scale = 50)
+#same for spring and autumn = rgamma(1, shape = 2, scale = 150)
+####
+species 4 no effect but big variation pop dynamics
+rnbinom(1, mu=100, size = 0.1)
 
 Some parameters needed in the standard format of the app have been fixed
 the distance of one station sample is fixed at 1.2e-5
