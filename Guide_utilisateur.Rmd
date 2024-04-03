@@ -30,12 +30,15 @@ library(lme4)
 library(DHARMa)
 library(shinydashboard)
 library(ggeffects)
+library(vegan)
+library(pairwiseAdonis) #library(devtools) ; install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis")
 ```
 
 <br> GranulatShiny est une application qui facilite le traitement statistique des données collectées dans le cadre des états initiaux, états de référence avant travaux et suivis environnementaux dédiées aux ressources halieutiques et à l'ichtyofaune au sein des concessions d'extraction de granulats marins. L'application permet d'automatiser une partie de la mise en forme des données et du calcul d'indicateurs standards de biodiversité, et fournir des clés de décision pour les étapes plus avancées du traitement.<br>
-À partir des indicateurs calculés et des choix fait par l'utilisateur, l'application produit des figures et des tableaux dans des formats correspondants aux recommandations du Protocole halieutique de référence et dans le Guide méthodologique pour l’élaboration des Documents d’Orientation pour une Gestion durable des Granulats Marins (DOGGM). L'application fournit une interface graphique interactive basée sur le langage R dispensant l’utilisateur de sa maitrise pour se concentrer sur les paramètres d’intérêt pour le diagnostic des effets potentiels de l’extraction de granulats marins sur les ressources halieutiques. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons. Chaque approche va couvrir un attendu du Protocole halieutique de référence. L'approche dite explicative présente et analyse les données à l'échelle de la communauté entière. L'approche descriptive présente et analyse les données à l'échelle d'une espèce. Et le recours à de l’analyse inférentielle est nécessaire pour évaluer de la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant extraction.
+À partir des indicateurs calculés et des choix fait par l'utilisateur, l'application produit des figures et des tableaux dans des formats correspondants aux recommandations du Protocole halieutique de référence et dans le Guide méthodologique pour l’élaboration des Documents d’Orientation pour une Gestion durable des Granulats Marins (DOGGM). L'application fournit une interface graphique interactive basée sur le langage R dispensant l’utilisateur de sa maitrise pour se concentrer sur les paramètres d’intérêt pour le diagnostic des effets potentiels de l’extraction de granulats marins sur les ressources halieutiques. GranulatShiny est composé de 3 approches statistiques (explicative, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l'influence des concessions d'extraction de granulats marins sur les communautés de poissons. Chaque approche va couvrir un attendu du Protocole halieutique de référence. L'approche dite explicative présente et analyse les données à l'échelle de la communauté entière. L'approche descriptive présente et analyse les données à l'échelle d'une espèce. Et le recours à de l’analyse inférentielle est nécessaire pour évaluer de la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant extraction.<br>
+L'application en sa version actuelle n'a pas de finalité réglementaire. Elle est aide pour la réalisation des rapports de suivi sur les communautés halieutiques. Elle ne vient pas remplacer le travail déjà fournie par les bureaux d'études mais vient compléter ce qui est déjà réalisé en permettant le montage d'un modèle statistique pour tester les effets de certains paramètres sur les communautés de poissons.
 
-<br>Avant de commencer, notez que vous rencontrerez différents boutons dans l'application. <br>
+<br>Ce guide a été rédigé afin de permettre à un utilisateur de GranulatShiny de s'approprier l'interface de l'application et de comprendre la méthodologie développée derrière chaque résultat fourni par l'application. <br> Avant de commencer, notez qu'il existes différents boutons dans l'application. <br>
 
 Les boutons avec une icône bateau vous permettent de **passer d'un onglet à un autre**.
 
@@ -61,6 +64,7 @@ Enfin, ceux avec un cercle contenant un i sont des **aides** que l'on peut faire
 actionButton("info", "",icon = icon("circle-info"))
 ```
 
+Lors du démarrage de l'application, la page d'accueil s'ouvre automatiquement. Sur cette page, les différents documents de références et d'informations sont listés avec leur URL associé en hyperlien. Un rappel du contexte sur l'extraction de granulats marins se trouve à droite de la page. <br>
 Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil dans l'application.
 
 ## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
@@ -74,7 +78,7 @@ Trois cas de figures peuvent se présenter : <br>
 S'il s'agit d'un exercice de découverte de l'outil, un jeu de données factice est mis à disposition de l'utilisateur avec l'outil. Les données sont directement intégrées dans l'application et peuvent être chargées en sélectionnant la réponse non sous l'entête: "Avez vous vos propres données ?". Ce jeu de données a une vocation pédagogique, il ne correspond à aucun cas réel et ne peut donc apparaître dans des documents à valeur administrative (i.e. rapports de suivi, état initial de l'environnement, état de référence avant travaux...).
 
 Pour les besoins de la prise en main de l’outil, le jeu de données mis à disposition avec l’outil correspond à une concession fictive qui serait située dans le Golfe de Gascogne. Pour ce jeu de données fictif, on considère une concession en exploitation de 2000 à 2030, pour laquelle un suivi du compartiment halieutique a été mis en place tous les 5 ans. Le plan d’échantillonnage fictif prévoit l’échantillonnage de 10 stations dans la concession et 10 stations hors de la concession. Ce choix ne correspond pas à un plan d’échantillonnage qui aurait été élaboré en connaissance des conditions environnementales du site (i.e. faciès sédimentaires, habitats benthiques) et ne correspond donc pas aux recommandations du protocole halieutique de référence. <br>
-Pour éviter toute confusion, les 3 espèces présentes dans ce jeu de données sont fictives également. Chaque espèce possède une dynamique de population associé à une loi de distribution de probabilité spécifique. Sachant cela, il est possible contrôler les résultats issus des statistiques inférentielles et les effets de l'environnement sur l'espèce choisie. La première espèce Cephalaspis.tenuicornis n’est pas impactée par l'extraction, le temps, l’espace et les conditions environnementales. Ainsi aucun effet potentiel des variables sur l’abondance de cette espèce ne sera détecté. L’espèce Dimichtys.terreli est impactée seulement par l'extraction. On a donc un effet visible entre l’échantillonnage dans la zone ou hors de la zone d’exploitation. Enfin Leedsischthys.problematicus est impactée par l’extraction mais différemment en fonction des saisons. Les saisons n’influencent pas la population de cette espèce en temps normal mais l’interaction entre zone d’extraction et les saisons influencent l’abondance de cette espèce. Enfin, Latimeria.chalumnae n’est pas impactée par l'extraction, le temps, l’espace et les conditions environnementales mais la population subit une forte variabilité.  Ces exemples permettent d’illustrer des réponses à l'environnement différentes pour mieux comprendre ce qui est recherché lors de l’analyse inférentielle. <br>
+Pour éviter toute confusion, les 4 espèces présentes dans ce jeu de données sont fictives également. Chaque espèce possède une dynamique de population associé à une loi de distribution de probabilité spécifique. Sachant cela, il est possible contrôler les résultats issus des statistiques inférentielles et les effets de l'environnement sur l'espèce choisie. La première espèce Cephalaspis.tenuicornis n’est pas impactée par l'extraction, le temps, l’espace et les conditions environnementales. Ainsi aucun effet potentiel des variables sur l’abondance de cette espèce ne sera détecté. L’espèce Dimichtys.terreli est impactée seulement par l'extraction. On a donc un effet visible entre l’échantillonnage dans la zone ou hors de la zone d’exploitation. Enfin Leedsischthys.problematicus est impactée par l’extraction mais différemment en fonction des saisons. Les saisons n’influencent pas la population de cette espèce en temps normal mais l’interaction entre zone d’extraction et les saisons influencent l’abondance de cette espèce. Enfin, Latimeria.chalumnae n’est pas impactée par l'extraction, le temps, l’espace et les conditions environnementales mais la population subit une forte variabilité.  Ces exemples permettent d’illustrer des réponses à l'environnement différentes pour mieux comprendre ce qui est recherché lors de l’analyse inférentielle. <br>
 
 **-	Cas n°2 : vous avez une première expérience de l’outil et vous vous lancez dans l’analyse de votre propre jeu de données mis au format recommandé** <br>
 S’il s’agit d’un travail d’analyse de données réelles mises au format adéquat, vous devez sélectionner et charger dans l’interface graphique GranulatShiny les fichiers : « TuttiCatch.csv » et « TuttiOperation.csv » qui rassemblement l’essentiel des informations relatives au déroulé et aux résultats des suivis mis en œuvre. Seul le format csv est pris en charge. Le fichier « TuttiCatch.csv » correspond aux données de captures provenant de l’échantillonnage des populations de poissons et le fichier « TuttiOperation.csv » correspond à toutes les informations dérivées de la mise en œuvre du protocole pour chaque station d’échantillonnage (i.e. date de réalisation de la campagne et nom de celle-ci, engin de pêche dont les caractéristiques seront par ailleurs spécifiées dans les rapports associés au rendu des résultats, coordonnées géographiques des point de filage et de virage et horaires associés, durée totale du trait de chalut, profondeur de virage et de filage).<br>
@@ -221,7 +225,7 @@ frise
 
 ### Représentation de la structure
 
-Ce tableau représente le pourcentage de chaque espèce présente pour chaque campagne d'échantillonnage (paragraphe 8.4.1 du Protocole halieutique de référence). Le tableau permet de suivre l'évolution des populations d'espèces au fil du temps et offre une perspective sur les tendances de population. En observant les variations des pourcentages d'espèces d'une année à  l'autre il est possible de détecter des changements écologiques  significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Il permet aussi  d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin. Enfin, il permet d'évaluer l'impact de la gestion mise en place sur la communauté de poissons.
+Ce tableau représente le pourcentage de chaque espèce présente pour chaque campagne d'échantillonnage (paragraphe 8.4.1 du Protocole halieutique de référence). Le tableau permet de suivre l'évolution des populations d'espèces au fil du temps et offre une perspective sur les tendances de population. En observant les variations des pourcentages d'espèces d'une année à l'autre il est possible de détecter des changements écologiques  significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Il permet aussi  d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin. Enfin, il permet d'évaluer l'impact de la gestion mise en place sur la communauté de poissons.
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_structure_table.R")
@@ -255,7 +259,7 @@ datatable(data_percent, callback = callback)
 
 ```
 
-Cette figure représente l’abondance de chaque espèce par campagne par ordre d’importance et la courbe d’abondance cumulées en fonction du nombre d’espèce par ordre d’importance (paragraphe 8.4.1 du Protocole halieutique de référence).
+Cette figure représente l’abondance de chaque espèce par campagne par ordre d’importance, la courbe d’abondance cumulées en fonction du nombre d’espèce par ordre d’importance et la courbe d'accumulation d'espèces (paragraphe 8.4.1 du Protocole halieutique de référence).
 
 ```{r, echo=FALSE, warning=FALSE, fig.height = 9, fig.width = 16}
 #### prepare data ####
@@ -315,19 +319,39 @@ Cette figure représente l’abondance de chaque espèce par campagne par ordre 
              x = "Number of Species",
              y = "Cumulative Abundance")
       
-      p <- plot_grid(cumul_plot, NULL, ncol = 1, rel_heights = c(3,2))
+       #### Species accumulation curves ####
+      indice_campagne <- 1
+      SAC <- specaccum(dataset %>%
+                         dplyr::filter(campagne==indice_campagne) %>%
+                         dplyr::select(species), "random")
+      table_SAC <- data.frame(site = SAC$sites, richness = SAC$richness,
+                              sd = SAC$sd)# table_SAC export the information
+      #from the list generate by speccacum
+      SAC_plot <- ggplot(table_SAC, aes(site))+
+        geom_ribbon(aes(ymin = richness - sd,
+                        ymax = richness + sd), fill = "lightblue")+
+        geom_line(aes(y=richness), color="blue")+
+        #geom_errorbar(aes(ymin=richness-sd, ymax=richness+sd), width=.2,
+        #              position=position_dodge(0.5)) +
+        labs(title = "Species accumulation curves",
+             x = "Number of Sites",
+             y = "Number of Species")
+
+      ### prepare the plot to be display ####
+      p <- plot_grid(cumul_plot, SAC_plot, ncol = 1, rel_heights = c(5,5))
 
       plot_grid(barplot,p, ncol = 2, rel_widths = c(5,4))
 ```
 
-La première figure représente l'abondance de chaque espèce pour une campagne dans un histogramme ordonné par ordre d’abondance décroissante. Cela permet d'identifier les espèces dominantes, de visualiser les tendances temporelles, de détecter les variations saisonnières et annuelles, de comparer les données entre différentes campagnes et de communiquer les résultats de manière claire et concise.
-La deuxième figure est une courbe d'abondance cumulée en fonction du nombre d'espèces par ordre d'abondance décroissante.  L'abondance cumulée se réfère à la somme cumulative des abondances des  espèces dans un ensemble de données, en commençant par l'espèce la plus  abondante et en ajoutant successivement les abondances des espèces  suivantes dans l'ordre décroissant. La courbe d'abondance cumulée permet d'évaluer la diversité et la  répartition des espèces dans un écosystème ou dans un échantillon  biologique. Plus la courbe est plate, plus la communauté est  diversifiée alors qu’une courbe qui  monte rapidement puis s'aplatit indique une communauté où quelques espèces sont très abondantes tandis que la plupart des espèces sont  rares. Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 3 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
+La première figure représente l'abondance de chaque espèce pour une campagne dans un histogramme ordonné par ordre d’abondance décroissante. Cela permet d'identifier les espèces dominantes, de visualiser les tendances temporelles, de détecter les variations saisonnières et annuelles, de comparer les données entre différentes campagnes et de communiquer les résultats de manière claire et concise. Pour plus de lisibilité, les espèces participant à moins de 1% de l'abondance totale ne sont pas affichées sur l'histogramme.
+La deuxième figure est une courbe d'abondance cumulée en fonction du nombre d'espèces par ordre d'abondance décroissante.  L'abondance cumulée se réfère à la somme cumulative des abondances des  espèces dans un ensemble de données, en commençant par l'espèce la plus  abondante et en ajoutant successivement les abondances des espèces  suivantes dans l'ordre décroissant. La courbe d'abondance cumulée permet d'évaluer la diversité et la  répartition des espèces dans un écosystème ou dans un échantillon  biologique. Plus la courbe est plate, plus la communauté est  diversifiée alors qu’une courbe qui  monte rapidement puis s'aplatit indique une communauté où quelques espèces sont très abondantes tandis que la plupart des espèces sont  rares. Attention la courbe d'abondance cumulée apporte un intérêt lorsqu'il y a de nombreuses espèces différentes. Ces résultats sont issus d'un jeu de données d'une concession fictive avec seulement 4 espèces. En pratique, vous ne devriez pas avoir ce genre de résultats avec vos données.
+La troisième figure représente le nombre d'espèces en fonction du nombre de sites échantillonnés. L'algorithme va pour un nombre de sites donnés régarder tester toutes les combinaisons existantes dans le jeu de données et récupérer le nombre d'espèces pour chaque combinaison. Ensuite il fait une moyenne par nombre de site et c'est cette valeur moyenne qui est reportée dans le graphique. Cette courbe permet de vérifier qu'il y a un nombre suffisant de sites d'échantillonnages pour capter l'ensemble des espèces présentes dans la zone. Si c'est le cas, la courbe doit tendre vers un plateau. 
 
 ## <i class="fa-solid fa-scroll"></i> Statistiques descriptives
 
 ### Plot des données
 
-Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. La partie verte est composée d'un tableau qui résume la variable expliquée et d'un simple histogramme pour voir la distribution de la variable Dans un premier temps le tableau renseigne sur le nombre de zéro présent, la longueur totale de la série de valeurs et un la fraction du nombres de zéros et valeurs manquantes sur le nombre de valeurs totales. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. Enfin, l’histogramme montre la répartition des valeurs en fréquence. <br>
+Dans cette partie on s'intéresse à un indicateur en particulier (abondance d'une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. Dans un premier temps le tableau qui résume la variable expliquée renseigne sur le nombre de zéros et valeurs manquantes, la longueur totale de la série de valeurs et la fraction du nombres de zéros et valeurs manquantes sur le total de valeurs. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. La valeur la plus importante pour la partie statistiques inférentielles est celle du nombre de zéros et valeurs manquantes. <br>
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_numeric_summary.R")
@@ -336,29 +360,9 @@ data <- dataset$Abun
 datatable(numeric_summary(as.numeric(data), "Abun"),
          callback = callback) 
 
-
-
-data <- as.data.frame(dataset$Abun)
-names(data) <- c("variable")
-ggplot(data, aes(x = variable))+
-  geom_histogram(fill="lightblue", color="black", bins = 50)+
-  labs(title = paste("Histogram of ", "Abun", sep=""),
-       x="Abun", y="Frequency")
-
 ```
 
-Dans la première boite bleue à gauche il est possible de visuliser des diagrammes d'intéractions. Un diagramme d'interaction peut représenter la manière dont différentes entités ou variables interagissent entre elles et ainsi comprendre les dépendances qui existent entre elles. Dans GranulatShiny le diagramme d'interaction permet de voir l'interaction entre la zone d'impact/non-impact et les autres covariables telles que la saison, l'année, la station et la campagne d’échantillonnage. Le diagramme d'interaction correspond à la moyenne de la variable étudiée en fonction des valeurs d'un premier facteur, avec une courbe pour chaque valeur d'un deuxième facteur.Dans l'exemple, la valeur de l'abondance est donnée en moyenne par saison en faisant la distinction entre les stations avec impact et sans impact. <br>
-
-```{r, echo=FALSE, warning=FALSE}
-interaction.plot(x.factor=dataset$saison,
-                         trace.factor=dataset$traitement,
-                         trace.label = "traitment",
-                         response=as.numeric(dataset$Abun),
-                         main = paste("Interaction_plot of ", "Abun"," by season and traitment", sep=""),
-                         xlab = "", ylab = "")
-```
-
-Dans la deuxième boite bleue à gauche il est possible de visuliser des boites à moustaches. La boite à moustache ou boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans GranulatShiny, la série de la variable expliquée (ici l'abondance) dans la zone avec impact est comparé avec celle de la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique.
+A la suite de ce tableau, il est possible de visuliser des boites à moustaches. La boite à moustache ou boxplot offre une autre représentation pour interpréter le lien entre la variable expliquée et les variables explicatives comme l'impact, l'année, l'enquête, la station et la saison. Dans les représentations graphiques de données statistiques, le boxplot est un moyen rapide de figurer le profil essentiel d'une série statistique quantitative. Le boxplot résume quelques indicateurs de position du caractère étudié (médiane, quartiles, minimum, maximum ou déciles). Il est souvent utilisé pour comparer rapidement deux séries. Dans GranulatShiny, la série de la variable expliquée (ici l'abondance) dans la zone avec impact est comparé avec celle de la zone sans impact. Il est possible dans l'appli de passer au log pour avoir une meilleure visualisation des boxplots car les valeurs extrêmes peuvent écraser le graphique. D'un point de vue graphique, la médiane est le trait horizontal qui traverse la boite à moustache. les bords en largeur de la boite correspondent aux quartiles 25 et 75 pourcent.  
 
 ```{r, echo=FALSE, warning=FALSE}
 
@@ -412,21 +416,47 @@ Et pour GLMM et GLM, vous devrez choisir une distribution de probabilité. Par d
 
 
 
-Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br> La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
+Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br> 
 
+#### Modèle linéaire mixte généralisé
+
+La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
+
+Sortie du modèle GLMM sur l'abondance.
 ```{r, echo=FALSE, warning=FALSE}
 
-GLM <- glm(log(Abun) ~ traitement+saison, data = dataset, family = gaussian(link = identity))
+GLMM <- glmer(log(Abun) ~ traitement * saison + (1|campagne) + (1|station), data = dataset, family = gaussian(link = identity))
+summary(GLMM)
+```
+
+#### Modèle linéaire généralisé
+Sortie du modèle GLM sur l'abondance
+```{r, echo=FALSE, warning=FALSE}
+
+GLM <- glm(log(Abun) ~ traitement*saison, data = dataset, family = gaussian(link = identity))
 summary(GLM)
+```
+
+#### Analyses de variances par permutations
+Sortie de la Permanova sur l'abondance
+```{r, echo=FALSE, warning=FALSE}
+
+vector <- decostand(dataset["Abun"],"chi.square", MARGIN = 2)
+vector <- data.frame(as.numeric(vector[1,]))
+names(vector) <- "Abun"
+dist <- vegdist(vector, method = "euclidean")
+result <- adonis2(dist~traitement*saison, data = dataset, permutations = 999)
+result
+
 ```
 
 L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
-plot(simulateResiduals(GLM))
+plot(simulateResiduals(GLMM))
 ```
 
-<br>Dans le cas de l'exemple, le test de dispersion n'est pas significatif donc l'écart-type observé est proche de celui simulé. Par contre, les tests de Kolmogorov-Smirnov et de Valeur aberrante sont signifcatifs, ils apparaisent en rouge, il y a donc un problème. Il est possible alors de chercher un autre modèle qui s'ajusterait mieux. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
+<br>Dans le cas de l'exemple, les tests de Kolmogorov-Smirnov, de Valeur aberrante  etde dispersion ne sont pas significatif donc il n'y a pas de problème problème. Si un de ces tests s'affichaient en rouge, cela indiquerait que le modèle n'est pas optimal et il serait possible alors de chercher un autre modèle qui s'ajusterait mieux. Comme ces modèles se basent sur des données réelles, il est parfois impossible de trouver un modèle parfait. Il faut alors choisir le modèle avec le moins d'avertissement. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
 
 ### Représentation des effets
 

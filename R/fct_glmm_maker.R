@@ -55,14 +55,17 @@ glmm_maker <-
       }
 
     } else if (family == "Normale") {
+      family <- gaussian(link = identity)
       if (interaction == F) {
         mod <-
-          lmer(formule,
-               data = data)
+          glmer(formule,
+               data = data,
+               family = family)
         if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
           mod_f <-
-            lmer(formule_bis,
-                 data = data)
+            glmer(formule_bis,
+                 data = data,
+                 family = family)
           list(mod, mod_f)
         } else {
           list(mod, mod)
@@ -70,19 +73,23 @@ glmm_maker <-
       }
       else if (interaction == T) {
         mod_f <-
-          lmer(formule_bis,
-               data = data)
+          glmer(formule_bis,
+               data = data,
+               family = family)
         list(mod_f, mod_f)
       }
     } else if (family == "Lognormale") {
+      family <- gaussian(link = identity)
       if (interaction == F) {
         mod <-
-          lmer(formule,
-               data = data)
+          glmer(formule,
+               data = data,
+               family = family)
         if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
           mod_f <-
-            lmer(formule_bis,
-                 data = data)
+            glmer(formule_bis,
+                 data = data,
+                 family = family)
           list(mod, mod_f)
         } else {
           list(mod, mod)
@@ -90,32 +97,29 @@ glmm_maker <-
       }
       else if (interaction == T) {
         mod_f <-
-          lmer(formule_bis,
-               data = data)
+          glmer(formule_bis,
+               data = data,
+               family = family)
         list(mod_f, mod_f)
       }
     } else {
       nAGQ <- 1L
       if (family == "Gamma log") {
         family <- Gamma(link = log)
-        nAGQ <- 0
       } else if (family == "Gamma inverse") {
         family <- Gamma(link = "inverse")
-        nAGQ <- 0
       }
       if (interaction == F) {
         mod <-
           glmer(formule,
                 data = data,
-                family = family,
-                nAGQ = nAGQ)
+                family = family)
         if (Anova(mod, type = "III")["traitement:saison", 3] > 0.05) {
           mod_f <-
             glmer(
               formule_bis,
               data = data,
-              family = family,
-              nAGQ = nAGQ
+              family = family
             )
           list(mod, mod_f)
         } else {
@@ -126,8 +130,7 @@ glmm_maker <-
         mod_f <-
           glmer(formule_bis,
                 data = data,
-                family = family,
-                nAGQ = nAGQ)
+                family = family)
         list(mod_f, mod_f)
       }
 

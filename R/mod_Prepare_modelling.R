@@ -105,7 +105,7 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       cov
     })
 
-   # output$test <- renderPrint({class(covariable())})
+    #output$test <- renderPrint({ecriture()[[3]]})
 
     output$covariable <-
       renderUI({
@@ -160,20 +160,27 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
       reactive({
         if(is.null(data_complet())){return()}
         if(is.null(input$distribution)){return()}
-        if(input$distribution == "Lognormale"){
+        if(r$methode == 3){
+          return( ecriture_modele(y_variable(),
+                          input$interaction,
+                          input$methode,
+                          input$covariable,
+                          input$distribution)
+          )
+        } else if(input$distribution == "Lognormale"){
           return(
             ecriture_modele_log(y_variable(),
-                            input$interaction,
-                            input$methode,
-                            input$covariable,
-                            input$distribution)
+                                input$interaction,
+                                input$methode,
+                                input$covariable,
+                                input$distribution)
           )
-        }
+        } else{
         ecriture_modele(y_variable(),
                         input$interaction,
                         input$methode,
                         input$covariable,
-                        input$distribution)
+                        input$distribution)}
       })
     output$ecriture_modele <- renderText(ecriture()[[1]])
     #output$ecriture_distribution <- renderText(ecriture()[[2]])
@@ -191,13 +198,22 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
     output$choix_modele <- renderUI({
       if(is.null(r$modele)){return()}
       if(class(r$modele) == "try-error"){return()}
-      if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
+      if (r$methode == 3){
         selectInput(
           ns("choix_modele"),
           i18n$t("Afficher les résultats du modèle :"),
           c("initial" = "1", "final" = "2"),
           selected = "2"
         )
+      } else if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
+        selectInput(
+          ns("choix_modele"),
+          i18n$t("Afficher les résultats du modèle :"),
+          c("initial" = "1", "final" = "2"),
+          selected = "2"
+        )
+      } else {
+        return()
       }
     })
 

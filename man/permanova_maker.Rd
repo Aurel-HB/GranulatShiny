@@ -4,16 +4,18 @@
 \alias{permanova_maker}
 \title{permanova_maker}
 \usage{
-permanova_maker(data, formule, formule_bis, interaction)
+permanova_maker(data, formule, formule_bis, interaction, dist)
 }
 \arguments{
-\item{data}{description}
+\item{data}{dataframe}
 
-\item{formule}{description}
+\item{formule}{expression from parse}
 
-\item{formule_bis}{description}
+\item{formule_bis}{expression from parse}
 
-\item{interaction}{description}
+\item{interaction}{Boolean}
+
+\item{dist}{matrix or large list}
 }
 \value{
 The return value is a list with the result of the permanova

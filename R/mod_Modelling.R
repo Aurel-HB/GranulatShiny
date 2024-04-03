@@ -119,10 +119,19 @@ mod_Modelling_server <- function(input, output, session, r){
           r$distribution), silent = T
         )
       } else if (r$methode == "3") {
-        try(permanova_maker(data_complet(),
-                        formule(),
-                        formule_bis(),
-                        r$interaction), silent = T)
+        # distance matrix for adonis
+        vector <- decostand(data_complet()[r$var_name],"chi.square", MARGIN = 2)
+        vector <- data.frame(as.numeric(vector[1,]))
+        names(vector) <- r$var_name
+        dist <- vegdist(vector, method = "euclidean")
+        ##
+        try(
+          permanova_maker(data_complet(),
+                          language(),
+                          language_bis(),
+                        r$interaction,
+                        dist),
+          silent = T)
       }
     })
 
@@ -188,9 +197,10 @@ mod_Modelling_server <- function(input, output, session, r){
 
         } else {
           if (r$choix_sortie == "1") {
-            modele()[[choix_modele()]]$aov.tab
+            #modele()[[choix_modele()]]$aov.tab
+            modele()[[choix_modele()]]
           } else if (r$choix_sortie == "2") {
-            modele()[[choix_modele()]]$coefficients
+            modele()[[choix_modele()]]
           }
 
 

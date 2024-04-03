@@ -32,6 +32,12 @@ ecriture_modele <-
       partie_2 <- NULL
     }
 
+    if (methode=="3") {
+      y_formule <- "dist"
+    } else { # the adonis2 function take in input a distance matrix and not the variable
+      y_formule <- y
+    }
+
     symbole <- ifelse(interaction == F, "*", "+")
     modele_ecriture <-
       paste("<b>", y, "~", "traitement", symbole, partie_1, partie_2, "</b>")
@@ -43,17 +49,17 @@ ecriture_modele <-
         paste("Avec", "<b>", y, "</b>", "suivant une loi", "<b>", loi,  "</b>")
     }
     formule_modele <-
-      as.formula(paste(y, "~", "traitement *", partie_1, partie_2))
+      as.formula(paste(y_formule, "~", "traitement *", partie_1, partie_2))
     language_modele <-
-      parse(text=paste(y, "~", "traitement *", partie_1, partie_2))[[1]]
+      parse(text=paste(y_formule, "~", "traitement *", partie_1, partie_2))[[1]]
     formule_modele_bis <-
-      as.formula(paste(y, "~", "traitement +", partie_1, partie_2))
+      as.formula(paste(y_formule, "~", "traitement +", partie_1, partie_2))
     language_modele_bis <-
-      parse(text=paste(y, "~", "traitement +", partie_1, partie_2))[[1]]
+      parse(text=paste(y_formule, "~", "traitement +", partie_1, partie_2))[[1]]
     # formule avec une variable interaction (necessaire pour test de puissance)
-    formule_interaction<-as.formula(paste(y,"~interaction + traitement +", partie_1, partie_2))
+    formule_interaction<-as.formula(paste(y_formule,"~interaction + traitement +", partie_1, partie_2))
     language_interaction <-
-      parse(text=paste(y, "~interaction + traitement +", partie_1, partie_2))[[1]]
+      parse(text=paste(y_formule, "~interaction + traitement +", partie_1, partie_2))[[1]]
 
     list(modele_ecriture,
          loi_modele,
