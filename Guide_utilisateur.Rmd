@@ -8,6 +8,8 @@ output:
     toc_float: true
   pdf_document:
     toc: true
+  word_document:
+    toc: true
 ---
 
 # <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
@@ -401,37 +403,29 @@ Cette partie est consacrée à la création d'un modèle pour l'analyse inféren
 
 #### Principes généraux de statistique nécessaires à l’utilisation de l’outil
 
-##### __Méthode paramétrique et non-paramétrique__
+##### [Méthode paramétrique et non-paramétrique]{.underline}
 
 Le domaine des statistiques existe parce qu'il est généralement impossible de collecter des données auprès de tous les individus concernés (population). Notre seule solution consiste à collecter des données auprès d'un sous-ensemble (échantillon) des individus concernés, mais notre véritable objectif est de connaître la "vérité" sur la population. Les quantités telles que les moyennes, les écarts types et les proportions sont toutes des valeurs importantes et sont appelées "paramètres" lorsque l'on parle d'une population. Étant donné que nous ne pouvons généralement pas obtenir de données sur l'ensemble de la population, nous ne pouvons pas connaître les valeurs des paramètres pour cette population. Nous pouvons toutefois calculer des estimations de ces quantités pour notre échantillon. Lorsqu'elles sont calculées à partir des données de l'échantillon, ces quantités sont appelées "statistiques". Une statistique estime un paramètre. Les procédures statistiques paramétriques reposent sur des hypothèses concernant la forme de la distribution (c'est-à-dire une distribution normale) dans la population sous-jacente et sur la forme ou les paramètres (c'est-à-dire les moyennes et les écarts-types) de la distribution supposée. Les procédures statistiques non paramétriques ne reposent sur aucune ou peu d'hypothèses concernant la forme ou les paramètres de la distribution de la population dont l'échantillon a été tiré.
 
-##### __Modèles linéaires__
+##### [Modèles linéaires]{.underline}
 
-Un modèle linéaire classique est une méthode paramétrique qui permet d’étudier la liaison statistique entre une variable réponse Y et les variables explicatives X. Soit yi la réponse de l’individu i et xi les valeurs prises par les variables explicatives pour cet individu. La relation entre X et Y peut s’écrire sous la forme :
-$$Y = α + βX + ε $$
-où ε représente les résidus du modèle, la variance de la variable Y non expliqué par les variables explicatives X, distribuée selon une loi normale d’espérance nulle. Le terme α correspond à ce qu’on appelle l’intercept et β représente les coefficients estimés du modèle des variables explicatives X.
+Un modèle linéaire classique est une méthode paramétrique qui permet d’étudier la liaison statistique entre une variable réponse Y et les variables explicatives X. Soit yi la réponse de l’individu i et xi les valeurs prises par les variables explicatives pour cet individu. La relation entre X et Y peut s’écrire sous la forme : $$Y = α + βX + ε $$ où ε représente les résidus du modèle, la variance de la variable Y non expliqué par les variables explicatives X, distribuée selon une loi normale d’espérance nulle. Le terme α correspond à ce qu’on appelle l’intercept et β représente les coefficients estimés du modèle des variables explicatives X.
 
-##### __Modèles linéaires généralisés__
+##### [Modèles linéaires généralisés]{.underline}
 
-La variable réponse pour un modèle linéaire doit être une variable approximativement normalement distribuée. De tels modèles trouvent une large application, mais ne peuvent pas gérer des réponses continues clairement discrètes ou asymétriques. Par exemple, les variables réponses de type “comptage”, souvent asymétrique ainsi que les variables binaires comme la présence/absence ne suivent pas une loi normale. Les modèles linéaires ne sont donc pas adaptés à ce type de variables. Les modèles linéaires généralisés (GLM) permettent l'extension des idées de modélisation linéaire à une classe plus large de types de réponse, comme celles énoncées précédemment, sous une méthodologie de modélisation commune. Une chose importante à comprendre dans les GLM est la relation entre les valeurs de la variable de réponse, Y (telles que mesurées dans les données et prédites par le modèle dans les valeurs ajustées) et le prédicteur linéaire. Le prédicteur linéaire émerge du modèle linéaire comme une somme de chaque terme du modèle. Le prédicteur linéaire correspond à la variable Y seulement lors d’un modèle linaire classique suivant une loi normale. Dans le cas de modèle linéaire généralisé, c’est la fonction de lien, **g**, qui relie la valeur **Y** à son prédicteur linéaire **N**.
-$$ N =g(Y) $$
-La valeur de **N** est obtenue en transformant la valeur de **Y** par la fonction de liaison **g**, et la valeur prédite de **Y** est obtenue en appliquant la fonction de liaison inverse à **N**. <br> En utilisant différentes lois de distribution et donc différentes fonctions de lien, il est possible d’observer les conséquences sur les hypothèses des résidus du modèle. La fonction de lien la plus appropriée est celle qui produit les résidus les plus conformes.
+La variable réponse pour un modèle linéaire doit être une variable approximativement normalement distribuée. De tels modèles trouvent une large application, mais ne peuvent pas gérer des réponses continues clairement discrètes ou asymétriques. Par exemple, les variables réponses de type “comptage”, souvent asymétrique ainsi que les variables binaires comme la présence/absence ne suivent pas une loi normale. Les modèles linéaires ne sont donc pas adaptés à ce type de variables. Les modèles linéaires généralisés (GLM) permettent l'extension des idées de modélisation linéaire à une classe plus large de types de réponse, comme celles énoncées précédemment, sous une méthodologie de modélisation commune. Une chose importante à comprendre dans les GLM est la relation entre les valeurs de la variable de réponse, Y (telles que mesurées dans les données et prédites par le modèle dans les valeurs ajustées) et le prédicteur linéaire. Le prédicteur linéaire émerge du modèle linéaire comme une somme de chaque terme du modèle. Le prédicteur linéaire correspond à la variable Y seulement lors d’un modèle linaire classique suivant une loi normale. Dans le cas de modèle linéaire généralisé, c’est la fonction de lien, **g**, qui relie la valeur **Y** à son prédicteur linéaire **N**. $$ N =g(Y) $$ La valeur de **N** est obtenue en transformant la valeur de **Y** par la fonction de liaison **g**, et la valeur prédite de **Y** est obtenue en appliquant la fonction de liaison inverse à **N**. <br> En utilisant différentes lois de distribution et donc différentes fonctions de lien, il est possible d’observer les conséquences sur les hypothèses des résidus du modèle. La fonction de lien la plus appropriée est celle qui produit les résidus les plus conformes.
 
-##### __Modèle linéaire généralisé mixte__
+##### [Modèle linéaire généralisé mixte]{.underline}
 
 Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.
 
-##### __Analyse de variance par permutations__
+##### [Analyse de variance par permutations]{.underline}
 
-C'est une méthode non paramétrique alternative à l'analyse de variance classique  dans le sens où elle ne se base pas sur la supposition que les données suivent des lois de distribution linéaires classiques ou généralisées comparables. Elle est en ce sens plus robuste à la normalité et l’homogénéité des variances des résidus ou des observations. Elle est également flexible car elle se base sur des matrices d’association et le coefficient d'association peut-être choisi en adéquation entre l'objectif et les données. Elle peut être appliquée à des données de toute dimension (y compris univariée) en fonction d'un ou deux facteurs qualitatifs.<br> 
-L'hypothèse nulle est qu'il n'y a pas de différence dans la position et/ou la dispersion des groupes définis par les modalités des facteurs qualitatifs dans un espace multidimensionnel. Son principe consiste donc à construire une matrice d'association entre les éléments, c'est-à-dire une matrice reportant toutes les distances entre chaque paire d'éléments et calculer la somme des carrées des distances inter-groupe et intra-groupe. Comme dans une analyse de vraiance classique, la variance inter-groupe est mise en relation avec la variance intra-classe. Plus le rapport entre la variance inter-groupe et la variance intra-classe est grand plus sont grandes les chances que les différences constatées entre les groupes sont réelles. Si la statistique obtenue par les échantillons est en dehors des 95 % de l'aire de distribution, H0 est rejetée. Dans le cas d'une Permanova, la distribution est  obtenue par permutation : les données sont redistribuées aléatoirement un grand nombre de fois. Cette distribution des données issues de ces redistributions aléatoires correspond à la distribution sous l'hypothèse nulle.<br>
-L'inconvénient de la Permanova ne permet de savoir qu'au moins 1 des groupes est différent des autres mais on ne sait pas lequel. Et il lorsque l'on cherche à évaluer si deux éléments sont associés ou non, il peut arriver que les valeurs soient nulles pour 2 éléments. Hors en écologie, le zéro induit  une absence de l'espèce considérée. Dans ce dernier cas, ce double 0 est donc classiquement non pris en compte pour estimer la ressemblance entre deux éléments notamment dans un esprit de caractérisation de communauté biologique. Cette prise en compte ou non du double zéro se décide sur le choix du coefficient d'associations dans le calcul de la matrice de distance.
+C'est une méthode non paramétrique alternative à l'analyse de variance classique dans le sens où elle ne se base pas sur la supposition que les données suivent des lois de distribution linéaires classiques ou généralisées comparables. Elle est en ce sens plus robuste à la normalité et l’homogénéité des variances des résidus ou des observations. Elle est également flexible car elle se base sur des matrices d’association et le coefficient d'association peut-être choisi en adéquation entre l'objectif et les données. Elle peut être appliquée à des données de toute dimension (y compris univariée) en fonction d'un ou deux facteurs qualitatifs.<br> L'hypothèse nulle est qu'il n'y a pas de différence dans la position et/ou la dispersion des groupes définis par les modalités des facteurs qualitatifs dans un espace multidimensionnel. Son principe consiste donc à construire une matrice d'association entre les éléments, c'est-à-dire une matrice reportant toutes les distances entre chaque paire d'éléments et calculer la somme des carrées des distances inter-groupe et intra-groupe. Comme dans une analyse de vraiance classique, la variance inter-groupe est mise en relation avec la variance intra-classe. Plus le rapport entre la variance inter-groupe et la variance intra-classe est grand plus sont grandes les chances que les différences constatées entre les groupes sont réelles. Si la statistique obtenue par les échantillons est en dehors des 95 % de l'aire de distribution, H0 est rejetée. Dans le cas d'une Permanova, la distribution est obtenue par permutation : les données sont redistribuées aléatoirement un grand nombre de fois. Cette distribution des données issues de ces redistributions aléatoires correspond à la distribution sous l'hypothèse nulle.<br> L'inconvénient de la Permanova ne permet de savoir qu'au moins 1 des groupes est différent des autres mais on ne sait pas lequel. Et il lorsque l'on cherche à évaluer si deux éléments sont associés ou non, il peut arriver que les valeurs soient nulles pour 2 éléments. Hors en écologie, le zéro induit une absence de l'espèce considérée. Dans ce dernier cas, ce double 0 est donc classiquement non pris en compte pour estimer la ressemblance entre deux éléments notamment dans un esprit de caractérisation de communauté biologique. Cette prise en compte ou non du double zéro se décide sur le choix du coefficient d'associations dans le calcul de la matrice de distance.
 
 #### Ecriture du modèle avec GranulatShiny
 
-Il existe 3 types de modèles : GLMM, GLM, Permanova. Les modèles linéaires généralisés (GLM) permettent d'étendre les idées de la modélisation linéaire à une classe plus large de types de réponses, telles que les données de comptage ou les réponses binaires.<br> Les modèles linéaires généralisés constituent une approche commune pour un large éventail de problèmes de modélisation des réponses. Les réponses normales, de Poisson et binomiales sont les plus couramment utilisées, mais d'autres distributions peuvent également être utilisées. <br> Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.<br> PERmutational Multivariate ANalysis Of VAriance (PERMANOVA) est un test statistique non paramétrique à plusieurs variables. Il est utilisé pour comparer des groupes d'objets et tester l'hypothèse nulle selon laquelle les centroïdes et la dispersion des groupes, tels que définis par l'espace de mesure, sont équivalents pour tous les groupes. Le rejet de l'hypothèse nulle signifie que le centroïde et/ou la dispersion des objets sont différents entre les groupes. <br> En résumé, la Permanova est un test de l'effet parallèle de plusieurs facteurs sur l'espèce ou le paramètre étudié. Elle équivaut à plusieurs ANOVA à sens unique. Alors que le GLM équivaut à l'effet combiné de tous les facteurs, le GLM permet de dériver la contribution de chaque variable afin de déterminer l'ampleur de la contribution de chaque facteur environnemental. Vous pouvez comprendre que permanova est l'effet parallèle de plusieurs facteurs, tandis que GLM est l'effet combiné. Ainsi, lorsqu'il n'est pas possible de mettre en place un GLMM ou un GLM (manque de données, etc.), une permanova peut être utilisée. <br>
-
-Selon le type de modèle que vous choisissez, vous aurez une première formulation différente du modèle :<br> GLMM → Abun \~ traitement \* saison + (1\|campagne) + (1\|station)<br> GLM → Abun \~ traitement \* saison<br> PERMANOVA → Abun \~ traitement \* saison<br>
+Selon le type de modèle que vous choisissez, vous aurez une première formulation différente du modèle : $$GLMM → Abun \sim traitement * saison + (1\|campagne) + (1\|station)$$ $$GLM → Abun \sim traitement * saison$$ $$PERMANOVA → Abun \sim traitement * saison$$
 
 Les modèles sont centrés sur la variable traitement car la surveillance des concessions d'extraction de granulats marins est basée sur la méthode BACI (Before After Control Impact). Par définition, la méthode BACI compare des sites témoins (c'est-à-dire non impactés) et des sites impactés et teste les différences entre l'avant et l'après. Il s'agit d'une méthode couramment utilisée dans la surveillance de l'environnement océanique et une méthode BACI bien conçue reste l'un des meilleurs modèles pour les programmes de surveillance des effets sur l'environnement. Malheureusement, ce modèle présente plusieurs limites méthodologiques qui compromettent sa capacité à détecter des effets dans certaines études. Les concessions d'extraction de granulats marins sont exploitées dans l'océan. Mais l'océan est spatialement et temporellement dynamique, et trouver deux emplacements statistiquement identiques l'un à l'autre tout en étant suffisamment éloignés géographiquement pour être statistiquement indépendants constitue un véritable défi. <br>
 
@@ -441,15 +435,54 @@ Vous pouvez également conserver ou non l'interaction entre les covariables trai
 
 ##### Modèle linéaire mixte généralisé
 
-La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
+C'est la méthode à priorisé. Dans le paragraphe 8.4.2 du "Prtocole halieutique", il est dit que pour évaluer de la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant extraction, il faut utiliser des modèles linéaires généralisés à effets mixtes (GLMMs) avec les variables temporelle et spatiale définies comme effets aléatoires croisés plus un effet saisonnier fixe. La première sortie est un écran de la console r. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance ou le résumé du résultat de la modélisation. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
 
 Sortie du modèle GLMM sur l'abondance.
 
 ```{r, echo=FALSE, warning=FALSE}
 
 GLMM <- glmer(log(Abun) ~ traitement * saison + (1|campagne) + (1|station), data = dataset, family = gaussian(link = identity))
-summary(GLMM)
+GLMM_summary <- summary(GLMM)
+GLMM_summary
 ```
+
+La parite haute du résultat rappelle le modèle qui a été utilisé pour calculer les effets.
+
+```{r, echo=FALSE, warning=FALSE}
+GLMM_summary$methTitle
+c(GLMM_summary$family,GLMM_summary$link)
+GLMM_summary$call
+```
+
+Il y a le type de modèle avec la méthode de calcul utilisée. Après, il y a la loi de probabilité et sa fonction de lien. Enfin, la commande complete est affichée, ce qui permet de vérifier que la bonne commande a été effectué.
+
+Ensuite, il est possible de lire les caractéristiques du modèle.
+
+```{r, echo=FALSE, warning=FALSE}
+GLMM_summary$AICtab
+```
+
+Ces paramètres sont utiles lorsqu'il s'agit de comparer plusieurs modèles entre eux.
+
+Les "scaled residuals" sont les résidus du modèles. Des tests sont effectués dessus afin de vérifier la bonne convergence et le bon ajustement du modèle.
+
+```{r, echo=FALSE, warning=FALSE}
+summary(GLMM_summary[["residuals"]])
+```
+
+Le tableau des effets aléaoires est spécifique au GLMM. Il rensaigne les informations sur cette partie de la formule :<br> (1 \| campagne) + (1 \| station)
+
+```{r, echo=FALSE, warning=FALSE}
+GLMM_summary[["varcor"]]
+```
+
+Enfin, il y a la partie sur les effets fixes. C'est cette partie qui permet de déterminer si les facteurs ont un effet sur la variable d'étude.
+
+```{r, echo=FALSE, warning=FALSE}
+GLMM_summary[["coefficients"]]
+```
+
+Il arrive cependant que dans certains cas particulier, les GLMMs n'arrive pas fournir de résultat. Dans ces cas là, un message d'erreur apparait : *"Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle."* <br> Il est alors possible d'essayer avec un GLM et si la modélisation pose encore problème, il faut alors réalisé une Permanova. En dessous de 30 valeurs positives, il n'est pas recommandé d'utiliser un GLMM ou GLM.
 
 ##### Modèle linéaire généralisé
 
@@ -476,7 +509,7 @@ result
 
 ```
 
-L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, regardez l'uniformité et l'homogénéité des groupes. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, des tests sont réalisés sur l'uniformité et l'homogénéité des groupes évalués dans le modèle. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
 
 ```{r, echo=FALSE, warning=FALSE}
 plot(simulateResiduals(GLMM))
