@@ -35,33 +35,7 @@ mod_Stat_ui <- function(id){
         hr(),
         actionButton("goloi", i18n$t("Passer au choix de la loi de distribution"),
                       icon = icon("ship"))
-      )#,
-      #### old version #####
-      #box( title = "Interactionplot",
-      #     solidHeader = TRUE,
-      #     status = "info",
-      #     collapsible = TRUE,
-      #     collapsed = TRUE,
-      #     style = "overflow-x: scroll;",
-      #     uiOutput(ns("choix_interaction")),
-      #     actionButton(ns("info3"), "",icon = icon("circle-info")),
-      #     plotOutput(ns("interact"))
-      #),
-      #box( title = "Boxplot",
-      #     solidHeader = TRUE,
-      #     status = "info",
-      #  collapsible = TRUE,
-      #  collapsed = TRUE,
-      #  uiOutput(ns("choix_box")),
-      #  actionButton(ns("info4"), "",icon = icon("circle-info")),
-      #  plotOutput(ns("boxplot"))
-      #)
-      #box(title = "Coplot",
-      #    solidHeader = T,
-      #    status = "info",
-      #    collapsible = T,
-      #    plotOutput(ns("co_saison_traitement"))),
-  )
+      ))
 }
 
 #' Stat Server Functions
@@ -113,10 +87,12 @@ mod_Stat_server <- function(input, output, session, r){
       s <- factor(data_forme()$saison,
                   unique(permuted$saison))
       t <- data_forme()["traitement"]
-      #i <- data_forme()["interaction"]
+      i <- data_forme()["interaction"]
       c <- data_forme()["campagne"]
-      data <- data.frame(v, y, l, s, t, c) #i,c)
-      names(data) <- c(input$var, "year", "station", "saison", "traitement", "campagne") #"interaction", "campagne")
+      data <- data.frame(v, y, l, s, t,i,c)
+      names(data) <- c(input$var, "year", "station", "saison", "traitement", "interaction", "campagne")
+      data$year <- as.factor(data$year)
+      data$campagne <- as.factor(data$campagne)
       data
     })
 
@@ -287,112 +263,6 @@ mod_Stat_server <- function(input, output, session, r){
         )
       })
     #####
-
-    ###### old version ######
-    ## histogram ###
-    #histogram <- reactive({
-    #  if(is.null(data_analyse())){return()}
-    #  data <- as.data.frame(variable())
-    #  names(data) <- c("variable")
-    #  ggplot(data, aes(x = variable))+
-    #    geom_histogram(fill="lightblue", color="black", bins = 50)+
-    #    labs(title = paste("Histogram of ", r$var_name, sep=""),
-    #         x=r$var_name, y="Frequency")
-    #})
-    #output$hist <- renderPlot({
-    #  if(is.null(histogram())){return()}
-    #  histogram()
-    #  #hist(as.numeric(variable()),
-    #  #     main = paste("Histogram of ", r$var_name, sep=""),
-    #  #     xlab = r$var_name, ylab = "Frequency", col = "lightblue")
-    #})
-
-    ## Exporter le graphique
-    #output$downloadPlot <- downloadHandler(
-    #  filename = function() {
-    #    paste("histogram_", r$var_name, ".png", sep = "")
-    #  },
-    #  content = function(file) {
-    #    # Use tryCatch to handle errors with try(silent = TRUE)
-    #    tryCatch(
-    #      {
-    #        ggsave(file, plot = histogram(), height = 9, width = 16,
-    #               bg = "white")
-    #      },
-    #      error = function(e) {
-    #        # Handle the error here (print a message, log it, etc.)
-    #        print("")
-    #      },
-    #      warning = function(w) {
-    #        # Handle warnings if needed
-    #        print("")
-    #      }
-    #    )
-    #  })
-
-
-
-    #output$co_saison_traitement <- renderPlot({
-    #  if(is.null(data_analyse())){return()}
-    #  coplot(as.numeric(data_analyse()[,1]) ~ data_analyse()$saison | data_analyse()$traitement,
-    #         data = data_analyse(),
-    #         main = paste("Coplot of ", r$var_name," by season and traitment", sep=""),
-    #         xlab = "", ylab = "", xlim = (c(min(as.numeric(data_analyse()[,1])),
-    #                                         max(as.numeric(data_analyse()[,1]))))
-    #         )
-    #}) pas lisible
-
-
-
-    #### interaction plot part ###
-    #output$choix_interaction <- renderUI({
-    #  selectInput(
-    #    ns("choix_interaction"),
-    #    i18n$t("Sélectionner l'interaction :"),
-    #    c("traitement_saison" = "1",
-    #      "traitement_year" = "2",
-    #      "traitement_campagne" = "3",
-    #      "traitement_station" = "4"),
-    #    selected = "1"
-    #  )
-    #})
-#
-    #output$interact <- renderPlot({
-    #  if(is.null(data_analyse())){return()}
-    #  if(is.null(input$choix_interaction)){return()}
-    #  if(input$choix_interaction == 1){
-    #    interaction.plot(x.factor=data_variable()$saison,
-    #                     trace.factor=data_variable()$traitement,
-    #                     trace.label = "traitment",
-    #                     response=as.numeric(variable()),
-    #                     main = paste("Interaction_plot of ", r$var_name," by season and traitment", sep=""),
-    #                     xlab = "", ylab = "")
-    #  }
-    #  if(input$choix_interaction == 2){
-    #    interaction.plot(x.factor=data_variable()$year,
-    #                     trace.factor=data_variable()$traitement,
-    #                     trace.label = "traitment",
-    #                     response=as.numeric(variable()),
-    #                     main = paste("Interaction_plot of ", r$var_name," by year and traitment", sep=""),
-    #                     xlab = "", ylab = "")
-    #  }
-    #  if(input$choix_interaction == 3){
-    #    interaction.plot(x.factor=data_variable()$campagne,
-    #                     trace.factor=data_variable()$traitement,
-    #                     trace.label = "traitment",
-    #                     response=as.numeric(variable()),
-    #                     main = paste("Interaction_plot of ", r$var_name," by survey and traitment", sep=""),
-    #                     xlab = "", ylab = "")
-    #  }
-    #  if(input$choix_interaction == 4){
-    #    interaction.plot(x.factor=data_variable()$station,
-    #                     trace.factor=data_variable()$traitement,
-    #                     trace.label = "traitment",
-    #                     response=as.numeric(variable()),
-    #                     main = paste("Interaction_plot of ", r$var_name," by sation and traitment", sep=""),
-    #                     xlab = "", ylab = "")
-    #  }
-    #})
 
 }
 

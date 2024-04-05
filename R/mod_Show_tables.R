@@ -45,7 +45,7 @@ mod_Show_tables_server <- function(input, output, session, r){
     observeEvent(input$info,{
       message <- as.character(
         i18n$t(
-          "Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2"
+          "Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages."
           )
       )
       sendSweetAlert(

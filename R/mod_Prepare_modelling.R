@@ -205,6 +205,8 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
           c("initial" = "1", "final" = "2"),
           selected = "2"
         )
+      } else if(is.null(getCall(r$modele[[2]]))){
+        return()
       } else if (getCall(r$modele[[2]]) != getCall(r$modele[[1]])) {
         selectInput(
           ns("choix_modele"),

@@ -15,12 +15,13 @@ mod_Modelling_ui <- function(id){
   tagList(
     box( solidHeader = FALSE,
          status = "info",
-         collapsible = FALSE,
+         collapsible = F,
          width = NULL,
          uiOutput(ns("choix_sortie")),
          # Output des glmms
          #formulation du modèle
-         verbatimTextOutput(ns("modele")),
+         verbatimTextOutput(ns("modele"))%>%
+           withSpinner(color = "#009a62", type = 5),
          downloadButton(ns("downloadModel"),
                         label = i18n$t("Telecharger le modele (.rds)")),
          downloadButton(ns("downloadSummary"),
@@ -29,7 +30,9 @@ mod_Modelling_ui <- function(id){
       #plot de vérification
     box(
       actionButton(ns("info"), "",icon = icon("circle-info")),
+      uiOutput(ns("choix_box")),
       plotOutput(ns("verification")),
+      uiOutput(ns("log")),
       downloadButton(ns("downloadPlot"),
                      label = i18n$t("Telecharger le graphique (.png)")),
       width = NULL,
@@ -37,7 +40,7 @@ mod_Modelling_ui <- function(id){
       collapsible = T,
       collapsed = T,
       solidHeader = TRUE,
-      title = "Residual analysis"
+      title = textOutput(ns("title"))#"Residual analysis"
     )
   )
 }
@@ -50,10 +53,6 @@ mod_Modelling_server <- function(input, output, session, r){
   i18n <- golem::get_golem_options(which = "translator")
   i18n$set_translation_language("fr")
     ns <- session$ns
-
-    # GLMMs -------------------------------------------------------------------
-    # Onglet Creation ####
-    ######################
 
     #import des objets utiles dans le modules
     data_complet <- reactive({
@@ -72,6 +71,18 @@ mod_Modelling_server <- function(input, output, session, r){
       r$choix_modele
     })
 
+
+    output$title <- renderText(
+      if(r$methode == 3){
+        return("Boxplot")
+      } else{
+        return("Residual analysis")
+      }
+    )
+
+    # GLMMs -------------------------------------------------------------------
+    # Onglet Creation ####
+    ######################
 
     # formule et language modèle
     formule <- reactive({
@@ -238,11 +249,105 @@ mod_Modelling_server <- function(input, output, session, r){
       })
 
 
+    #### boxplot part / this part is only for permanova ####
+    output$choix_box <- renderUI({
+      if(methode()!=3){return()}
+      selectInput(
+        ns("choix_box"),
+        i18n$t("Sélectionner la covariable :"),
+        c("traitement" = "1",
+          "saison" = "2",
+          "traitement:saison" = "3"),
+        selected = "1"
+      )
+    })
+
+    # log choice
+    output$log <- renderUI({
+      if(methode()!=3){return()}
+      checkboxInput(ns("log"), i18n$t("Voulez-vous passer au log ?"))
+    })
+
+    # variable is the vector of the chosen variable with or without transformation
+    variable <- reactive({
+      if(is.null(data_complet())){return()}
+      if (input$log){
+        return(log(as.numeric(data_complet()[,1]+1)))
+      } else {
+        return(as.numeric(data_complet()[,1]))
+      }
+    })
+
+    create_boxplot <- reactive({
+      if(is.null(data_complet())){return()}
+      if(is.null(input$choix_box)){return()}
+      if (input$log){
+        var_name <- paste("log(", r$var_name,")", sep="")
+      } else{ var_name <- r$var_name}
+      if(input$choix_box == 1){
+        p_value <- modele()[[choix_modele()]]["traitement","Pr(>F)"]
+        if(p_value<0.05){
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = paste("* p = ",p_value, sep = ""),
+                             colour = "red", size = 10)
+        } else {
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = i18n$t("Pas d'effet"),
+                             colour = "black", size = 10)
+        }
+        plot <- ggplot(data_complet(), aes(x = traitement, y = as.numeric(variable())))+
+          geom_boxplot()+
+          labs(title = paste("Boxplot of ", var_name," by impact", sep=""),
+               y = "")+ legend
+      }
+      if(input$choix_box == 2){
+        p_value <- modele()[[choix_modele()]]["saison","Pr(>F)"]
+        if(p_value<0.05){
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = paste("* p = ",p_value, sep = ""),
+                             colour = "red", size = 10)
+        } else {
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = i18n$t("Pas d'effet"),
+                             colour = "black", size = 10)
+        }
+        plot <- ggplot(data_complet(), aes(x = saison, y = as.numeric(variable())))+
+          geom_boxplot()+
+          labs(title = paste("Boxplot of ", var_name," by season", sep=""),
+               y = "")+ legend
+      }
+      if(input$choix_box == 3){
+        p_value <- modele()[[choix_modele()]]["traitement:saison","Pr(>F)"]
+        if(p_value<0.05){
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = paste("* p = ",p_value, sep = ""),
+                             colour = "red", size = 10)
+        } else {
+          legend <- annotate("text", x = 0,
+                             y = max(as.numeric(variable())),
+                             label = i18n$t("Pas d'effet"),
+                             colour = "black", size = 10)
+        }
+        plot <- ggplot(data_complet(), aes(x = interaction, y = as.numeric(variable())))+
+          geom_boxplot()+
+          labs(title = paste("Boxplot of ", var_name," by impact:season", sep=""),
+               y = "")+ legend
+      }
+      return(plot)
+    })
+    #####
+
+
     # Vérification (sortie du modèle, même input)
     observeEvent(r$go2,{
       residual <- reactive({
         if (is.null(r$choix_sortie)){return()}
-        if (methode()== 3){return()}
+        if (methode()== 3){return(create_boxplot())}
         if(class(modele()) == "try-error"){return(i18n$t("Il y a une erreur lors de la modélisation"))}
         #plotQQunif(simulateResiduals(modele()[[choix_modele()]]))
         plot(simulateResiduals(modele()[[choix_modele()]]))

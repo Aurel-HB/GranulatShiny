@@ -43,7 +43,7 @@ Mettre en forme,Formatting
 Quelle table afficher ?,Which table display?
 Telecharger la table (.csv),Download the table (.csv)
 Telecharger les informations rentrées (.csv),Download the parametrization (.csv)
-Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2, Table units: area in km2 _ abundance in km2 _ biomass in kg/km2 _ species name in km2
+Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages., Table units: area in km2 _ abundance in km2 _ biomass in kg/km2 _ species name in km2. In this table it is possible to modify the season column to better adapt to the sampling conditions.
 Choisir un variable pour les statistiques descriptives,Choose a variable for the descriptive statistics
 Telecharger le tableau (.csv),Download the table (.csv)
 Telecharger le graphique (.png),Download the plot (.png)
@@ -79,6 +79,7 @@ Telecharger le summary (.txt),Download the summary (.txt)
 Afficher les sorties :,Display the outputs:
 Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle.,There is an error in the modelling. Please change the distribution or the model.
 Il y a une erreur lors de la modélisation,There is an error in the modelling
+Pas d'effet, No effect
 Formulation du modèle :,Model formulation:
 Covariable,Covariate
 Choississez un prédicteur,Choose a predictor
