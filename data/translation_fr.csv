@@ -74,6 +74,7 @@ Ajouter une covariable ?,Add a covariate?
 Ajouter une ou plusieurs covariables ?,Add one or more covariates?
 Afficher les résultats du modèle :,Display model results:
 Voir les effets,See the effects
+L'icone de chargement disparaitra une fois que vous aurez cliquez sur le bouton modélisation et que les calculs seront finis (cela peut prendre du temps).,The loading icon will disappear once you have clicked on the modelling button and the calculations have been completed (this may take some time).
 Telecharger le modele (.rds),Download the model (.rds)
 Telecharger le summary (.txt),Download the summary (.txt)
 Afficher les sorties :,Display the outputs:

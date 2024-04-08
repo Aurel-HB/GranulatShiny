@@ -17,11 +17,14 @@ mod_Modelling_ui <- function(id){
          status = "info",
          collapsible = F,
          width = NULL,
+         textOutput(ns("indique")),
+         hr(),
          uiOutput(ns("choix_sortie")),
          # Output des glmms
          #formulation du modèle
          verbatimTextOutput(ns("modele"))%>%
            withSpinner(color = "#009a62", type = 5),
+         textOutput(ns("spinner")),
          downloadButton(ns("downloadModel"),
                         label = i18n$t("Telecharger le modele (.rds)")),
          downloadButton(ns("downloadSummary"),
@@ -79,6 +82,10 @@ mod_Modelling_server <- function(input, output, session, r){
         return("Residual analysis")
       }
     )
+
+    output$indique <- renderText({
+      i18n$t("L'icone de chargement disparaitra une fois que vous aurez cliquez sur le bouton modélisation et que les calculs seront finis (cela peut prendre du temps).")
+    })
 
     # GLMMs -------------------------------------------------------------------
     # Onglet Creation ####
@@ -213,8 +220,6 @@ mod_Modelling_server <- function(input, output, session, r){
           } else if (r$choix_sortie == "2") {
             modele()[[choix_modele()]]
           }
-
-
         }
       })
     })
@@ -287,15 +292,15 @@ mod_Modelling_server <- function(input, output, session, r){
       if(input$choix_box == 1){
         p_value <- modele()[[choix_modele()]]["traitement","Pr(>F)"]
         if(p_value<0.05){
-          legend <- annotate("text", x = 0,
+          legend <- annotate("text", x = 0.65,
                              y = max(as.numeric(variable())),
                              label = paste("* p = ",p_value, sep = ""),
-                             colour = "red", size = 10)
+                             colour = "red", size = 5)
         } else {
-          legend <- annotate("text", x = 0,
+          legend <- annotate("text", x = 0.65,
                              y = max(as.numeric(variable())),
                              label = i18n$t("Pas d'effet"),
-                             colour = "black", size = 10)
+                             colour = "black", size = 5)
         }
         plot <- ggplot(data_complet(), aes(x = traitement, y = as.numeric(variable())))+
           geom_boxplot()+
@@ -305,15 +310,15 @@ mod_Modelling_server <- function(input, output, session, r){
       if(input$choix_box == 2){
         p_value <- modele()[[choix_modele()]]["saison","Pr(>F)"]
         if(p_value<0.05){
-          legend <- annotate("text", x = 0,
+          legend <- annotate("text", x = 0.65,
                              y = max(as.numeric(variable())),
                              label = paste("* p = ",p_value, sep = ""),
-                             colour = "red", size = 10)
+                             colour = "red", size = 5)
         } else {
-          legend <- annotate("text", x = 0,
+          legend <- annotate("text", x = 0.65,
                              y = max(as.numeric(variable())),
                              label = i18n$t("Pas d'effet"),
-                             colour = "black", size = 10)
+                             colour = "black", size = 5)
         }
         plot <- ggplot(data_complet(), aes(x = saison, y = as.numeric(variable())))+
           geom_boxplot()+
@@ -321,23 +326,25 @@ mod_Modelling_server <- function(input, output, session, r){
                y = "")+ legend
       }
       if(input$choix_box == 3){
-        p_value <- modele()[[choix_modele()]]["traitement:saison","Pr(>F)"]
-        if(p_value<0.05){
-          legend <- annotate("text", x = 0,
-                             y = max(as.numeric(variable())),
-                             label = paste("* p = ",p_value, sep = ""),
-                             colour = "red", size = 10)
-        } else {
-          legend <- annotate("text", x = 0,
-                             y = max(as.numeric(variable())),
-                             label = i18n$t("Pas d'effet"),
-                             colour = "black", size = 10)
+        if("traitement:saison" %in% row.names( modele()[[choix_modele()]])){
+          p_value <- modele()[[choix_modele()]]["traitement:saison","Pr(>F)"]
+          if(p_value<0.05){
+            legend <- annotate("text", x = 0.65,
+                               y = max(as.numeric(variable())),
+                               label = paste("* p = ",p_value, sep = ""),
+                               colour = "red", size = 5)
+          } else {
+            legend <- annotate("text", x = 0.65,
+                               y = max(as.numeric(variable())),
+                               label = i18n$t("Pas d'effet"),
+                               colour = "black", size = 5)
+          }
+          plot <- ggplot(data_complet(), aes(x = interaction, y = as.numeric(variable())))+
+            geom_boxplot()+
+            labs(title = paste("Boxplot of ", var_name," by impact:season", sep=""),
+                 y = "")+ legend
+        }else{ plot <- NULL}
         }
-        plot <- ggplot(data_complet(), aes(x = interaction, y = as.numeric(variable())))+
-          geom_boxplot()+
-          labs(title = paste("Boxplot of ", var_name," by impact:season", sep=""),
-               y = "")+ legend
-      }
       return(plot)
     })
     #####
