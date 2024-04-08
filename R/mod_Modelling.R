@@ -32,7 +32,8 @@ mod_Modelling_ui <- function(id){
     ),
       #plot de vérification
     box(
-      actionButton(ns("info"), "",icon = icon("circle-info")),
+      #actionButton(ns("info"), "",icon = icon("circle-info")),
+      uiOutput(ns("info")),
       uiOutput(ns("choix_box")),
       plotOutput(ns("verification")),
       uiOutput(ns("log")),
@@ -365,8 +366,26 @@ mod_Modelling_server <- function(input, output, session, r){
     })
 
     ##### information #####
+
+    #output$title <- renderText(
+    #  if(r$methode == 3){
+    #    return("Boxplot")
+    #  } else{
+    #    return("Residual analysis")
+    #  }
+    #)
+
+    output$info <- renderUI({
+      if(r$methode==3){
+        actionButton(ns("info2"), "",icon = icon("circle-info"))
+      } else {
+        actionButton(ns("info"), "",icon = icon("circle-info"))
+      }
+    })
+
+
     observeEvent(input$info,{
-      message <- as.character(list_translate[r$lang][10,1])
+      message <- as.character(list_translate[r$lang][11,1])
       sendSweetAlert(
         session = session,
         title = "",
@@ -374,6 +393,17 @@ mod_Modelling_server <- function(input, output, session, r){
         type = "info"
       )
     })
+
+    observeEvent(input$info2,{
+      message <- as.character(list_translate[r$lang][12,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
+
 
     ## Exporter le graphique ####
     observe({

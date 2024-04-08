@@ -407,7 +407,7 @@ Lorsque vous êtes satisfait de la distribution des probabilités, vérifiez la 
 
 ### Création des modèles
 
-Cette partie est consacrée à la création d'un modèle pour l'analyse inférentielle. La variable analysée est rappelée en haut à droite de l'onglet et peut être modifiée dans l'onglet représentation des données. Dans l'application il est possible de réaliser 3 types de tests inférentiels : GLMM, GLM, Permanova. Dans un premier temps ce chapitre rappelle les principes généraux de statistiques employé dans l'application.<br>
+Cette partie est consacrée à la création d'un modèle pour l'analyse inférentielle. La variable analysée est rappelée en haut à gauche de l'onglet et peut être modifiée dans l'onglet représentation des données. Dans l'application il est possible de réaliser 3 types de tests inférentiels : GLMM, GLM, Permanova. Dans un premier temps ce chapitre rappelle les principes généraux de statistiques employé dans l'application.<br>
 
 #### &nbsp;&nbsp;Principes généraux de statistique nécessaires à l’utilisation de l’outil
 

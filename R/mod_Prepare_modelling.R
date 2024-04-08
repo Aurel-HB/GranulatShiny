@@ -14,6 +14,7 @@ mod_Prepare_modelling_ui <- function(id){
   ns <- NS(id)
   tagList(
     #Input des glmms
+    actionButton(ns("info"), "",icon = icon("circle-info")),
       uiOutput(ns("variable_y")),
       selectInput(
         ns("methode"),
@@ -61,6 +62,16 @@ mod_Prepare_modelling_server <- function(input, output, session, r){
     ns <- session$ns
     # GLMMs -------------------------------------------------------------------
     # Onglet Creation
+
+    observeEvent(input$info,{
+      message <- as.character(list_translate[r$lang][10,1])
+      sendSweetAlert(
+        session = session,
+        title = "",
+        text = message,
+        type = "info"
+      )
+    })
 
     # Render UI parametrage glmms
 
