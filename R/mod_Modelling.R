@@ -376,31 +376,57 @@ mod_Modelling_server <- function(input, output, session, r){
     })
 
     ## Exporter le graphique ####
-    output$downloadPlot <- downloadHandler(
-      filename = function() {
-        paste("plot_residual",".png", sep = "")
-      },
-      content = function(file) {
-        # Use tryCatch to handle errors with try(silent = TRUE)
-        tryCatch(
-          {
-           #open the device
-            png(file,height = 600, width = 1070)
-            #create the plot
-            plot(simulateResiduals(modele()[[choix_modele()]]))
-            #close the device
-            dev.off()
+    observe({
+      if(methode() == 3){
+        output$downloadPlot <- downloadHandler(
+          filename = function() {
+            paste("boxplot_", r$var_name, ".png", sep = "")
           },
-          error = function(e) {
-            # Handle the error here (print a message, log it, etc.)
-            print("")
+          content = function(file) {
+            # Use tryCatch to handle errors with try(silent = TRUE)
+            tryCatch(
+              {
+                ggsave(file, plot = create_boxplot(), height = 9, width = 12,
+                       bg = "white")
+              },
+              error = function(e) {
+                # Handle the error here (print a message, log it, etc.)
+                print("")
+              },
+              warning = function(w) {
+                # Handle warnings if needed
+                print("")
+              }
+            )
+          })
+      } else {
+        output$downloadPlot <- downloadHandler(
+          filename = function() {
+            paste("plot_residual",".png", sep = "")
           },
-          warning = function(w) {
-            # Handle warnings if needed
-            print("")
-          }
-        )
-     })
+          content = function(file) {
+            # Use tryCatch to handle errors with try(silent = TRUE)
+            tryCatch(
+              {
+                #open the device
+                png(file,height = 600, width = 1070)
+                #create the plot
+                plot(simulateResiduals(modele()[[choix_modele()]]))
+                #close the device
+                dev.off()
+              },
+              error = function(e) {
+                # Handle the error here (print a message, log it, etc.)
+                print("")
+              },
+              warning = function(w) {
+                # Handle warnings if needed
+                print("")
+              }
+            )
+          })
+      }
+    })
 
 
     # réinitialisation du bouton
