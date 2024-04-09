@@ -485,11 +485,28 @@ Le tableau des effets aléaoires est spécifique au GLMM. Il rensaigne les infor
 GLMM_summary[["varcor"]]
 ```
 
-Enfin, il y a la partie sur les effets fixes. C'est cette partie qui permet de déterminer si les facteurs ont un effet sur la variable d'étude.
+Enfin, il y a la partie sur les effets fixes. C'est cette partie qui permet de déterminer si les facteurs ont un effet sur la variable d'étude. La colonne "Estimate" permet de déterminer la valeur moyenne que prend la variable étudiée (dans notre exemple l'abondance totale) pour modalité des variables explicatives. Dans notre exemple, l'abondance est expliquée par la variable "traitement" avec 2 modalités (impact, Sans impact) et la variable "saison" avec 4 modalités (winter, spring, summer, autumn).
+La ligne (Intercept) correspond à une valeur de base. Cette valeur de base est associée à une modalités de chacune de nos variables. Ainsi en hiver et avec une impact le logarithme de l'abondance (car loi Lognormale) vaut en moyenne 10.68.
 
 ```{r, echo=FALSE, warning=FALSE}
 GLMM_summary[["coefficients"]]
 ```
+Pour connaitre la valeur du logarithme de l'abondance en hiver et sans impact, il faut additionner la valeur Intercept à la valeur de l'estimate de la ligne "traitementSans impact" soit 10.68 + 0.12 qui vaut 10.8. Et pour vérifier si le changement est significatif, il suffit de regarder la colonne "Pr(>|z|)" et vérifier si la valeur est inférieur à 0.05. Maintenant, pour obtenir la valeur du logarithme de l'abondance en été et avec impact, il faut additionner la valeur Intercept à la valeur de l'estimate de la ligne "saisonSummer" soit 10.68 + (-0.16) soit 10.52. Enfin, en additionnant la valeur Intercept avec celle des lignes "traitementSans impact", "saisonSummer", "traitementSans impact:saisonSummer", il est possible d'obtenir la valeur du logarithme de l'abondance en été sans impact soit 10.68 + 0.12 + (-0.16) + 1.10 qui donne 11.74. Dans l'exemple, c'est l'interaction entre la saison et le traitement qui apporte des changement significativement différent. Ainsi, si ces deux variables étaient considérée séparément, leur effet sur l'abondance ne serait pas visible.
+
+Et la dernière section montre les corrélations entre les termes à effet fixe du modèle. Chaque ligne et chaque colonne représentent un terme à effet fixe, et les valeurs du tableau sont les corrélations entre ces termes. Ces corrélations sont calculées sur la base de la matrice de covariance des estimations des effets fixes. Elles indiquent comment les effets estimés des différents facteurs fixes du modèle sont liés les uns aux autres.
+
+Analyse a posteriori du modèle GLMM sur l'abondance.
+
+```{r, echo=FALSE, warning=FALSE}
+plot(simulateResiduals(GLMM))
+```
+
+L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, des tests sont réalisés sur l'uniformité et l'homogénéité des groupes évalués dans le modèle. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
+
+
+<br>Dans le cas de l'exemple, les tests de Kolmogorov-Smirnov, de Valeur aberrante etde dispersion ne sont pas significatif donc il n'y a pas de problème problème. Si un de ces tests s'affichaient en rouge, cela indiquerait que le modèle n'est pas optimal et il serait possible alors de chercher un autre modèle qui s'ajusterait mieux. Comme ces modèles se basent sur des données réelles, il est parfois impossible de trouver un modèle parfait. Il faut alors choisir le modèle avec le moins d'avertissement. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
+
+
 
 Il arrive cependant que dans certains cas particulier, les GLMMs n'arrive pas fournir de résultat. Dans ces cas là, un message d'erreur apparait : *"Il y a une erreur lors de la modélisation. Veuillez changer la loi ou le modèle."* <br> Il est alors possible d'essayer avec un GLM et si la modélisation pose encore problème, il faut alors réalisé une Permanova. En dessous de 30 valeurs positives, il n'est pas recommandé d'utiliser un GLMM ou GLM.
 
@@ -518,13 +535,6 @@ result
 
 ```
 
-L'autre sortie est un graphique utilisant le package DHARMa pour résumer les résidus du modèle. Le premier graphique représente les résidus attendus par les observations. Si les points ne suivent pas la ligne rouge, il y a un problème avec le choix du modèle. Il existe également 3 tests : Kolmogorov-Smirnov, Dispersion et Valeur aberrante. Le test de Kolmogorov-Smirnov est un test d'hypothèse utilisé pour déterminer si un échantillon suit bien une loi donnée connue par sa fonction de répartition continue. Le test statistique par défaut dans DHArMa pour le test de dispersion est l'écart-type observé / simulé des données. Et le test de valeur aberrante permet de vérifier si le nombre d'observations en dehors de l'enveloppe de simulation est plus grand ou plus petit que prévu. Pour chaque test, il y a un calcul de la déviation. S'il est significatif, il apparaît en rouge et le test n'est pas concluant.<br> Sur l'autre graphique, des tests sont réalisés sur l'uniformité et l'homogénéité des groupes évalués dans le modèle. Le premier test, s'il est en rouge, vous alerte sur le fait que certaines distributions de résidus au sein des groupes ne sont pas uniformes, c'est-à-dire que si vous représentez vos résidus pour un groupe spécifique (celui qui est surligné en rouge), ils ne semblent pas uniformes. Donc ils s'écartent de manière significative des hypothèses de votre modèle. S'il n'est pas en rouge, le test est validé. Le deuxième test correspond à un test de Levene. En statistique, le Test de Levene est une statistique déductive utilisée pour évaluer l'égalité de variance pour une variable calculée pour deux groupes ou plus.<br>
-
-```{r, echo=FALSE, warning=FALSE}
-plot(simulateResiduals(GLMM))
-```
-
-<br>Dans le cas de l'exemple, les tests de Kolmogorov-Smirnov, de Valeur aberrante etde dispersion ne sont pas significatif donc il n'y a pas de problème problème. Si un de ces tests s'affichaient en rouge, cela indiquerait que le modèle n'est pas optimal et il serait possible alors de chercher un autre modèle qui s'ajusterait mieux. Comme ces modèles se basent sur des données réelles, il est parfois impossible de trouver un modèle parfait. Il faut alors choisir le modèle avec le moins d'avertissement. On peut voir également que le test d'uniformité est validé mais pas celui d'homogénéité. Une fois le modèle validé, vous pouvez changer d'onglet et passer à la visualisation des effets associés au modèle.
 
 ### Représentation des effets
 
