@@ -150,7 +150,7 @@ Lorsque vous avez complété l'étape de chargement des données, vous pouvez ap
 
 **Nota Bene :** Si vous avez plus d'une concession à analyser, vous pouvez revenir dans cet onglet, changer les fichiers correspondant à cette autre concession (« TuttiCatch.csv », « TuttiOperation.csv », « ShapeFiles »), puis appuyer à nouveau sur le dragon vert pour relancer la production des tableaux d'indicateurs.
 
-### Tableau générale
+### Tableau général
 
 Dans l'onglet "Tables", il y a un tableau de données à droite et une partie interactive à gauche. Le tableau affiché est formé à partir des données renseignées dans l'onglet "Mise en forme des données". Les fonctions de mises en formes du tableau vont calculer l'abondance, la biomasse et différents indicateurs de diversité pour chaque station et pour chaque campagne. La variable "traitement", indicatrice de l'état de chaque station peut prendre deux valeurs "sans impact" ou "impact". Elle renseigne si la station est à l'intérieur du périmètre de la concession et donc considérée comme étant impactée par les travaux d'extraction de granulats (i.e. modalité "impact") ou si la station est en dehors du périmètre de la concession (i.e. modalité "sans impact"). Dans le cas d'un état initial, où il n'y a pas eu d'extraction sur le site de la concession étudiée, les stations situées à l'intérieur de la concession se voient attribuer l'état "sans impact" jusqu'à la date de début d'exploitation. Cela permet de les considérer comme reflétant l'état de l'environnement avant tout impact de l'extraction dans le cadre de l'analyse statistique déployée ensuite.
 
