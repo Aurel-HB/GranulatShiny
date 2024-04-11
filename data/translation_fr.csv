@@ -43,7 +43,7 @@ Mettre en forme,Formatting
 Quelle table afficher ?,Which table display?
 Telecharger la table (.csv),Download the table (.csv)
 Telecharger les informations rentrées (.csv),Download the parametrization (.csv)
-Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages., Table units: area in km2 _ abundance in km2 _ biomass in kg/km2 _ species name in km2. In this table it is possible to modify the season column to better adapt to the sampling conditions.
+Unités tableau : la surface est en km2 _ l'abondance est en nombre/km2 _ la biomasse est en kg/km2 _ chaque espèce est en nombre/km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages.,Table units: surface area is in km2 _ abundance is in numbers/km2 _ biomass is in kg/km2 _ each species is in numbers/km2. In this table it is possible to modify the season column to better adapt to the sampling conditions.
 Choisir un variable pour les statistiques descriptives,Choose a variable for the descriptive statistics
 Telecharger le tableau (.csv),Download the table (.csv)
 Telecharger le graphique (.png),Download the plot (.png)

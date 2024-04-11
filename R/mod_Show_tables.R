@@ -45,7 +45,7 @@ mod_Show_tables_server <- function(input, output, session, r){
     observeEvent(input$info,{
       message <- as.character(
         i18n$t(
-          "Unités tableau : surface en km2 _ abondance en km2 _ biomasse en kg/km2 _ nom espèce en km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages."
+          "Unités tableau : la surface est en km2 _ l'abondance est en nombre/km2 _ la biomasse est en kg/km2 _ chaque espèce est en nombre/km2. Dans ce tableau il est possible de modifier la colonne saison pour mieux s'adapter aux conditions d'échantillonnages."
           )
       )
       sendSweetAlert(
@@ -62,7 +62,7 @@ mod_Show_tables_server <- function(input, output, session, r){
 
     #outPut de la table
     output$table <- renderDT({
-      # Create a datatable with 'saison' column editable
+      # Create a datatable with 'saison' column only editable
       datatable(data_forme(),
                 editable = list(target = 'cell',
                                 disable = list(columns = c(0,1,2,4,
@@ -73,7 +73,6 @@ mod_Show_tables_server <- function(input, output, session, r){
 
 
     observe({
-      #saveRDS(data_forme(),"table_modif_season.rds")
       r$table_modif_season <- data_forme()
       # this new variable will save the change from the user
     })
@@ -82,7 +81,7 @@ mod_Show_tables_server <- function(input, output, session, r){
     newData <- reactive({
       if(is.null(input$table_cell_edit)){return(data_forme())}
       info <- input$table_cell_edit
-      #str(info)
+
 
       # Extract the row and column index and the updated value
       row <- info$row
@@ -90,10 +89,9 @@ mod_Show_tables_server <- function(input, output, session, r){
       value <- info$value
 
       # Update the data
-      #newData <- readRDS("table_modif_season.rds")
       newData <- r$table_modif_season
       newData[row, col] <- value
-      #saveRDS(newData, "table_modif_season.rds")
+
       r$table_modif_season <- newData
       newData
     })
