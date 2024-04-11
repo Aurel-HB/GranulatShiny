@@ -43,18 +43,22 @@ desc::desc_set_authors(c(person(given = "Aurel",
                                 role = "aut"),
                          person(given = "Laure",
                                 family = "Simplet",
-                                role = "ctb"),
+                                role = "ctb",
+                                email = "Laure.Simplet@ifremer.fr",
+                                comment = c(ORCID = "0000-0002-1226-3866")),
                          person(given = "Vincent",
                                 family = "Badts",
                                 role = "ctb"),
                          person(given = "Laurent",
                                 family = "Dubroca",
                                 role = "aut",
-                                email = "Laurent.Dubroca@ifremer.fr"),
+                                email = "Laurent.Dubroca@ifremer.fr",
+                                comment = c(ORCID = "0000-0002-1861-0507")),
                          person(given = "Camille",
                                 family = "Vogel",
                                 role = "aut",
-                                email = "camille.vogel@ifremer.fr")))
+                                email = "camille.vogel@ifremer.fr",
+                                comment = c(ORCID = "0000-0002-9590-5982"))))
 
 ## Set {golem} options ----
 golem::set_golem_options()
