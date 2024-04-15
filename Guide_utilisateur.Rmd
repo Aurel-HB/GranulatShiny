@@ -17,6 +17,8 @@ text-align: justify}
 ```
 # <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
 
+Auteurs : Aurel Hebert--Burggraeve, Laure Simplet, Laurent Dubroca, Camille Vogel <br>
+
 ```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
 knitr::include_graphics("inst/app/www/favicon.png")
 ```
