@@ -90,11 +90,12 @@ mod_Indicator_server <- function (input, output, session, r){
     })
 
 
-  show_data_indic <- reactive({
+  show_data_indic <- reactive({ # we only display the mean value without sd
+    # for more visibility
     if(is.null(r$data_forme)){return()}
 
     name_indic <- names(data_indic())
-    position <- grep("value", name_indic)
+    position <- grep("mean", name_indic)
     data <- data_indic()[,position]
     data <- data.frame("ID_campagne" = data_indic()[,1], data)
     return(data)
@@ -109,7 +110,7 @@ mod_Indicator_server <- function (input, output, session, r){
       paste("data_indic", ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(show_data_indic(),  file)
+      write.csv(data_indic(),  file) # download the complete table
     }
   )
 

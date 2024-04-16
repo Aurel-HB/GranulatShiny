@@ -24,7 +24,7 @@ lineplot_creation <- function(data, indicator, campagne){
   value <- c()
   sd <- c()
   for(i in 1:length(names(data))){
-    if(grepl("value", names(data)[i])){
+    if(grepl("mean", names(data)[i])){
       value <- c(value, data[1,i])
     } else {
       sd <- c(sd, data[1,i])

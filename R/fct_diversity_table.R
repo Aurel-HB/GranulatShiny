@@ -9,8 +9,8 @@
 #' @param data dataframe
 #' @param var_name character of 1 value
 #'
-#' @return The return value is a dataframe with the value of chosen variable
-#' for interior, exterior of the concession and the globale average
+#' @return The return value is a dataframe with the average value of chosen variable
+#' for interior, exterior of the concession and the globale
 #'
 #' @export
 
@@ -27,11 +27,11 @@ diversity_table <- function(data, var_name){
   Var_ext <-data.frame(rep(0,nb_campagne),rep(0,nb_campagne))
   Var_tot <-data.frame(rep(0,nb_campagne),rep(0,nb_campagne))
 
-  names(Var_int) <- c(paste(var_name,"_int_value", sep = ""),
+  names(Var_int) <- c(paste(var_name,"_int_mean", sep = ""),
                    paste(var_name,"_int_sd", sep=""))
-  names(Var_ext) <- c(paste(var_name,"_ext_value", sep=""),
+  names(Var_ext) <- c(paste(var_name,"_ext_mean", sep=""),
                    paste(var_name,"_ext_sd", sep=""))
-  names(Var_tot) <- c(paste(var_name,"_tot_value", sep=""),
+  names(Var_tot) <- c(paste(var_name,"_tot_mean", sep=""),
                    paste(var_name,"_tot_sd", sep=""))
 
   for (i in sort(unique(data$campagne))){

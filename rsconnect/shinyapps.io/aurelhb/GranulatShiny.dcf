@@ -5,6 +5,6 @@ account: aurelhb
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 11236543
-bundleId: 8495143
+bundleId: 8496047
 url: https://aurelhb.shinyapps.io/GranulatShiny/
 version: 1

@@ -15,6 +15,7 @@ numeric_summary(vector, name)
 a summarised vector of the numeric vector composed of "variable",
  "n_missing", "n_total", "complete_rate", "mean","sd", "min", "Q25",
  "median", "Q75", "max"
+ be careful the mean and the sd are round at 2 digits
 }
 \description{
 summarise a numeric data

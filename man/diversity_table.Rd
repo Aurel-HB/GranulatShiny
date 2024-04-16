@@ -12,8 +12,8 @@ diversity_table(data, var_name)
 \item{var_name}{character of 1 value}
 }
 \value{
-The return value is a dataframe with the value of chosen variable
-for interior, exterior of the concession and the globale average
+The return value is a dataframe with the average value of chosen variable
+for interior, exterior of the concession and the globale
 }
 \description{
 A fct function that create a dataframe of 3 columns.

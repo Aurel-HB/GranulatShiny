@@ -231,27 +231,18 @@ mod_Modelling_server <- function(input, output, session, r){
         paste("modele_summary",".txt", sep = "")
       },
       content = function(file) {
-        # Use tryCatch to handle errors with try(silent = TRUE)
-        tryCatch(
-          {
             # Open a connection to a file (e.g., "output.txt")
             sink(file)
 
             # Write the content of the text area to the file
-            print(summary(modele()[[choix_modele()]]))
+            if(methode()== 3){
+              print(modele()[[choix_modele()]])
+            } else {
+              print(summary(modele()[[choix_modele()]]))
+            }
 
             # Close the connection to the file
             sink()
-          },
-          error = function(e) {
-            # Handle the error here (print a message, log it, etc.)
-            print("")
-          },
-          warning = function(w) {
-            # Handle warnings if needed
-            print("")
-          }
-        )
       })
 
 

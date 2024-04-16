@@ -8,13 +8,15 @@
 #' @return a summarised vector of the numeric vector composed of "variable",
 #'  "n_missing", "n_total", "complete_rate", "mean","sd", "min", "Q25",
 #'  "median", "Q75", "max"
+#'  be careful the mean and the sd are round at 2 digits
+#'
 #' @export
 #'
 
 numeric_summary <- function(vector, name){
   var_summary <- as.numeric(summary(vector))
-  mean <- mean(vector)
-  sd <- sd(vector)
+  mean <- round(mean(vector), digits = 2)
+  sd <-  round(sd(vector), digits = 2)
   n0 <- 0
   for (value in vector){
     if (value == 0){
