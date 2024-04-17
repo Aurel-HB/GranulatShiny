@@ -134,7 +134,7 @@ mod_reception_server <- function(input, output, session, r){
       tagList(url)
     })
     output$inf_file_url_2 <- renderUI({
-      url <- a("(6) Economie bleue granulats_marins", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
+      url <- a("(6) Economie bleue granulats marins", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
       tagList(url)
     })
     output$inf_file_url_3 <- renderUI({
