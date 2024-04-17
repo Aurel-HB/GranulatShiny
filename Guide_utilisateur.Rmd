@@ -202,7 +202,7 @@ où les termes sont les mêmes que dans l'indice de Shannon-Weiner. Un indice de
 
 ####   Représentation dans l'application
 
-Dans un premier temps, le tableau (ci-dessous) affiche les valeurs moyennes d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Ils sont calculées à partir des valeurs obtenues en chaque station échantillonnée. Pour plus de lisibilité, les écarts-types ne sont pas affichés dans le tableau présent dans l'application mais sont disponibles dans le fichier cvs téléchargeables via le bouton "Telecharger le tableau".
+Dans un premier temps, le tableau (ci-dessous) affiche les valeurs moyennes d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Ils sont calculés à partir des valeurs obtenues en chaque station échantillonnée. Pour plus de lisibilité, les écarts-types ne sont pas affichés dans le tableau présent dans l'application mais sont disponibles dans le fichier cvs téléchargeables via le bouton "Telecharger le tableau".
 
 ```{r, echo=FALSE, warning=FALSE}
 source("R/fct_diversity_table.R")
