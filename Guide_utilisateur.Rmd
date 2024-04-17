@@ -223,7 +223,7 @@ data_indic <- cbind(
 )
 
 name_indic <- names(data_indic)
-position <- grep("value", name_indic)
+position <- grep("mean", name_indic)
 show_data_indic <- data_indic[,position]
 show_data_indic <- data.frame("ID_campagne" = data_indic[,1], show_data_indic)
 
