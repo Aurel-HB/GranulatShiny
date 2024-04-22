@@ -24,20 +24,28 @@ mod_reception_ui <- function(id){
                       br(),
            uiOutput(ns("guide_user")),
                       br(),
-         h5(i18n$t("Lien URL vers les documents de références")),
-                      uiOutput(ns("ref_file_url_1")),
-                      uiOutput(ns("ref_file_url_2")),
-                      uiOutput(ns("ref_file_url_3")),
-                      uiOutput(ns("ref_file_url_4")),
-                      uiOutput(ns("ref_file_url_5")),
+           box( solidHeader = T,
+                collapsible = T,
+                collapsed = T,
+                width = "100%",
+                title = i18n$t("Lien URL vers les documents de références"),
+                uiOutput(ns("ref_file_url_1")),
+                uiOutput(ns("ref_file_url_2")),
+                uiOutput(ns("ref_file_url_3")),
+                uiOutput(ns("ref_file_url_4")),
+                uiOutput(ns("ref_file_url_5"))),
                       hr(),
-         h5(i18n$t("Lien URL vers les documents d'informations")),
-         uiOutput(ns("inf_file_url_1")),
-         uiOutput(ns("inf_file_url_2")),
-         uiOutput(ns("inf_file_url_3")),
-         uiOutput(ns("inf_file_url_4")),
-         uiOutput(ns("inf_file_url_5")),
-         uiOutput(ns("inf_file_url_6")),
+        box( solidHeader = T,
+             collapsible = T,
+             collapsed = T,
+             width = "100%",
+             title = i18n$t("Lien URL vers les documents d'informations"),
+             uiOutput(ns("inf_file_url_1")),
+             uiOutput(ns("inf_file_url_2")),
+             uiOutput(ns("inf_file_url_3")),
+             uiOutput(ns("inf_file_url_4")),
+             uiOutput(ns("inf_file_url_5")),
+             uiOutput(ns("inf_file_url_6"))),
          hr(),
                       actionButton("start", "start", icon = icon("ship"))
                  ),
@@ -54,7 +62,8 @@ mod_reception_ui <- function(id){
     ")),
       img(src='www/favicon.png', align = "left", style = "width: 234px; height: 260px"),
     box( solidHeader = T,
-         collapsible = F,
+         collapsible = T,
+         collapsed = T,
          title = i18n$t("Cadre pour l'extraction de granulats marins"),
          status = "warning",
          class = "scroll-box",  # Add class to apply custom styling
@@ -134,7 +143,7 @@ mod_reception_server <- function(input, output, session, r){
       tagList(url)
     })
     output$inf_file_url_2 <- renderUI({
-      url <- a("(6) Economie bleue granulats marins", href="https://www.gouvernement.fr/sites/default/files/contenu/piece-jointe/2023/04/09-l-economie-bleue-en-france-2022-granulats-marins.pdf")
+      url <- a("(6) Economie bleue granulats marins", href="https://www.info.gouv.fr/organisation/secretariat-general-de-la-mer-sgmer/l-economie-bleue-en-france")
       tagList(url)
     })
     output$inf_file_url_3 <- renderUI({

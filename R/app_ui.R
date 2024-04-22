@@ -54,7 +54,7 @@ app_ui <- function(request) {
           tabName = "descriptive",
           icon = icon("scroll"),
           menuSubItem(i18n$t("Plot des données"), tabName = "plot"),
-          menuSubItem(i18n$t("Diagnostique d'analyse"), tabName = "Diag")
+          menuSubItem(i18n$t("Diagnostic d'analyse"), tabName = "Diag")
         ),
         menuItem(
           i18n$t("Statistiques inférentielles"),
