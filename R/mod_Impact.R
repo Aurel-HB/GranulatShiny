@@ -70,7 +70,7 @@ mod_Impact_server <- function(input, output, session, r){
     output$stationOut <- renderUI({
       selectInput(
         ns("station"),
-        i18n$t("Stations à l'intérieur de la zone d'étude :"),
+        i18n$t("Stations à l'intérieur de la zone impactée :"),
         multiple = T,
         choices = levels(as.factor(tutti_operation()$Code_Station))
       )
