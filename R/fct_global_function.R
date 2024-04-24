@@ -17,7 +17,6 @@
 global_function <- function(tutti_catch, tutti_operation, liste_station, liste_dates, zones, trawl_opening) {
   data <- tutti_function_traitement(tutti_catch, tutti_operation, liste_station, liste_dates, zones, trawl_opening)
   dataf <- indice_computing(data[[1]], data[[2]]) #garde la table Abun
-  dataff <- outlier_remove(dataf)
-  data_list <- table_shapping(dataff)
+  data_list <- table_shapping(dataf)
   return(data_list)
 }

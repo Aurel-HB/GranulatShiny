@@ -96,7 +96,6 @@ mod_Ref_server <- function(input, output, session, r){
       }
     })
 
-
     observe({
       r$tutti_operation <- tutti_operation()
     })
