@@ -88,52 +88,6 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     names(tutti_catch_abun)[5] <- "date"
     }
 
-  ## saison
-  # Extract month and day
-  tutti_catch_abun$month <- format.Date(tutti_catch_abun$date, "%m")
-  tutti_catch_abun$day <- format.Date(tutti_catch_abun$date, "%d")
-
-  # Convert month and day to numeric if needed
-  tutti_catch_abun$month <- as.numeric(tutti_catch_abun$month)
-  tutti_catch_abun$day <- as.numeric(tutti_catch_abun$day)
-
-
-  tutti_catch_abun$saison <- NA
-
-  {
-    tutti_catch_abun[tutti_catch_abun$month == 1 |
-                       tutti_catch_abun$month == 2, 8] <- "Winter"
-    tutti_catch_abun[tutti_catch_abun$month == 3 &
-                       tutti_catch_abun$day < 20,   8] <- "Winter"
-
-    tutti_catch_abun[tutti_catch_abun$month == 3 &
-                       tutti_catch_abun$day >= 20,  8] <- "Spring"
-    tutti_catch_abun[tutti_catch_abun$month == 4 |
-                       tutti_catch_abun$month == 5, 8] <- "Spring"
-    tutti_catch_abun[tutti_catch_abun$month == 6 &
-                       tutti_catch_abun$day < 21,   8] <- "Spring"
-
-    tutti_catch_abun[tutti_catch_abun$month == 6 &
-                       tutti_catch_abun$day >= 21,  8] <- "Summer"
-    tutti_catch_abun[tutti_catch_abun$month == 7 |
-                       tutti_catch_abun$month == 8, 8] <- "Summer"
-    tutti_catch_abun[tutti_catch_abun$month == 9 &
-                       tutti_catch_abun$day < 22,   8] <-  "Summer"
-
-    tutti_catch_abun[tutti_catch_abun$month == 9 &
-                       tutti_catch_abun$day >= 22,    8] <- "Autumn"
-    tutti_catch_abun[tutti_catch_abun$month == 10 |
-                       tutti_catch_abun$month == 11, 8] <- "Autumn"
-    tutti_catch_abun[tutti_catch_abun$month == 12 &
-                       tutti_catch_abun$day < 21,    8] <- "Autumn"
-
-    tutti_catch_abun[tutti_catch_abun$month == 12 &
-                       tutti_catch_abun$day >= 21, 8] <- "Winter"
-  }
-
-  tutti_catch_abun <-
-    tutti_catch_abun %>% select(-c("month", "day"))
-
 
   ## Survey and tow
   tutti_catch_abun <-
@@ -150,14 +104,90 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
                 values_from = "abun") # reduce nb of rows and increase nb columns
   # the species in line become columns and a row is a station/date
 
-  ## traitement
+  # add the station where there no data ####
+  # transformation of the tutti_operation as the tutti_catch_abun_wide
+  ## saison
+  # Extract month and day
+  tutti_operation$month <- format.Date(tutti_operation$date, "%m")
+  tutti_operation$day <- format.Date(tutti_operation$date, "%d")
+
+  # Convert month and day to numeric if needed
+  tutti_operation$month <- as.numeric(tutti_operation$month)
+  tutti_operation$day <- as.numeric(tutti_operation$day)
+  tutti_operation$saison <- NA
+  col_saison <- length(names(tutti_operation))
+
+  {
+    tutti_operation[tutti_operation$month == 1 |
+                       tutti_operation$month == 2, col_saison] <- "Winter"
+    tutti_operation[tutti_operation$month == 3 &
+                       tutti_operation$day < 20,   col_saison] <- "Winter"
+
+    tutti_operation[tutti_operation$month == 3 &
+                       tutti_operation$day >= 20,  col_saison] <- "Spring"
+    tutti_operation[tutti_operation$month == 4 |
+                       tutti_operation$month == 5, col_saison] <- "Spring"
+    tutti_operation[tutti_operation$month == 6 &
+                       tutti_operation$day < 21,   col_saison] <- "Spring"
+
+    tutti_operation[tutti_operation$month == 6 &
+                       tutti_operation$day >= 21,  col_saison] <- "Summer"
+    tutti_operation[tutti_operation$month == 7 |
+                       tutti_operation$month == 8, col_saison] <- "Summer"
+    tutti_operation[tutti_operation$month == 9 &
+                       tutti_operation$day < 22,   col_saison] <-  "Summer"
+
+    tutti_operation[tutti_operation$month == 9 &
+                       tutti_operation$day >= 22,    col_saison] <- "Autumn"
+    tutti_operation[tutti_operation$month == 10 |
+                       tutti_operation$month == 11, col_saison] <- "Autumn"
+    tutti_operation[tutti_operation$month == 12 &
+                       tutti_operation$day < 21,    col_saison] <- "Autumn"
+
+    tutti_operation[tutti_operation$month == 12 &
+                       tutti_operation$day >= 21, col_saison] <- "Winter"
+  }
+
+  tutti_operation <-
+    tutti_operation %>% select(-c("month", "day"))
+
+  tutti_operation <-
+    tutti_operation %>% select(
+      "year",
+      "station",
+      "date",
+      "saison",
+      "campagne",
+      "tow",
+      "hauled_surf"
+    ) # at this moment we have create a a tutti_operation with the same format
+  # as tutti_catch_abun_wide but with all the operations
+
+  species <- sort(unique(tutti_catch$Nom_Scientifique))
+  # add a column per species
+  for (indice in species){
+    tutti_operation[indice] <- NA
+  }
+
+  #now completion of this column by the species catch
+  for(ligne in 1:nrow(tutti_catch_abun_wide)){
+    for (ind_species in species) {
+          tutti_operation[tutti_operation$campagne == tutti_catch_abun_wide$campagne[ligne] &
+                      tutti_operation$station == tutti_catch_abun_wide$station[ligne],
+                    ind_species] <- tutti_catch_abun_wide[ind_species][[ligne,1]]
+    }
+  }
+
+  tutti_catch_abun_wide <- tutti_operation
+
+  ## traitement ####
   traitement<-NA
   traitement<-rep("Sans impact", nrow(tutti_catch_abun_wide))
   tutti_catch_abun_wide$traitement<-traitement_maker_zones(tutti_catch_abun_wide, liste_station, liste_dates, zones, traitement=traitement)
   tutti_catch_abun_wide <- tutti_catch_abun_wide %>% relocate(1:7, traitement)
 
   ## variable interaction
-  tutti_catch_abun_wide$interaction<-interaction(tutti_catch_abun_wide$traitement, tutti_catch_abun_wide$saison, sep=":")
+  tutti_catch_abun_wide$interaction <- interaction(tutti_catch_abun_wide$traitement, tutti_catch_abun_wide$saison, sep=":")
   tutti_catch_abun_wide <- tutti_catch_abun_wide %>% relocate(1:8, interaction)
 
   # catch table shapping - BIOMASS ####
@@ -173,60 +203,11 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     names(tutti_catch_biom)[5] <- "date"
     }
 
-  ## saison
-  # Extract month and day
-  tutti_catch_biom$month <- format.Date(tutti_catch_biom$date, "%m")
-  tutti_catch_biom$day <- format.Date(tutti_catch_biom$date, "%d")
-
-  # Convert month and day to numeric if needed
-  tutti_catch_biom$month <- as.numeric(tutti_catch_biom$month)
-  tutti_catch_biom$day <- as.numeric(tutti_catch_biom$day)
-
-  ## saison
-
-  tutti_catch_biom$saison <- NA
-
-  {
-    tutti_catch_biom[tutti_catch_biom$month == 1 |
-                       tutti_catch_biom$month == 2, 8] <- "Winter"
-    tutti_catch_biom[tutti_catch_biom$month == 3 &
-                       tutti_catch_biom$day < 20,   8] <- "Winter"
-
-    tutti_catch_biom[tutti_catch_biom$month == 3 &
-                       tutti_catch_biom$day >= 20,  8] <- "Spring"
-    tutti_catch_biom[tutti_catch_biom$month == 4 |
-                       tutti_catch_biom$month == 5, 8] <- "Spring"
-    tutti_catch_biom[tutti_catch_biom$month == 6 &
-                       tutti_catch_biom$day < 21,   8] <- "Spring"
-
-    tutti_catch_biom[tutti_catch_biom$month == 6 &
-                       tutti_catch_biom$day >= 21,  8] <- "Summer"
-    tutti_catch_biom[tutti_catch_biom$month == 7 |
-                       tutti_catch_biom$month == 8, 8] <- "Summer"
-    tutti_catch_biom[tutti_catch_biom$month == 9 &
-                       tutti_catch_biom$day < 22,   8] <-  "Summer"
-
-    tutti_catch_biom[tutti_catch_biom$month == 9 &
-                       tutti_catch_biom$day >= 22,    8] <- "Autumn"
-    tutti_catch_biom[tutti_catch_biom$month == 10 |
-                       tutti_catch_biom$month == 11, 8] <- "Autumn"
-    tutti_catch_biom[tutti_catch_biom$month == 12 &
-                       tutti_catch_biom$day < 21,    8] <- "Autumn"
-
-    tutti_catch_biom[tutti_catch_biom$month == 12 &
-                       tutti_catch_biom$day >= 21, 8] <- "Winter"
-  }
-
-  tutti_catch_biom <-
-    tutti_catch_biom %>% select(-c("month", "day"))
-  tutti_catch_biom$date <-
-    as.Date(tutti_catch_biom$date, format = "%d/%m/%Y %H:%M")
-
 
   ## Survey and tow
 
   tutti_catch_biom <-
-    tutti_catch_biom %>% left_join(tutti_operation[, c(2:5, 12)], by = c("station", "date"))
+    tutti_catch_biom %>% left_join(tutti_operation[, c(2:7)], by = c("station", "date"))
 
   # Transform biomass in biomass (kg/m^2)
   tutti_catch_biom$biom <- round(tutti_catch_biom$biom / tutti_catch_biom$hauled_surf,
@@ -238,7 +219,24 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
                 names_from = "species",
                 values_from = "biom") # biom_km2 pour faire en relatif
 
-  ## traitement
+  # add the station where there no data ####
+  # add a column per species
+  for (indice in species){
+    tutti_operation[indice] <- NA
+  }
+
+  #now completion of this column by the species catch
+  for(ligne in 1:nrow(tutti_catch_biom_wide)){
+    for (ind_species in species) {
+      tutti_operation[tutti_operation$campagne == tutti_catch_biom_wide$campagne[ligne] &
+                        tutti_operation$station == tutti_catch_biom_wide$station[ligne],
+                      ind_species] <- tutti_catch_biom_wide[ind_species][[ligne,1]]
+    }
+  }
+
+  tutti_catch_biom_wide <- tutti_operation
+
+  ## traitement ####
   traitement<-NA
   traitement<-rep("Sans impact", nrow(tutti_catch_biom_wide))
   tutti_catch_biom_wide$traitement<-traitement_maker_zones(tutti_catch_biom_wide, liste_station, liste_dates, zones, traitement=traitement)
