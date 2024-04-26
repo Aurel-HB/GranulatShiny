@@ -15,15 +15,15 @@ body {
 text-align: justify}
 </style>
 ```
-# <i class="fa-solid fa-book"></i> Guide utilisateur de GranulatShiny
+# <i class="fa-solid fa-book"></i> User guide of GranulatShiny
 
-Auteurs : Aurel Hebert--Burggraeve, Laure Simplet, Laurent Dubroca, Camille Vogel <br>
+Authors : Aurel Hebert--Burggraeve, Laure Simplet, Laurent Dubroca, Camille Vogel <br>
 
 ```{r, echo=FALSE,  out.width = "50%", fig.align = "left"}
 knitr::include_graphics("inst/app/www/favicon.png")
 ```
 
-## <i class="fa-solid fa-dungeon"></i> Page d'accueil
+## <i class="fa-solid fa-dungeon"></i> Homepage
 
 ```{r, echo=FALSE, warning=FALSE, results = FALSE, message=FALSE}
 library(shiny)
@@ -41,41 +41,42 @@ library(vegan)
 library(pairwiseAdonis) #library(devtools) ; install_github("pmartinezarbizu/pairwiseAdonis/pairwiseAdonis")
 ```
 
-<br> GranulatShiny est une application qui facilite le traitement statistique des données collectées dans le cadre des états initiaux, états de référence avant travaux et suivis environnementaux dédiés aux ressources halieutiques et à l’ichtyofaune relatifs à l'instruction des demandes d'autorisation de travaux d’extraction de granulats marins. L’application permet d’automatiser une partie de la mise en forme des données et du calcul d’indicateurs standards de biodiversité, et fournir des clés de décision pour les étapes plus avancées du traitement.<br> À partir des indicateurs calculés et des choix faits par l’utilisateur, l’application produit des figures et des tableaux dans des formats correspondant aux recommandations du "Protocole halieutique" et du guide méthodologique pour l’élaboration des Documents d’Orientation pour une Gestion durable des Granulats Marins (DOGGM). L’application fournit une interface graphique interactive basée sur le langage R dispensant l’utilisateur de sa maitrise pour se concentrer sur les paramètres d’intérêt pour le diagnostic des effets potentiels de l’extraction de granulats marins sur les ressources halieutiques. GranulatShiny est composée de 3 approches statistiques (exploaratoire, descriptive et inférentielle) qui peuvent être utilisées principalement pour quantifier l’influence de l’extraction de granulats marins sur les communautés de poissons. Chaque approche va couvrir un attendu du "Protocole halieutique". L’approche dite exploratoire présente et analyse les données à l’échelle de la communauté entière. L’approche descriptive présente et analyse les données à l’échelle d’une espèce. Et le recours à de l’analyse inférentielle est nécessaire pour évaluer la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant et pendant l'exploitation.<br> L’application dans sa version actuelle n’a pas de finalité réglementaire mais représente une aide pour la réalisation des rapports de suivi sur les communautés halieutiques. Elle ne vient pas remplacer le travail déjà fourni par les bureaux d’études mais vient compléter ce qui est déjà réalisé en permettant le montage d’un modèle statistique pour tester les effets de certains paramètres sur les communautés de poissons.
+<br> GranulatShiny is an application that facilitates the statistical processing of data collected as part of the initial studies, pre-construction baseline studies and environmental monitoring dedicated to fishery resources and ichthyofauna relating to the appraisal of applications for authorisation to extract marine aggregates. The application automates some of the data formatting and the calculation of standard biodiversity indicators, and provides decision keys for the more advanced processing stages.<br> Based on the calculated indicators and the user's choices, the application produces figures and tables in formats corresponding to the recommendations of the french reference documents: the "Halieutic Protocol" and the methodological guide for the development of Orientation Documents for Sustainable Management of Marine Aggregates (DOGGM). The application provides an interactive graphical interface based on the R language, relieving the user of the need for mastery to focus on parameters of interest for diagnosing the potential effects of marine aggregate extraction on fish resources. GranulatShiny consists of 3 statistical approaches (exploratory, descriptive, and inferential) that can be used primarily to quantify the influence of marine aggregate extraction on fish communities. Each approach covers an expected aspect of the "Halieutic Protocol". The exploratory approach presents and analyzes data at the scale of the entire community. The descriptive approach presents and analyzes data at the scale of a species. And resorting to inferential analysis is necessary to evaluate the temporal and spatial variability of different indicators of fish resources before and during exploitation.<br> The current version of the application does not have a regulatory purpose but serves as an aid in the production of monitoring reports on fish communities. It does not replace the work already provided by consulting firms but complements what is already done by allowing the assembly of a statistical model to test the effects of certain parameters on fish communities.
 
-<br>Ce guide a été rédigé afin de permettre à un utilisateur de GranulatShiny de s'approprier l'interface de l'application et de comprendre la méthodologie développée derrière chaque résultat fourni par l'application. <br> Avant de commencer, notez qu'il existes différents boutons dans l'application. <br>
+This guide has been written to enable a GranulatShiny user to familiarize themselves with the application interface and understand the methodology developed behind each result provided by the application.<br>
+Before starting, note that there are different buttons in the application.
 
-Les boutons avec une icône bateau vous permettent de **passer d'un onglet à un autre**.
+The buttons with a boat icon allow you to **switch from one tab to another**.
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("start", "start", icon = icon("ship"))
 ```
 
-Ceux portant un petit dragon vert désignent une **étape obligatoire**.
+Those bearing a small green dragon indicate a **mandatory stopover**.
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("go", "Mettre en forme",icon = icon("dragon", style='color: #22A433'))
 ```
 
-Les boutons avec une flèche permettent de **télécharger des résultats** de l'application. Les formats utilisés sont (csv, png, txt, rds).
+The buttons with an arrow allow you to **download results** from the application. The formats used are (csv, png, txt, rds).
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("tel", "Telecharger la table",icon = icon("download"))
 ```
 
-Enfin, ceux avec un cercle contenant un i sont des **aides** que l'on peut faire afficher pour mieux comprendre un graphique ou autres objets proposés par l'application.
+Finally, those with a circle containing an i are **helps** that can be displayed to help you better understand a graph or other objects proposed by the application.
 
 ```{r, echo=FALSE, warning=FALSE}
 actionButton("info", "",icon = icon("circle-info"))
 ```
 
-Lors du démarrage de l'application, la page d'accueil s'ouvre automatiquement. Sur cette page, les différents documents de références et d'informations sont listés avec leur URL associée en hyperlien. Un rappel du contexte sur l'extraction de granulats marins se trouve à droite de la page. <br> Pour passer à l'onglet suivant appuyer sur le bouton start de la page d'accueil dans l'application.
+When launching the application, the homepage opens automatically. On this page, various reference documents and information are listed with their associated URLs hyperlinked. A reminder of the context regarding marine aggregate extraction is located on the right side of the page. <br> To move to the next tab, press the "start" button on the homepage within the application.
 
-## <i class="fa-solid fa-wand-magic-sparkles"></i> Mise en forme des données
+## <i class="fa-solid fa-wand-magic-sparkles"></i> Data formatting
 
-###  Informations à rentrer : chargement des jeux de données à analyser
+###  Information to enter: loading datasets to analyze.
 
-La première étape d'utilisation de l'application est l'importation des données collectées. Celles-ci doivent répondre à un standard défini par l’Ifremer et dont le canevas peut être retrouvé ici : <br>
+The first step in using the application is to import the data collected. The data must comply with a standard defined by Ifremer, the outline of which can be found here:<br>
 http://htmlpreview.github.io/?https://github.com/Aurel-HB/GranulatShiny/blob/main/Description_Format_Generique_GranulatShiny.html
 <br> 
 
@@ -146,13 +147,13 @@ carte
 
 **- Cas n°3 : vous avez déjà utilisé l’outil pour traiter vos données. Vous possédez un fichier récapitulatif de l’ensemble des paramètres utilisés pour une précédente analyse et vous souhaitez repartir de ce fichier** <br> Dans le cas où vous avez déjà sauvegardé le paramétrage dans un fichier, vous pouvez l’importer à la suite des fichiers «TuttiCatch.csv » et « TuttiOperation.csv » ; ainsi les champs concernant les stations seront remplis automatiquement. <br>
 
-### Production des tables d'indicateurs
+### Production of indicator tables
 
 Lorsque vous avez complété l'étape de chargement des données, vous pouvez appuyer sur le bouton avec le dragon vert. Cela lancera, en interne de l'application, le calcul des différents indicateurs et covariables nécessaires à l'analyse des données. Si vous n'appuyez pas sur ce bouton, rien ne se passera et vous ne serez pas en mesure de poursuivre l'analyse. <br>
 
 **Nota Bene :** Si vous avez plus d'une concession à analyser, vous pouvez revenir dans cet onglet, changer les fichiers en chargant ceux correspondant à cette autre concession (« TuttiCatch.csv », « TuttiOperation.csv », « ShapeFiles »), puis appuyer à nouveau sur le dragon vert pour relancer la production des tableaux d'indicateurs.
 
-### Tableau général
+### General table
 
 Dans l'onglet "Tables", il y a un tableau de données à droite et une partie interactive à gauche. Le tableau affiché est formé à partir des données renseignées dans l'onglet "Mise en forme des données". Les fonctions de mises en forme du tableau vont calculer l'abondance, la biomasse et différents indicateurs de diversité pour chaque station et pour chaque campagne. La variable "traitement", indicatrice de l'état de chaque station peut prendre deux valeurs "sans impact" ou "impact". Elle renseigne si la station est à l'intérieur du périmètre de la concession et donc considérée comme étant impactée par les travaux d'extraction de granulats (i.e. modalité "impact") ou si la station est en dehors du périmètre de la concession (i.e. modalité "sans impact"). Dans le cas d'un état initial, où il n'y a pas eu d'extraction sur le site de la concession étudiée, les stations situées à l'intérieur de la concession se voient attribuer l'état "sans impact" jusqu'à la date de début d'exploitation. Cela permet de les considérer comme reflétant l'état de l'environnement avant tout impact de l'extraction dans le cadre de l'analyse statistique déployée ensuite.
 
@@ -179,13 +180,13 @@ Lors des processus de mise en forme, la modalité saison est calculée à partir
 
 Vous pouvez modifier l'affichage général du tableau de données à l'aide de la flèche située sous le message "quel tableau afficher" et il est possible de télécharger le tableau affiché via le bouton "Telecharger la table". Le bouton "Telecharger les informations rentrées" permet d'enregistrer dans un fichier csv la liste des stations d'impact, les dates d'exploitation et la largeur d'ouverture du chalut utilisées dans l'onglet "Importation des données". A l'issue de cet onglet, vous pouvez décider de réaliser la partie "statistique exploratoire" qui s'intéresse à la communauté dans sa globalité, ou de passer directement à la partie "statistique descriptive" qui se concentre sur une variable spécifique.
 
-## <i class="fa-solid fa-eye"></i> Statistiques exploratoires
+## <i class="fa-solid fa-eye"></i> Exploratory statistics
 
-### Représentation des indicateurs
+### Representation of indicators
 
 Dans cette partie on s'intéresse aux indicateurs de biodiversité et d'abondance obtenues à l'échelle de la communauté, à l'intérieur et à l'extérieur de la concession, pour chaque campagne de collecte de données réalisée. Les indicateurs présentés sont ceux référencés dans le "Protocole halieutique" article 8.4.1.
 
-####   Définition des indicateurs
+####   Definition of indicators
 
 La biodiversité englobe la variété de la vie, à tous les niveaux d'organisation, classée selon des critères évolutifs (phylogénétiques) et écologiques (fonctionnels). Au niveau des populations biologiques, la variation génétique entre les organismes individuels et entre les lignées contribue à la biodiversité en tant que signature de l'histoire évolutive et écologique et base de l'évolution adaptative future. C'est au niveau des espèces que le terme de biodiversité est le plus souvent appliqué par les écologistes et les biologistes de la conservation. La richesse spécifique fait référence au nombre total d'espèces présentes dans un écosystème donné. C'est une mesure simple qui ne prend en compte que le nombre d'espèces sans considérer leur abondance relative. Par exemple, si une forêt tropicale contient 100 espèces d'arbres différents, sa richesse spécifique serait de 100.
 
@@ -205,7 +206,7 @@ $$ D= \sum_{i}^S (p_{i}*(p_{i}-1)) $$
 
 où les termes sont les mêmes que dans l'indice de Shannon-Weiner. Un indice de Simpson plus élevé indique une biodiversité plus faible, car il met davantage l'accent sur la probabilité qu'une espèce choisie au hasard soit la même que celle choisie précédemment.
 
-####   Représentation dans l'application
+####   Representation in the application
 
 Dans un premier temps, le tableau (ci-dessous) affiche les valeurs moyennes d’abondance, de biomasse, de richesse spécifique, des indicateurs de Shannon et de Simpson à l’intérieur de la concession, à l’extérieur de la concession, et au global pour chaque campagne. Ils sont calculés à partir des valeurs obtenues en chaque station échantillonnée. Pour plus de lisibilité, les écarts-types ne sont pas affichés dans le tableau présent dans l'application mais sont disponibles dans le fichier cvs téléchargeable via le bouton "Telecharger le tableau".
 
@@ -252,7 +253,7 @@ frise
 
 <br> L'intérêt de ces approches est de pouvoir comparer la communauté halieutique à plusieurs échelles. Dans un premier temps, la comparaison est axée sur intérieur ou extérieur de la concession. Mais si les campagnes sont regardées les unes après les autres, il pourrait être possible de distinguer des changements au cours du temps. Il y a à la fois un aspect spatial et temporel.
 
-### Représentation de la structure
+### Representation of the structure
 
 Ce tableau représente la proportion de chaque espèce présente pour chaque campagne d'échantillonnage (paragraphe 8.4.1 du Protocole halieutique). Le tableau permet de suivre l'évolution des proportions d'espèces au fil du temps et offre une perspective sur les tendances des assemblages. Les variations des proportions des différentes espèces d'une année à l'autre peuvent renseigner des changements écologiques significatifs, tels que des fluctuations dans la biodiversité, des modifications des habitats ou des pressions environnementales. Ce tableau peut permettre aussi d’identifier les espèces qui dominent dans un écosystème donné ainsi que celles qui sont en déclin.
 
@@ -378,9 +379,9 @@ La figure en haut à droite est une courbe d'abondance cumulée en fonction du n
 
 La figure en bas à droite représente le nombre d'espèces en fonction du nombre de sites échantillonnés. L'algorithme va, pour un nombre de sites donnés, tester toutes les combinaisons existantes dans le jeu de données et récupérer le nombre d'espèces pour chaque combinaison. Ensuite il fait une moyenne par nombre de site et c'est cette valeur moyenne qui est reportée dans le graphique. <br> La forme de la courbe d'accumulation des espèces peut fournir des informations sur la diversité de l'écosystème étudié. Si la courbe augmente rapidement et tend vers une asymptote plate, cela suggère que la plupart des espèces présentes ont été échantillonnées et que l'on a une bonne estimation de la diversité de l'écosystème. En revanche, si la courbe augmente lentement et ne semble pas atteindre un plateau, cela indique qu'il reste encore des espèces à découvrir et que l'échantillonnage doit être poursuivi pour obtenir une estimation plus précise de la diversité.<br> La courbe d'accumulation des espèces est utile pour déterminer le nombre minimum d'échantillons nécessaires pour obtenir une représentation adéquate de la diversité des espèces. Cela peut être utiliser lors des deux années d'état initial pour s'assurer que le plan d'échantillonnage proposé permet de capter la diversité de la zone. Ici, construite à partir du jeu de données factice, la courbe ne présente que peu d'intérêt.
 
-## <i class="fa-solid fa-scroll"></i> Statistiques descriptives
+## <i class="fa-solid fa-scroll"></i> Descriptive statistics
 
-### Représentation des données
+### Data representation
 
 Dans cette partie on s’intéresse à un indicateur en particulier (abondance d’une espèce, biomasse totale, indicateur de diversité, ...) et on le compare aux variables explicatives de notre jeu de données. On recherche des effets ou des corrélations possibles en amont des statistiques inférentielles. Il faut donc choisir une variable que l’on cherche à expliquer en fonction de paramètres liés à l’acquisition des données et à l’extraction. C’est sur cette variable que sera effectuée l’analyse statistique. Dans un premier temps le tableau qui résume la variable expliquée renseigne sur le nombre de zéros et valeurs manquantes, la longueur totale de la série de valeurs et la fraction du nombre de zéros et valeurs manquantes sur le total de valeurs. Ensuite, il fournit également la moyenne, les extrêmes, l’écart-type et les quartiles de la série. Les valeurs les plus importantes pour la partie "statistiques inférentielles" sont celles renseignant sur le nombre de zéros et valeurs manquantes (“n_missing”, “complete_rate”). La proportion de zéros dans les données structure la méthode de modélisation qui va être employée. En effet, une trop grande proportion de zéros peut compromettre la réalisation d’un modèle linéaire mixte généralisé.  <br>
 
@@ -417,7 +418,7 @@ Dans le paragraphe 8.4.1 du "Protocole halieutique", il est indiqué de décrire
 
 Après l'exploration des données, il est possible de passer à l'onglet suivant en appuyant sur le bouton "Choisir la probabilité de distribution" ou en cliquant sur “diagnostic d’analyse”.
 
-### Diagnostic d'analyse
+### Diagnostic analysis
 
 Cet onglet permet de choisir et de visualiser la distribution de probabilité qui correspond le mieux à la variable expliquée. L'histogramme de fréquence de la variable à l'étude (sélectionnée par l'utilisateur) est représenté en bâtons gris. Il représente la distribution empirique des données observées. Il est construit en regroupant les données de la variable en intervalles et en comptant le nombre d'observations dans chaque intervalle. Cela donne une visualisation de la répartition des valeurs de la variable.<br> La fonction de densité (en bleu dans l'exemple) est une estimation de la distribution de probabilité des données de la variable. Elle est calculée en ajustant différents modèles de distribution statistique aux données observées. Ces modèles peuvent inclure des distributions normales, de Poisson, exponentielles, etc. La fonction de densité représente la probabilité qu'une observation tombe dans une plage particulière de valeurs.<br> La distribution de probabilité (en vert dans l'exemple) représente le modèle de distribution statistique qui correspondrait le mieux à la fonction de densité. Elle est choisie par l'utilisateur pour se superposer au mieux à la courbe bleue. Les paramètres de chaque distribution de probabilité sont approximés à l'aide de la moyenne et de l’écart type de la variable.
 
@@ -438,31 +439,31 @@ ggplot(data = dataset, aes(x = Abun, y = after_stat(density))) +
 
 Lorsque vous êtes satisfait de la distribution des probabilités, vérifiez la phrase au-dessus du bouton "Passer à la modélisation". Il y a deux possibilités. Dans le cas où vous avez moins de 30 observations, la phrase dit : "Vous n'avez pas assez de valeurs pour passer à la partie modélisation". Dans ce cas, vous devez changer la variable de travail car il n'y a pas assez de valeur pour créer un modèle pertinent. A l'inverse, si le volume de données présent dans le jeu de données est suffisant (\>30 observations), vous aurez : "Après avoir choisi une distribution de probabilité, vous pouvez passer à la construction du modèle". Lorsque vous avez terminé, appuyez sur le bouton "passer à la modélisation".
 
-## <i class="fa-solid fa-fish-fins"></i> Modélisation
+## <i class="fa-solid fa-fish-fins"></i> Modelling
 
-### Création des modèles
+### Model creation
 
 Cette partie est consacrée à la création d'un modèle pour l'analyse inférentielle. La variable analysée est rappelée en haut à gauche de l'onglet et peut être modifiée dans l'onglet "représentation des données". Dans l'application il est possible de réaliser 3 types de tests inférentiels : GLMM, GLM, PERMANOVA. Dans un premier temps ce chapitre rappelle les principes généraux de statistique employés dans l'application.<br>
 
-####   Principes généraux de statistiques nécessaires à l’utilisation de l’outil
+####   General principles of statistics needed to use the tool
 
-#####     [Méthode paramétrique et non-paramétrique]{.underline}
+#####     [Parametric and non-parametric methods]{.underline}
 
 Le domaine des statistiques existe parce qu'il est impossible de collecter des données auprès de tous les individus concernés (population). La seule solution consiste à collecter des données auprès d'un sous-ensemble (échantillon) des individus concernés, mais le véritable objectif est de connaître la "vérité" sur la population. La population est approchée en étudiant des variables descriptives. Chaque variable est un objet statistique, qui peut être décrit par des indicateurs. Les indicateurs statistiques tels que la moyenne, l'écart-type et les quartiles servent à résumer l'information concernant une variable observée. Lorsque l'on étudie un échantillon considéré comme représentatif, ces indicateurs servent à construire la loi de distribution de la variable étudiée. Chaque indicateur correspond à un "paramètre" de cette loi de distribution. On considère alors que la loi de distribution obtenue pour cette variable à partir de l'échantillon est applicable à la population. Étant donné que l'on ne peut généralement pas obtenir de données sur l'ensemble de la population, on ne peut pas connaître les valeurs des paramètres pour cette population. Il est toutefois possible de calculer des estimations de ces quantités pour l'échantillon. Lorsqu'elles sont calculées à partir des données de l'échantillon, ces quantités sont appelées "statistiques". Une statistique estime un paramètre. Les procédures statistiques paramétriques reposent sur des hypothèses concernant la forme de la distribution (c'est-à-dire une distribution normale) dans la population sous-jacente et sur la forme ou les paramètres (c'est-à-dire les moyennes et les écarts-types) de la distribution supposée. Les procédures statistiques non paramétriques ne reposent sur aucune ou peu d'hypothèses concernant la forme ou les paramètres de la distribution de la variable dont l'échantillon a été tiré.
 
-#####     [Modèles linéaires]{.underline}
+#####     [Linear models]{.underline}
 
 Un modèle linéaire classique est une méthode paramétrique qui permet d’étudier la liaison statistique entre une variable réponse **Y** et les variables explicatives **X**. Soit yi la réponse de l’individu **i** et **x<sub>i</sub>** les valeurs prises par les variables explicatives pour cet individu. La relation entre **X** et **Y** peut s’écrire sous la forme : $$Y = α + \sum_jβ_jX_j + ε $$ où **ε** représente les résidus du modèle, la variance de la variable **Y** non expliquée par les variables explicatives **X**, distribuée selon une loi normale d’espérance nulle. Le terme **α** correspond à ce qu’on appelle l’intercept et **β<sub>j</sub>** représente les coefficients estimés du modèle des variables explicatives **X<sub>j</sub>**. La variable réponse pour un modèle linéaire doit être une variable approximativement normalement distribuée.
 
-#####     [Modèles linéaires généralisés]{.underline}
+#####     [Generalized linear models]{.underline}
 
 Les modèles linéaires trouvent une large application, mais ne peuvent pas gérer des réponses continues clairement discrètes ou asymétriques. Par exemple, les variables réponses de type “comptage”, souvent asymétrique ainsi que les variables binaires comme la présence/absence ne suivent pas une loi normale. Les modèles linéaires ne sont donc pas adaptés à ce type de variables. Les modèles linéaires généralisés (GLM) permettent l'extension des idées de modélisation linéaire à une classe plus large de types de réponse, comme celles énoncées précédemment, sous une méthodologie de modélisation commune. Une chose importante à comprendre dans les GLM est la relation entre les valeurs de la variable de réponse, **Y** (telles que mesurées dans les données et prédites par le modèle dans les valeurs ajustées) et le prédicteur linéaire. Le prédicteur linéaire émerge du modèle linéaire comme une somme de chaque terme du modèle. Le prédicteur linéaire correspond à la variable **Y** seulement lors d’un modèle linaire classique suivant une loi normale. Dans le cas de modèle linéaire généralisé, c’est la fonction de lien, **g**, qui relie la valeur **Y** à son prédicteur linéaire **N**. $$ N =g(Y) $$ La valeur de **N** est obtenue en transformant la valeur de **Y** par la fonction de liaison **g**, et la valeur prédite de **Y** est obtenue en appliquant la fonction de liaison inverse à **N**. <br> En utilisant différentes lois de distribution et donc différentes fonctions de lien, il est possible d’observer les conséquences sur les hypothèses des résidus du modèle. La fonction de lien la **plus appropriée** est celle qui produit **les résidus les plus conformes**.
 
-#####     [Modèle linéaire généralisé mixte]{.underline}
+#####     [Generalized linear mixed model]{.underline}
 
 Les modèles linéaires mixtes généralisés (GLMM) sont une extension des GLM. Un GLMM est dit "mixte" parce qu'il comprend au moins un effet "fixe", les variables explicatives et au moins un effet "aléatoire". Les effets aléatoires ne sont pas des termes évalués, ils servent uniquement à indiquer au modèle que les données ne sont pas indépendantes et reflètent une corrélation entre les unités statistiques. D'un point de vue statistique, cela permet d'estimer précisément la déviance résiduelle et donc d'éviter de biaiser l'erreur standard des paramètres. Au final, cela se traduit par des p-values plus fiables.
 
-#####     [Analyse de variance par permutations]{.underline}
+#####     [Analysis of variance using permutations]{.underline}
 
 La PERMANOVA, ou Analyse de Variance Permutationale Multivariée, est une méthode statistique qui permet d'analyser les différences entre plusieurs groupes définis par des caractéristiques qualitatives, comme par exemple les différents traitements dans une étude expérimentale.
 
@@ -474,7 +475,7 @@ La décision de rejeter ou non l'hypothèse nulle (l'absence de différence entr
 
 Cependant, la PERMANOVA présente quelques limites. Elle ne permet pas de déterminer quel groupe spécifique diffère des autres, seulement qu'au moins un groupe est différent. De plus, la présence de valeurs nulles peut biaiser l'estimation de la similarité entre les éléments, ce qui est particulièrement problématique en écologie où un zéro peut signifier l'absence d'une espèce. Cette limitation peut être atténuée en choisissant un coefficient d'association approprié dans le calcul de la matrice de distance.
 
-####   Ecriture du modèle avec GranulatShiny
+####   Writing the model with GranulatShiny
 
 Selon la méthode de modélisation que vous choisissez, la formulation du modèle diffère. Si l'on prend l'exemple de l'abondance comme variable réponse, le GLMM prendra en compte deux variables explicatives fixes, le traitement et la saison, et leur interaction ainsi que deux variables explicatives aléatoires, la campagne et la station : $$GLMM → Abun \sim traitement * saison + (1\|campagne) + (1\|station)$$ Le GLM prendra en compte uniquement les variables explicatives fixes prises en compte dans le GLMM et leur interaction : $$GLM → Abun \sim traitement * saison$$ La PERMANOVA prendra en compte les mêmes variables explicatives que le GLM : $$PERMANOVA → Abun \sim traitement * saison$$
 
@@ -484,7 +485,7 @@ Pour un GLMM et un GLM, vous devrez choisir une distribution de probabilité. Pa
 
 Vous pouvez également conserver ou non l'interaction entre les covariables traitement et saison. Attention si l'interaction n'apporte rien au modèle celle-ci est retirée automatiquement. Vous pouvez également ajouter d'autres covariables dans votre modèle. Elles seront ajoutées sans interaction avec les autres. Lorsque vous êtes prêt, vous pouvez cliquer sur "démarrer la modélisation".<br>
 
-#####     [Modèle linéaire mixte généralisé]{.underline}
+#####     [Generalized linear mixed model]{.underline}
 
 C'est la méthode à prioriser. Dans le paragraphe 8.4.2 du "Protocole halieutique", il est dit que pour évaluer la variabilité temporelle et spatiale des différents indicateurs des ressources halieutiques avant extraction, il faut utiliser des modèles linéaires généralisés à effets mixtes (GLMMs) avec les variables temporelle et spatiale définies comme effets aléatoires croisés plus un effet saisonnier fixe. La première sortie est une reproduction de la sortie du logiciel r pour la ligne de commande correspondante. Vous pouvez choisir d'afficher le tableau d'analyse de la déviance, qui synthétise les résultats de la modélisation en ne fournissant qu'un résumer de l'évaluation de l'importance des effets fixes dans le modèle et de comprendre leur impact sur la variable réponse. Vous pouvez également afficher le résumé exhaustif de ces résultats. Vous pouvez choisir d'afficher les résultats du modèle avant optimisation via le choix initial ou alors le modèle optimisé via le choix final en bas à gauche.<br>
 
@@ -595,7 +596,7 @@ plot(simulateResiduals(bad_glmm))
 
 <br> Lorsque la modélisation par GLMM ne converge pas, il faut lui préférer des méthodes de modélisation associées à  des algorithmes de calcul plus sipmles, c'est-à-dire avec moins de paramètres à estimer. L'outil GranulatShiny en propose deux : le GLM et la PERMANOVA.<br> NOTA BENE : lorsque le jeu de données utilisé pour la modélisation est constitué de 30 observations non nulles ou moins, il est préférable de s'en tenir à la méthode la moins coûteuse en termes de calcul, à savoir la PERMANOVA.
 
-#####     [Modèle linéaire généralisé]{.underline}
+#####     [Generalized linear model]{.underline}
 
 Reproduction de la sortie R du modèle GLM sur l'abondance
 
@@ -607,7 +608,7 @@ summary(GLM)
 
 Le GLM sort des résultats proches de celui du GLMM et s'analyse de la même manière. Cependant, celui est moins précis. Il ne prend pas en compte les effets aléatoires induits par l'environnement ou la méthode utilisée.
 
-#####     [Analyses de variances par permutations]{.underline}
+#####     [Analysis of variance by permutation]{.underline}
 
 Méthode de PERMANOVA intégrée dans l'application
 
@@ -656,7 +657,7 @@ plot
 
 <br>Les mêmes boites à moustaches que dans l'onglet Représentation des données sont affichées. Sauf que si la variable de comparaison (dans l'exemple c'est le traitement) a un effet significatif sur la variable expliquée (ici l'abondance) alors la p-value apparait en rouge en haut à gauche du graphique. S'il n'y a pas d'effet détecté pendant la PERMANOVA alors le message "Pas d'effet" apparait en haut à gauche du graphique.
 
-### Représentation des effets
+### Effects representation
 
 Cet onglet permet de visualiser graphiquement les effets des variables explicatives sur la variable expliquée dans le cas d'un GLMM ou d'un GLM. Dans le cas d'une PERMANOVA, cette section n'est pas sollicitée et la fenêtre graphique sera blanche. Cette partie retransforme les estimates du modèle en l'unité initiale (dans le cas de l'abondance c'est un nombre par km²). Ainsi on peut voir la valeur moyenne de l'abondance en fonction de la saison et du traitement. D'abord vous devez choisir les deux prédicteurs à représenter.<br>
 
@@ -687,11 +688,11 @@ ggpredict(GLM, terms = c("traitement", "saison"))|> plot()
 
 <br>Ce graphique est une autre manière de représenter le tableau de sortie du modèle de l'onglet précédent.
 
-### Puissance statistique
+### Statistical power
 
 Cette partie est en cours de développement. L'outil antérieur construit par Mathis Cambreling fonctionne seulement pour le jeu de données ayant servi de base à ses calculs. L'outil n'étant pas généralisable, celui-ci a été retiré pour assurer la stabilité actuelle de l'application. Un autre outil est en cours de développement.<br>
 
-## Bibliographie
+## Bibliography
 
 **Anderson MJ** (2017) Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. John Wiley & Sons, Ltd, pp 1–15
 
