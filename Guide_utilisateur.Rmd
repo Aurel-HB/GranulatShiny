@@ -695,7 +695,7 @@ Cette partie est en cours de développement. L'outil antérieur construit par Ma
 
 **Anderson MJ** (2017) Permutational Multivariate Analysis of Variance (PERMANOVA). Wiley StatsRef: Statistics Reference Online. John Wiley & Sons, Ltd, pp 1–15
 
-**Avezard C, Lavarde P, Pichon A, Legait B, Wallard I** (2017) Impact environnemental et ́economique des activit ́es d’exploration ou d’exploitation des ressources minérales marines.
+**Avezard C, Lavarde P, Pichon A, Legait B, Wallard I** (2017) Impact environnemental et ́economique des activit́es d’exploration ou d’exploitation des ressources minérales marines.
 
 **Bolker BM** (2008) Ecological Models and Data in R. doi: 10.2307/j.ctvcm4g37
 

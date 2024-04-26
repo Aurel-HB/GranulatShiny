@@ -98,6 +98,7 @@ mod_Prepare_data_server <- function(input, output, session, r){
      if(is.null(tutti_operation_filtre())){return()}
      if(check_concession()==FALSE){return()}
      if(r$check_duplica==FALSE){return()}
+     if(r$check_date==FALSE){return()}
      if(is.null(r$trawl_opening)){return()}
      actionButton(ns("go"), i18n$t("Mettre en forme"),
                   icon = icon("dragon", style='color: #22A433'))

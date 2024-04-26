@@ -25,6 +25,7 @@ Le fichier n'a pas le bon format ! Référez vous au format tutti_catch de la no
 Il y a eu une erreur lors de la lecture des dates du fichier tutti_catch. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_catch file. Refer to the classic tutti format for entering dates.
 Sélectionnez le fichier Tutti operation (.csv),Select the Tutti Operation file (.csv)
 Le fichier n'a pas le bon format ! Référez vous au format tutti_operation de la notice.,The file is in the wrong format! Please refer to the tutti_operation format in the instructions.
+Vous avez une incohérence entre les dates du fichier tutti_catch et les dates du fichier tutti_operation.,There is an inconsistency between the dates in the tutti_catch file and the dates in the tutti_operation file.
 Il y a eu une erreur lors de la lecture des dates du fichier tutti_operation. Référez vous au format classique tutti pour la saisie des dates.,There was an error reading the dates from the tutti_operation file. Refer to the classic tutti format for entering dates.
 Vos fichiers ne correspondent pas à la même concession.,Your files do not correspond to the same concession.
 Votre fichier tutti_catch contient des lignes en double. Si vous faites du sous-échantillonage assurez vous de bien les rassembler en une seule ligne avant importation dans GranulatShiny.,Your tutti_catch file contains duplicate lines. If you are sub-sampling make sure you combine them into a single line before importing them into GranulatShiny.

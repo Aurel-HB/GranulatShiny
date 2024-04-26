@@ -88,6 +88,43 @@ tutti_function_traitement<- function(tutti_catch, tutti_operation, liste_station
     names(tutti_catch_abun)[5] <- "date"
     }
 
+  # this version create the survey indice also in the catch table to compile the 2 table with this variable####
+  #tutti_catch_abun <-
+  #  tutti_catch %>% select("Annee","Serie_Partielle", "Code_Station", "Nom_Scientifique", "Nombre", "DateDeb")
+#
+  #{
+  #  names(tutti_catch_abun)[1] <- "year"
+  #  names(tutti_catch_abun)[2] <- "campagne"
+  #  names(tutti_catch_abun)[3] <- "station"
+  #  names(tutti_catch_abun)[4] <- "species"
+  #  names(tutti_catch_abun)[5] <- "abun"
+  #  names(tutti_catch_abun)[6] <- "date"
+  #  }
+
+  ## variable campagne calculate by the combination of Annee and Serie_Partielle
+  #survey_Date <- sort(unique(tutti_catch_abun$year))
+  #survey_ID <- unique(tutti_catch_abun$campagne)
+  #
+  #for(i_tutti in 1:nrow(tutti_catch_abun)){
+  #  for (i_ref in 1:length(survey_Date)){
+  #    if (tutti_catch_abun$year[i_tutti] == survey_Date[i_ref]){
+  #      tutti_catch_abun$campagne[i_tutti] <- tutti_catch_abun$campagne[i_tutti] + length(survey_ID)*(i_ref-1)
+  #    }
+  #  }
+  #}
+  #
+  ## in the specific case there is a gap in the survey (2022_serie1 to 2023_serie2)
+  #real_nb_survey <- seq(1,length(unique(tutti_catch_abun$campagne)),1)
+  #tutti_campagne <- sort(unique(tutti_catch_abun$campagne))
+  #for( i in 1:length(real_nb_survey)){
+  #  if(real_nb_survey[i] != tutti_campagne[i]){
+  #    tutti_catch_abun <-
+  #      tutti_catch_abun %>% dplyr::mutate(campagne = ifelse(campagne == tutti_campagne[i],
+  #                                                          real_nb_survey[i],
+  #                                                          campagne))
+  #  }
+  #}
+  #####
 
   ## Survey and tow
   tutti_catch_abun <-

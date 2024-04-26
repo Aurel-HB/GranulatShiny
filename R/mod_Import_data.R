@@ -249,6 +249,30 @@ mod_Import_data_server <- function(input, output, session, r){
     )
 
 
+    #check if the date are corresponding in the 2 files ####
+    check_date <- reactive({
+      if(is.null(tutti_catch())){return()}
+      if(is.null(tutti_operation())){return()}
+      if(r$check_concession == FALSE){return()}
+      operation_date <- sort(unique(tutti_operation()$DateDeb))
+      catch_date <- sort(unique(tutti_catch()$DateDeb))
+      check_date <- TRUE
+      if (FALSE %in% c(sort(unique(catch_date)) %in% sort(unique(operation_date)))){
+        check_date <- FALSE
+        sendSweetAlert(
+          session = session,
+          title = "Alert !",
+          text = i18n$t("Vous avez une incohérence entre les dates du fichier tutti_catch et les dates du fichier tutti_operation."),
+          type = "fail"
+        )
+      }
+      return(check_date)
+    })
+
+    observe({
+      r$check_date <- check_date()
+    })
+
     #exportation of the dataset ####
 
     observe({
