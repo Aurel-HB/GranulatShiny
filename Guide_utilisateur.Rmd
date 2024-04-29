@@ -733,6 +733,8 @@ Cette partie est en cours de développement. L'outil antérieur construit par Ma
 
 **Underwood AJ** (1994) On Beyond BACI: Sampling Designs that Might Reliably Detect Environmental Disturbances. Ecological Applications 4: 4–15
 
+**Venables WN, Dichmont CM** (2004) GLMs, GAMs and GLMMs: an overview of theory for applications in fisheries research. Fisheries Research 70: 319–337
+
 **Walker R, Bokuniewicz H, Carlin D, Cato I, Dijkshoorn C, Backer AD, Dalfsen J van, Desprez M, Howe L, Robertsdottir BG, et al** (2016) Effects of extraction of marine sediments on the marine environment 2005-2011. doi: 10.17895/ices.pub.5498
 
 **WGEXT** (2019) Working Group on the Effects of Extraction of Marine Sediments on the Marine Ecosystem (WGEXT). doi: 10.17895/ices.pub.5
